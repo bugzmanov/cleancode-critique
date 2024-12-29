@@ -1,4 +1,4 @@
-<div style="text-align:center"><img src="./images/is_this_code_clean.png" width="50%"/></div>
+<div style="text-align:center; padding-top:30px"><img src="./images/is_this_code_clean.png" width="50%"/></div>
 
 # Clean Code - Critical Analysis
 

@@ -10,6 +10,7 @@
     --link: #60a5fa;
     --code-bg: #2d3748;
 }
+
 /* Book quotes styling */
 .book-quote {
     border-left: 3px solid var(--book-accent);
@@ -157,29 +158,29 @@
 
 /* code review */
 
-        .code-line {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
+.code-line {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-        .code-comment-trigger {
-            position: absolute;
-            left: 3rem;
-            color: #ff0000;  /* Bright red color */
-            cursor: pointer;
-            opacity: 0.9;
-            transition: opacity 0.2s;
-            user-select: none;
-            font-size: 12px;
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            text-align: center;
-            line-height: 24px;
-        }
+.code-comment-trigger {
+    position: absolute;
+    left: 3rem;
+    color: #ff0000;  /* Bright red color */
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+    user-select: none;
+    font-size: 12px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    text-align: center;
+    line-height: 24px;
+}
 
 /* rants */
 
@@ -242,101 +243,89 @@
     border-top: 1px solid rgba(94, 234, 212, 0.2);
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-    <style>
-        :root {
-            --bg-primary: #1a1b26;
-            --bg-secondary: #1f2937;
-            --text-primary: #e5e7eb;
-        }
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 2rem;
+    line-height: 1.6;
+}
 
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: system-ui, -apple-system, sans-serif;
-            padding: 2rem;
-            line-height: 1.6;
-        }
+pre {
+    position: relative;
+    margin: 1em 0;
+    background: var(--bg-secondary) !important;
+}
 
-        pre {
-            position: relative;
-            margin: 1em 0;
-            background: var(--bg-secondary) !important;
-        }
+pre code {
+    position: relative;
+    display: block;
+    font-family: 'Menlo', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
 
-        pre code {
-            position: relative;
-            display: block;
-            font-family: 'Menlo', 'Monaco', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-        }
+.reviewable-line {
+    position: relative;
+    display: inline;
+    border-bottom: 1px dotted #ff0000;
+    padding: 2px 0;
+}
 
-        .reviewable-line {
-            position: relative;
-            display: inline;
-            border-bottom: 1px dotted #ff0000;
-            padding: 2px 0;
-        }
+.code-comment {
+    display: none;
+    position: absolute;
+    left: 80%;
+    /*top: -80px;*/
+    transform: translateX(-50%);
+    background: #f0de7d;
+    color: #2f2f2f; 
+    padding: 8px 12px;
+    border-radius: 4px;
+    width: 300px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    z-index: 100;
+    white-space: normal;
+}
 
-        .code-comment {
-            display: none;
-            position: absolute;
-            left: 80%;
-            /*top: -80px;*/
-            transform: translateX(-50%);
-            background: #f0de7d;
-            color: #2f2f2f; 
-            padding: 8px 12px;
-            border-radius: 4px;
-            width: 300px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
-            line-height: 1.4;
-            z-index: 100;
-            white-space: normal;
-        }
-
-        .reviewable-line:hover .code-comment {
-            display: block;
-        }
+.reviewable-line:hover .code-comment {
+    display: block;
+}
 
 
-        .code-comment-trigger:hover {
-            opacity: 1;
-        }
+.code-comment-trigger:hover {
+    opacity: 1;
+}
 
-        /*.code-comment {*/
-        /*    display: none !important;*/
-        /*    position: absolute !important;*/
-        /*    left: calc(100% + 20px);*/
-        /*    top: 0;*/
-        /*    background: #ffd700;*/
-        /*    color: #000;*/
-        /*    padding: 8px 12px;*/
-        /*    border-radius: 4px;*/
-        /*    width: 300px;*/
-        /*    box-shadow: 0 2px 8px rgba(0,0,0,0.3);*/
-        /*    font-family: system-ui, -apple-system, sans-serif;*/
-        /*    font-size: 14px;*/
-        /*    line-height: 1.4;*/
-        /*    z-index: 100;*/
-        /*    white-space: normal;*/
-        /*    visibility: hidden;  /* Hide by default */*/
-        /*    opacity: 0;*/
-        /*    transition: opacity 0.2s, visibility 0.2s;*/
-        /*}*/
-        /**/
-        .code-comment.active {
-            display: block;
-            visibility: visible;
-            opacity: 1;
-        }
+/*.code-comment {*/
+/*    display: none !important;*/
+/*    position: absolute !important;*/
+/*    left: calc(100% + 20px);*/
+/*    top: 0;*/
+/*    background: #ffd700;*/
+/*    color: #000;*/
+/*    padding: 8px 12px;*/
+/*    border-radius: 4px;*/
+/*    width: 300px;*/
+/*    box-shadow: 0 2px 8px rgba(0,0,0,0.3);*/
+/*    font-family: system-ui, -apple-system, sans-serif;*/
+/*    font-size: 14px;*/
+/*    line-height: 1.4;*/
+/*    z-index: 100;*/
+/*    white-space: normal;*/
+/*    visibility: hidden;  /* Hide by default */*/
+/*    opacity: 0;*/
+/*    transition: opacity 0.2s, visibility 0.2s;*/
+/*}*/
+/**/
+.code-comment.active {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}
 /* Optional: add some visual separation between columns */
 .code-column:not(:last-child) {
     /*border-right: 1px solid rgba(255, 255, 255, 0.1);*/
@@ -636,5 +625,7 @@ main {
     display: none !important;
 }
 
-
+#menu-bar-hover-placeholder {
+    display: none !important;
+}
 
