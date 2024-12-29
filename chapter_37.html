@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Error Handling - Clean Code - Critical Analysis</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Clean Code - Critical Analysis</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="prefer-exceptions-to-returning-error-codes"><a class="header" href="#prefer-exceptions-to-returning-error-codes">Prefer Exceptions to Returning Error Codes</a></h2>
+<p>To illustrate the guide-line he starts with an example:</p>
+<div class="book-quote">
+<pre><code class="language-java">
+if (deletePage(page) == E_OK) {
+    if (registry.deleteReference(page.name) == E_OK) {
+        if (configKeys.deleteKey(page.name.makeKey()) == E_OK){
+            logger.log("page deleted");
+        } else {
+            logger.log("configKey not deleted");
+        }
+    } else {
+        logger.log("deleteReference from registry failed");
+    }
+} else {
+    logger.log("delete failed");
+    return E_ERROR;
+}
+</code></pre>
+</div>
+<p>Lets do a quick de-tour...</p>
+<div class="big-emphasis">
+    <p className="text-4xl font-bold text-teal-400 animate-pulse">
+        THESE 👏 ARE 👏 TERRIBLE 👏 LOG 👏 MESSAGES!
+    </p>
+</div>
+<p>They lack any context to the degree of being useless. Imagine debugging production issue at 3am and the only thing you see in log is this:</p>
+<pre><code>2024-01-01T02:45:00 - delete failed
+</code></pre>
+<p>Well, thank you dear sir cleancoder. Now I have everything I need!</p>
+<p>Never write logging like this. Even as a joke. Good log messages should always provide context, including:</p>
+<ul>
+<li>What operation was being performed</li>
+<li>The input parameters</li>
+<li>The outcome or reason for failure</li>
+</ul>
+<p>Error handling must be cosistent! The provided code would return E_ERROR to the client code only in case 1 of 3 deletes fails: errors to <code>deleteReference</code> and <code>deleteKey</code> are essentialy ignored.</p>
+<p>Martin provides improved version:</p>
+<div class="book-quote">
+<pre><code class="language-java">
+try {
+    deletePage(page);
+    registry.deleteReference(page.name);
+    configKeys.deleteKey(page.name.makeKey());
+} catch (Exception e) {
+    logger.log(e.getMessage());
+}
+</code></pre>
+</div>
+<div class="big-emphasis">
+    <p className="text-4xl font-bold text-teal-400 animate-pulse">
+        ALWAYS 👏 LOG 👏 STACK-TRACES!
+    </p>
+</div>
+<p>The bear minimum is:</p>
+<pre><code class="language-java">logger.log(e.getMessage(), e);
+</code></pre>
+<p>or better yet:</p>
+<pre><code class="language-java">logger.log("Got an error while deleting page: " + page, e);
+</code></pre>
+<p>This log has description of the operation, it has details of the context, it has stack-traces <span style="font-size:2rem"> = 😍 </span></p>
+<p>Notice the big change in refactored version: now ALL errors are essentially ignored and not communicated to the client code.</p>
+<pre><code class="language-java">public void delete(Page page) {
+    try {
+        deletePage(page);
+        registry.deleteReference(page.name);
+        configKeys.deleteKey(page.name.makeKey());
+    } catch (Exception e) {
+        logger.error("Got an error while deleting page: " + page, e);
+    }
+}
+</code></pre>
+<p>The delete operation will always successfully return. Almost always this is a design mistake.</p>
+<p>Best Practices for Exception Handling:</p>
+<ul>
+<li><strong>Let Exceptions Propagate When Appropriate</strong>: If the code catching the exception doesn’t know how to handle it, it should let it propagate to a higher layer</li>
+<li><strong>Log-and-Throw When Necessary</strong>: If local context (e.g., the page object) is important for debugging and isn’t available in upper layers, it’s reasonable to log the error before re-throwing:</li>
+</ul>
+<pre><code class="language-java">public void delete(Page page) thows Exception {
+    try {
+        deletePage(page);
+        registry.deleteReference(page.name);
+        configKeys.deleteKey(page.name.makeKey());
+    } catch (Exception e) {
+        logger.error("Got an error while deleting page: " + page, e);
+        throw e;
+    }
+}
+</code></pre>
+<p>[todo: talk about types and exceptions]</p>
+<p>[todo: talk about errors as values]</p>
+<h3 id="extract-trycatch-blocks"><a class="header" href="#extract-trycatch-blocks">Extract Try/Catch Blocks</a></h3>
+<p>Martin proposes splitting the delete method into smaller pieces:</p>
+<div class="code-comparison">
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Original Code: </div>
+        <pre class="ignore"><code class="language-java">public void delete(Page page) {
+  try {
+    deletePage(page);
+    registry.deleteReference(page.name);
+    configKeys.deleteKey(page.name.makeKey());
+  } catch (Exception e) {
+    logger.log(e.getMessage());
+  }
+}</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Proposed rewrite:</div>
+        <pre class="ignore"><code class="language-java">public void delete(Page page) {
+  try {
+    deletePageAndAllReferences(page);
+  } catch (Exception e) {
+    logError(e);
+  }
+}
+&nbsp;
+private void deletePageAndAllReferences(Page page) throws Exception {
+  deletePage(page);
+  registry.deleteReference(page.name);
+  configKeys.deleteKey(page.name.makeKey());
+}
+&nbsp;
+private void logError(Exception e) {
+  logger.log(e.getMessage());
+}</code></pre>
+    </div>
+</div>
+<p>He proposed to rewrite 1 method with 8 lines of code into 3 methods with 16 lines of code (including whitespacing).
+This is just a code bloat.</p>
+<p>Looking at original <code>delete</code>: you could immidiately grasp that it was executing 3 deletions, that it is silencing the errors and that the logging was done incorrectly.</p>
+<p>All this information is gone now from new <code>delete</code> method:</p>
+<pre><code class="language-java">public void delete(Page page) {
+  try {
+    deletePageAndAllReferences(page);
+  } catch (Exception e) {
+    logError(e);
+  }
+}
+</code></pre>
+<p>Ok, maybe error silencing is stil noteceable.</p>
+<p><code>deletePageAndAllReferences</code> clearly is not doing 1 thing only, is it?<br/>
+I think the name is not descriptive enough, it should be <code>deletePageAndAllReferencesAndPageKey</code>. <em><strong>/s</strong></em></p>
+<p>Clumsy names is one of the smells indicating that something is wrong with the model or with an abstraction.<br/>
+I think in this case, the code screams: <strong>"Don't butcher me, uncle Bob. I should exist and prosper as a single piece.
+Don't create useless methods just satisfy arbitary rule that doesn't have any value"</strong></p>
+<blockquote>
+<p>"If it's hard to find a simple name for a variable or method that creates a clear image of the underlying object, that's a hint that the underlying object may not have a clean design."</p>
+<p>from <a href="https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201">Philosophy Of Software Design</a></p>
+</blockquote>
+<p>In addition:</p>
+<pre><code class="language-java">private void logError(Exception e) {
+    logger.log(e.getMessage());
+}
+</code></pre>
+<p>Is an example that bad abstractions can do more harm than good. It fails to capture meaningful context or stack traces.
+The more this helper being used in the app, the harder it will be to manage this application.</p>
+<hr />
+<h3 id="error-handling-approaches-todo-polish"><a class="header" href="#error-handling-approaches-todo-polish">Error Handling Approaches (TODO: POLISH!)</a></h3>
+<p>Ok. Now lets talk about exception vs error codes.</p>
+<p>Code needs a channel to communicate errors and that channel needs to be different from channel of communicating normal results.
+Martin have avoided this discussion by using methods that have nothing to communicate in successfull scenario.</p>
+<p>Java’s exception handling is powerful and widely supported, offering features like:</p>
+<ul>
+<li>Stack traces for debugging</li>
+<li>Causality chaining for error contexts</li>
+<li>Compile-time enforcement of error handling (checked exceptions)</li>
+</ul>
+<hr />
+<p>Modern languages like Rust and Scala favor representing errors as values.
+This approach avoids the implicit flow control of exceptions by making errors explicit in function signatures.</p>
+<p>For example, in Rust:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn delete_page(page: &amp;Page) -&gt; Result&lt;(), Error&gt; {
+    // Perform deletion logic
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h3>
+<p>Using exceptions instead of error codes is generally a good practice, but it’s not a silver bullet. Effective error handling requires thoughtful design:</p>
+<ul>
+<li>Use exceptions to propagate errors, but don’t swallow them silently.</li>
+<li>Log meaningful context along with stack traces.</li>
+<li>Avoid refactors that bloat the code or obscure key operations.</li>
+<li>Consider whether exceptions or an error-as-value approach best fits your use case.</li>
+</ul>
+<p>Error handling isn’t just about avoiding failure—it’s about making failure clear, actionable, and easy to debug.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter_36.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter_38.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter_36.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter_38.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/book2.js"></script>
+
+
+    </div>
+    </body>
+</html>

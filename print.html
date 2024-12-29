@@ -1,0 +1,2159 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Clean Code - Critical Analysis</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Clean Code - Critical Analysis</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <div style="text-align:center; padding-top:30px"><img src="./images/is_this_code_clean.png" width="50%"/></div>
+<h1 id="clean-code---critical-analysis"><a class="header" href="#clean-code---critical-analysis">Clean Code - Critical Analysis</a></h1>
+<p>Clean code is probably the most recommended book to entry level engineers and junior developers. While it might have been good recommendation in the past, I don't believe that's the case anymore.</p>
+<p>After revisiting the book in 2023 I was surprised to notice that:</p>
+<ul>
+<li>The book is old and it hasn't aged well</li>
+<li>Much of the advice is questionable, but some being outright harmful</li>
+<li>Examples are the worst part of the book. By any objective measure, many would qualify as "bad code."</li>
+<li>Lazer focus on a wrong thing and attempt to sell it as the solution to everything. Code readability is important, it is not the only one aspect</li>
+<li>Despite being an entry-level book, it has these vibes of implied superiority, potentially giving the readers an undeserved sense of expertise</li>
+</ul>
+<p>For a significantly shorter critque of the book, check out <a href="https://qntm.org/clean">qntm's critique</a>.
+I mostly agree with qntm assessment. But it's a bit too emotional and personal and doesn't cover the parts i find the most harmful.</p>
+<h3 id="recommended-alternatives"><a class="header" href="#recommended-alternatives">Recommended Alternatives</a></h3>
+<p>If you're just starting your career and seeking books to improve your coding skills, I suggest these instead:</p>
+<ul>
+<li>
+<p><a href="https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201">A Philosophy of Software Design</a> <br/>
+This is not stated explicitly as a goal, but the book is full of contra-arguments and implicit critiques to the "Clean Code". <br/>
+This might be the best book to unlearn "Clean Code" style of development.</p>
+</li>
+<li>
+<p><a href="https://www.amazon.com/Balancing-Coupling-Software-Design-Addison-wesley/dp/0137353480">The Art of Software Design: Balancing Flexibility and Coupling</a></p>
+</li>
+</ul>
+<p>Also Robert Martin is working on the second edition of <em>Clean Code</em>. It will be fun to see how much of this critique will become irrelevant 😃</p>
+<div style="text-align:center"> 
+    <a target="_blank" href="https://www.reddit.com/r/programming/comments/1eo2lo5/uncle_bob_martin_i_am_in_the_midst_of_writing_the/"><img src="./images/second-ed-tweet.png" style="width:40%"></img></a>
+</div> 
+<h2 id="intended-audience"><a class="header" href="#intended-audience">Intended Audience</a></h2>
+<ul>
+<li><strong>For those recommending "Clean Code"</strong>:<br/>
+You may have read the book over a decade ago and found it useful at the time. This might help you reconsider.</li>
+<li><strong>For those confused after reading "Clean Code"</strong>:<br/>
+You’re not alone. The book can be confusing, and you might find better practical advice in modern alternatives</li>
+<li><strong>For those who enjoyed "Clean Code"</strong>:<br />
+<a href="https://github.com/hwayne/awesome-cold-showers">"It's great when people get excited about things, but sometimes they get a little too excited."</a><br />
+I hope this critique would help you to see more nuance.</li>
+</ul>
+<h3 id="a-note-to-all-readers"><a class="header" href="#a-note-to-all-readers">A Note to All Readers</a></h3>
+<p>This page exists as a reference for anyone. Agree or disagree, contributions to the critique are welcome via <a href="https://github.com/bugzmanov/cleancode-critique">GitHub</a>.</p>
+<p><br/><br/></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-1-clean-code"><a class="header" href="#chapter-1-clean-code">Chapter 1: Clean Code</a></h1>
+<p>Here is Martin's main thesis: <strong>bad code destroys companies</strong>.</p>
+<p>Ergo: Writing bad code is a mistake, and no excuse can justify it.</p>
+<div class="book-quote">
+I know of one company that, in the late 80s, wrote a killer app. It was very popular, and lots of professionals bought and used it. But then the release cycles began to stretch. Bugs were not repaired from one release to the next. Load times grew and crashes increased. I remember the day I shut the product down in frustration and never used it again. The company went out of business a short time after that.
+<p>Two decades later I met one of the early employees of that company and asked him what had happened. The answer confirmed my fears. They had rushed the product to market and had made a huge mess in the code. As they added more and more features, the code got worse and worse until they simply could not manage it any longer.</p>
+<p><em>It was the bad code that brought the company down.</em></p>
+</div>
+<h4 id="a-counter-anecdote"><a class="header" href="#a-counter-anecdote">A Counter-Anecdote:</a></h4>
+<blockquote>
+<p>"Oracle Database 12.2.</p>
+<p>It is close to 25 million lines of C code. What an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests. Generations of programmers have worked on that code under difficult deadlines and filled the code with all kinds of crap.</p>
+<p>Very complex pieces of logic, memory management, context switching, etc. are all held together with thousands of flags. The whole code is ridden with mysterious macros that one cannot decipher without picking a notebook and expanding relevant parts of the macros by hand. It can take a day to two days to really understand what a macro does.</p>
+<p>Sometimes one needs to understand the values and the effects of 20 different flags to predict how the code would behave in different situations. Sometimes 100s too! I am not exaggerating."</p>
+<p>From <a href="https://news.ycombinator.com/item?id=18442941">HN: What's the largest amount of bad code you have ever seen work?</a></p>
+</blockquote>
+<p>As horrific as this sounds, Oracle won't go out business <a href="https://www.macrotrends.net/stocks/charts/ORCL/oracle/gross-profit">anytime soon</a>. I can bet my life on that.</p>
+<h4 id="a-personal-anecdote"><a class="header" href="#a-personal-anecdote">A personal anecdote:</a></h4>
+<p>I worked in a small Series-A startup that had the most elegant code I've ever seen. The code was highly attuned to the domain model, well-structured and was so ergonomic that adding new features was a joy. It was the third iteration of the codebase. They run out of money. <del>It was the hunt for the clean code that brought the company down</del>. Nah. I'm kidding. World of business is far more complex than just code quality.</p>
+<p>Reading Clean Code in 2009, the idea that bad code being the root of all evil impressed me and I became a convert. It took me a decade to finally admit "ok. this doesn't match with reality." "Bad" code is pretty much the norm. Success or failure of an enterprise has nothing to do with it. And code that's good today will be very questionable from tomorrow's standards (this book is a perfect illustration of this).</p>
+<p>The focus on "cleanliness" of the code often feels like bike-shedding. The real challenge is to keep the balance between complexity vs available resources to manage it.
+Oracle can afford to have complex code base as they have enough resources and (<em>I'm speculating</em>) keep throwing more bodies at the problem.</p>
+<div class="book-quote">
+Of course you have been impeded by bad code. So then—why did you write it? <...> 
+<p>Were you trying to go fast? Were you in a rush? Probably so. Perhaps you felt that you didn't have time to do a good job</p>
+</div> 
+<p>"Not having enough time" might be an easy excuse and rationalization. But in my experience, I'm writing bad code because:</p>
+<ul>
+<li>I don't know that it is bad</li>
+<li>I don't know how to make it good within the constraints</li>
+<li>The existing architecture or design</li>
+</ul>
+<p>More often, it's a combination: accepting the existing design because I don't know how to make it better.</p>
+<p>You don't know what you don't know. Unfortunately, just reading "Clean Code" helps very little with discovering unknowns.</p>
+<div class="emphasis-block">
+    What might help is diving in and working on high quality code bases, having an experienced mentor, learning and studying different domains, ecosystems, languages and frameworks.
+</div>
+<h2 id="the-boy-scout-rule"><a class="header" href="#the-boy-scout-rule">The Boy Scout Rule</a></h2>
+<p>"Leave the campground cleaner than you found it". This is the call to action: always improve code that you're touching.</p>
+<p>In corporate america anything that has a catchy name has a chance to spread. I've heard of CTO at a mid-size company who knew two things about IT: how to hire contractors to adapt <a href="https://scaledagileframework.com/">Scaled Agile Framework</a> and "the Boy Scout Rule" of programming.</p>
+<div class="book-quote">
+Can you imagine working on a project where the code simply got better as time passed?
+</div>
+<p>This sounds appealing and might work on a small scale (think couple lines of code) and in isolation. But on this scale, it quickly hits diminishing returns. Applied on a larger scale, it creates chaos, random failures, and placing unnecessary burden on people working with the system and the codebase.</p>
+<!-- The analogy: you wake up every day in your apartment, and sometimes some of your stuff (furniture, clothes, appliances) are misplaced, moved or reorganized. Even if it's a slightly better organization, this will drive you insane if this will keep happening. --> 
+<p>What makes things worse: <strong>cleanliness of code is not an objective metric</strong>.</p>
+<p>In a campground, everyone agrees a plastic cup is trash and doesn’t belong. In code, readability and elegance are far more subjective.
+The most elegant OCaml code will be unreadable and weird in the eyes of average java Bob.</p>
+<div class="small-image-right">
+ <img src="./images/tidy_first.png"/>
+</div>
+<p>Kent Beck offers the idea of tidyings - small code changes that will unquestionably improve code base. While reading the book "Tidy first?" you'll notice two things:</p>
+<ul>
+<li>These are very small changes</li>
+<li>Question mark in the title of the book</li>
+</ul>
+<p>Clean Code advocates for significantly more radical interventions.
+<br/>
+<br/>
+<br/>
+<br/></p>
+<p>The boy scout rule is the opposite of:
+<br/></p>
+<div class="big-emphasis">Do not "fix" stuff that is not broken</div>
+<center style="font-style:italic">(this needs a catchy name)</center>
+<p>To Sum Up:</p>
+<p>Focusing obsessively on clean code often misses the bigger picture. The real game lies in managing complexity effectively while balancing the resources and the constraints.</p>
+<p><br/><br/></p>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2-meaningful-names"><a class="header" href="#chapter-2-meaningful-names">Chapter 2: Meaningful names</a></h1>
+<p>I generally agree with the theme of this chapter: names are important. Naming is the main component of building abstractions and abstraction boundaries.
+In smaller languages like C or Go-Lang, naming is <em>the</em> primary mechanism for abstraction.</p>
+<p>Naming brings the problem domain into the computational domain:</p>
+<pre><code class="language-java">static int TEMPERATURE_LIMIT_F = 1000;
+</code></pre>
+<p>Named code constructs — such as functions and variables — are the building blocks of composition in virtually every programming paradigm.</p>
+<blockquote>
+<p>Names are a form of abstraction: they provide a simplified way of thinking about a more complex underlying entity. Like other forms of abstraction, the best names are those that focus attention on what is most important about the underlying entity while omitting details that are less important.</p>
+<p>Fom <a href="https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201">"Philosophy of software design"</a></p>
+</blockquote>
+<p>However, I disagree with Clean Code's specific approach to naming and its examples of "good" names. Quite often the book declares a good rule but then shows horrible application.</p>
+<h2 id="use-intention-revealing-names"><a class="header" href="#use-intention-revealing-names">Use intention-revealing names</a></h2>
+<p>The advocated principle is the title - the name should reveal intent. But the application:</p>
+<div class="book-quote">
+The name of a variable, function, or class, should answer all the big questions. It should tell you why it exists, what it does, and how it is used. If a name requires a comment, then the name does not reveal its intent.
+</div>
+<p>This sounds like an impossible task. First, the name that reveals all of those details fails to be an abstraction boundary.
+Second, what you notice in many examples in this book that this approach to naming leads to using "description as a name".</p>
+<p>Martin presents 3 versions of the same code:</p>
+<div class="code-comparison">
+    <div class="code-column">
+    <pre><code class="language-java">
+public List&lt;int[]&gt; getThem() {
+  List&lt;int[]&gt; list1 
+       = new ArrayList&lt;int[]&gt;();
+  for (int[] x : theList)
+    if (x[0] == 4)
+      list1.add(x);
+  return list1;
+} </pre></code>
+       <div class="code-column-title" style="padding-top:10px; text-align: center; margin-bottom: 0px;">(Might be) Obfuscated and unrealistic</div>
+    </div>
+    <div class="code-column">
+        <pre><code class="language-java">
+public List&lt;int[]&gt; getFlaggedCells() {
+  List&lt;int[]&gt; flaggedCells 
+     = new ArrayList&lt;int[]&gt;();
+  for (int[] cell : gameBoard)
+    if (cell[STATUS_VALUE] == FLAGGED)
+      flaggedCells.add(cell);
+  return flaggedCells;
+}</code></pre>
+        <div class="code-column-title" style="padding-top:10px; text-align: center; margin-bottom: 0px;">(Migh be) Good enough</div>
+    </div>
+    <div class="code-column">
+        <pre><code class="language-java">
+public List&lt;Cell&gt; getFlaggedCells() {
+  List&lt;Cell&ht; flaggedCells 
+      = new ArrayList&lt;Cell&gt;();
+  for (Cell cell : gameBoard)
+    if (cell.isFlagged())
+        flaggedCells.add(cell);
+  return flaggedCells;
+}
+</code></pre>
+        <div class="code-column-title" style="padding-top:10px; text-align: center; margin-bottom: 0px;">(Might be) Premature abstraction</div>
+    </div>
+</div>
+<p>My main disagreement is this: not all code chunks need a name. In modern languages, this method can be a one-liner:</p>
+<pre><code class="language-scala">gameBoard.filter(cell =&gt; cell(STATUS_VALUE) == FLAGGED)
+</code></pre>
+<p>That's it. This code can be inlined and used as is.</p>
+<p>Second, while <code>getFlaggedCells</code> looks like an improvement over obfuscated <code>getThem</code>, it's not really a name, it's a description of what the method does.
+If the description is as long as the code, it's often redundant.</p>
+<p>Martin writes about it in passing: "if you can extract another function from it with <strong>a name that is not merely a restatement of its implementation</strong>".<br/>
+But he violates this principle quite often.</p>
+<p>Third, if for readability alone, I'd argue that the second version is as clear as the third. If readability is the only reason for introducing Cell abstraction, this is an overkill.</p>
+<div class="collapsible-rant">
+    <div class="collapsible-header">
+        <span class="collapsible-title">To be fair there are good reasons to introduce Cell abstraction, but also there are reasons not to</span>
+        <span class="collapsible-arrow">↓</span>
+    </div>
+    <div class="collapsible-content">
+        <code>List&lt;int[]&gt;</code> is a generic type - devoid of meaning without a context. <br/><code>List&lt;Cell&gt;</code> - has more semantic meaning and is harder to misuse.<br/>
+        <pre><code class="language-java">
+List&lt;int[]&gt; list = getFlaggedCells();
+list.get(0)[0] = list.get(0)[1] - list.get(0)[0];
+        </code></pre>
+        This compiles and runs, but the transformation is non-sensical and will corrupt data (the first element is a status field). <br/> 
+        <code>List&lt;Cell&gt;</code> has a better affordance than <code>List&lt;int[]&gt;</code>, and makes such mistakes less likely. But improved affordance comes from the specialized type, not just the name.<br/><br/>
+        But there is a the downside - specialized types needs specialized processing code. 
+&nbsp;
+        Serialization libraries, for example, would have support for <code>List&lt;int[]&gt;</code> out of the box, 
+        but would need custom ser-de for the Cell class.<br/><br/>
+        Since Clean Code, Robert Martin has embraced Clojure and functional programming. One of the tenets of Clojure philosophy: <b>use generic types to represent the data</b> and you'll have enormous library of processing functions that can be reused and combined.<br/>
+        I'm curious if he would ever finish the second edition and if he had changed his mind about types.
+    </div>
+</div>
+<!--To be fair there are good reasons to introduce Cell abstraction, but also there are reasons not to. `List<int[]>` is a generic type - devoid of meaning without a context. `List<Cell>` - has more semantic meaning and is harder to misuse.-->
+<!---->
+<!--```java-->
+<!--List<int[]> list = getFlaggedCells();-->
+<!--list.get(0)[0] = list.get(0)[1] - list.get(0)[0];-->
+<!--```-->
+<!---->
+<!--This compiles and runs, but the transformation is non-sensical and will corrupt data (the first element is a status field). `List<Cell>` has a better affordance than `List<int[]>`, and makes such mistakes less likely. But improved affordance comes from the specialized type, not just the name.-->
+<!---->
+<!--It comes with the downside - specialized types needs specialized processing code. Serialization libraries, for example, would have support for `List<int[]>` out of the box, -->
+<!--but would need custom ser-de for the Cell class.-->
+<!---->
+<!--Since Clean Code, Robert Martin has embraced Clojure and functional programming. One of the tenets of Clojure philosophy: *use generic types to represent the data* and you'll have enormous library of processing functions that can be reused and combined.-->
+<!---->
+<!--I'm curious if he would ever finish the second edition and if he had changed his mind about types.-->
+<!---->
+<h2 id="avoid-disinformation--use-problem-domain-name"><a class="header" href="#avoid-disinformation--use-problem-domain-name">Avoid disinformation ... Use Problem Domain Name</a></h2>
+<p>Martin pretty much advocates for informative style of writing in code: be clear, avoid quirks and puns.</p>
+<p>These are examples of "good" names from his perspective:</p>
+<ul>
+<li><code>bunchOfAccounts</code></li>
+<li><code>XYZControllerForEfficientStorageOfStrings</code></li>
+</ul>
+<div class="book-quote">
+Do not refer to a grouping of accounts as an accountList unless it's actually a List. The word list means something specific to programmers. If the container holding the accounts is not actually a List, it may lead to false conclusions. So accountGroup or bunchOfAccounts or just plain accounts would be better.
+</div>
+<p>This might be stylistic preferences, but <code>accountsList</code> is easier to read and write than <code>bunchOfAccounts</code>: it's shorter and has fewer words - it is more concise. If by looking at word List the first thing you're thinking is <code>java.util.List</code>, then you might need some time away from Java. Touch some grass, write some Haskell.</p>
+<div class="subtle-paragraph">
+XYZControllerForEfficientStorageOfStrings - this is not a name - it's an essay. It tells the whole story of (web) application working with strings and storing them efficiently.
+</div>
+<p>Martin states that acronyms and word shortenings are bad, but doesn't see the problem in a name that has 7 words and 40 characters in it.</p>
+<p>There is a simple solution to this - comments that expand acronyms and explain shortenings. But because Martin believes that <a href="./chapter_4.html">comments are a failure</a>, he has to insist on using essays as a name.</p>
+<p>By the end of the chapter he finally mentions:</p>
+<div class="book-quote">
+Shorter names are generally better than longer ones, so long as they are clear.
+<p>...The resulting names are more precise, which is the point of all naming.</p>
+</div>
+<p>These are really good points! But most of the examples in the chapter are not aligned with them. And I don't think "short and concise naming" is a takeaway people are getting from reading this chapter.</p>
+<p>If anything, in most examples he proposed to replace short (albeit cryptic) names with 3-4 word long slugs.</p>
+<div class="collapsible-rant">
+    <div class="collapsible-header">
+        <span class="collapsible-title">Opinion: Code Conventions for the Java Programming Language</span>
+        <span class="collapsible-arrow">↓</span>
+    </div>
+    <div class="collapsible-content">
+        Pascal and Camel case in Java was proposed in <a href="https://checkstyle.sourceforge.io/styleguides/sun-code-conventions-19990420/CodeConventions.doc8.html">Sun's Java Style</a> as a way to enforce <b>"names should be short yet meaningful"</b>. 
+        <br/><br/>
+        The idea being that <code>ItIsReallyUncomfortableToReadLongSentencesWrittenInThisStyle</code>. Hence people will be soft forced to limit the size of names.<br/>
+        <br/>
+        The assumption was wrong.
+        <br/><br/>
+        <div style="text-align:center"><img src="./images/names.png" width="70%"/></div>
+    </div>
+</div>
+<!--Pascal and Camel case in Java was proposed in Sun's Java Style as way to enforce "names should be short yet meaningful". <br/>-->
+<!--The idea being that `ItIsReallyUncomfortableToReadLongSentencesWrittenInThisStyle`. Hence people will be soft forced to limit the size of names.<br/>-->
+<!--The assumption was wrong.-->
+<!---->
+<!--<div style="text-align:center"><img src="./images/names.png" width="70%"/></div>-->
+<h2 id="add-meaningful-context"><a class="header" href="#add-meaningful-context">Add meaningful context</a></h2>
+<p>I believe this was my first big WTF moment in the book:</p>
+<div class="code-comparison">
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Original Code: </div>
+        <pre class="ignore"><code class="language-java">private void printGuessStatistics(char candidate, 
+                                  int count) {   
+    String number;
+    String verb;
+    String pluralModifier;
+    if (count == 0) {
+        number = "no";
+        verb = "are";
+        pluralModifier = "s";
+    } else if (count == 1) {
+        number = "1";
+        verb = "is";
+        pluralModifier = "";
+    } else {
+        number = Integer.toString(count);
+        verb = "are";
+        pluralModifier = "s";
+    }
+    String guessMessage = String.format(
+        "There %s %s %s%s", verb, number, 
+        candidate, pluralModifier
+    );
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">print(guessMessage);<span class="code-comment">Instead of printing, the method should just return guessMessage String result</span></span>
+    &nbsp;
+    &nbsp;
+}</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Proposed rewrite:</div>
+        <pre class="ignore"><code class="language-java">public class GuessStatisticsMessage {
+    private String number;
+    private String verb;
+    private String pluralModifier;
+&nbsp; 
+    public String make(char candidate, int count) {
+        createPluralDependentMessageParts(count);
+        return String.format(
+                "There %s %s %s%s", 
+                verb, number, candidate, pluralModifier );
+    }
+&nbsp; 
+    private void createPluralDependentMessageParts(int count) {
+        if (count == 0) {
+            thereAreNoLetters();
+        } else if (count == 1) {
+            thereIsOneLetter();
+        } else {
+            thereAreManyLetters(count);
+        }
+    }
+&nbsp; 
+    private void thereAreManyLetters(int count) {
+        number = Integer.toString(count);
+        verb = "are";
+        pluralModifier = "s";
+    }
+&nbsp; 
+    private void thereIsOneLetter() {
+        number = "1";
+        verb = "is";
+        pluralModifier = "";
+    }
+&nbsp; 
+    private void thereAreNoLetters() {
+        number = "no";
+        verb = "are";
+        pluralModifier = "s";
+    }
+}</code></pre>
+    </div>
+</div>
+<p>In no way the second option is better than the first one. The original has only one problem: side-effect. Instead of printing to the console it should have just return String.</p>
+<p>And that is it:</p>
+<ul>
+<li>1 method, 20 lines of code, can be read top to bottom,</li>
+<li>3 mutable local variables to capture local mutable state that can not escape.</li>
+<li>It is thread-safe. I's impossible to misuse this API.</li>
+</ul>
+<p>Second option:</p>
+<ul>
+<li>5 methods, 40 lines of code, +1 new class with mutable state.</li>
+<li>Because it's a class, the state can escape and be observed from the outside.</li>
+<li>Which makes it not thread safe.</li>
+</ul>
+<p>The second option introduced more code, more concepts and more entities, introduced thread safety concerns.. while getting the exactly same results.</p>
+<p>It also violates one of the rules laid out in the chapter about method names: "Methods should have verb or verb phrase names". <code>thereIsOneLetter()</code> is not really a verb or a verb phrase.</p>
+<p>If I'll try to be charitable here: Martin is creating internal Domain Specific Language(DSL) for a problem.</p>
+<div class="subtle-paragraph">
+A good indicator of an internal DSL: there are parts of API that doesn't make sense outside specific context/grammar. 
+<p>For example, <code>new GuessStatisticsMessage().thereAreNoLetters()</code> looks weird and doesn't make sense.</p>
+<p>On the other hand, language consturcts are presented in a somewhat declarative style:</p>
+<pre><code class="language-java">private void thereAreNoLetters() {
+    number = "no";
+    verb = "are";
+    pluralModifier = "s";
+}
+
+private void thereIsOneLetter() {
+    number = "1";
+    verb = "is";
+    pluralModifier = "";
+}
+</code></pre>
+<p>I hope you agree that methods like this is not a typical Java. If anything, this looks closer to typical ruby.</p>
+</div>
+<p>At the end, OOP and DSL are the wrong tool for the task of creating string.
+In a powerful-enough language, keeping this code procedural gives you result that is short and easy to understand:</p>
+<pre><code class="language-scala">def formatGuessStatistics(candidate: Char, count: Int): String = {   
+   count match {
+       case i if i &lt; 0 =&gt; throw new IllegalArgumentException(s"count=$count: negative counts are not supported")
+       case 0 =&gt; s"There are no ${candidate}s"
+       case 1 =&gt; s"There is 1 ${candidate}"
+       case x =&gt; s"There are $x ${candidate}s"
+   }
+}
+</code></pre>
+<br/>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3-functions"><a class="header" href="#chapter-3-functions">Chapter 3: Functions</a></h1>
+<p>The chapter begins by showcasing an example of "bad" code:</p>
+<div class="book-quote">
+<pre><code class="language-java">public static String testableHtml(PageData pageData, boolean includeSuiteSetup) throws Exception {
+    WikiPage wikiPage = pageData.getWikiPage();
+    StringBuffer buffer = new StringBuffer();
+    if (pageData.hasAttribute("Test")) {
+      if (includeSuiteSetup) {
+        WikiPage suiteSetup =
+         PageCrawlerImpl.getInheritedPage(
+                 SuiteResponder.SUITE_SETUP_NAME, wikiPage
+         );
+        if (suiteSetup != null) {
+         WikiPagePath pagePath = suiteSetup.getPageCrawler().getFullPath(suiteSetup);
+         String pagePathName = PathParser.render(pagePath);
+         buffer.append("!include -setup .")
+               .append(pagePathName)
+               .append("\n");
+        }
+      }
+      WikiPage setup = 
+        PageCrawlerImpl.getInheritedPage("SetUp", wikiPage);
+      if (setup != null) {
+        WikiPagePath setupPath = wikiPage.getPageCrawler().getFullPath(setup);
+        String setupPathName = PathParser.render(setupPath);
+        buffer.append("!include -setup .")
+              .append(setupPathName)
+              .append("\n");
+      }
+    }
+    buffer.append(pageData.getContent());
+    if (pageData.hasAttribute("Test")) {
+      WikiPage teardown = PageCrawlerImpl.getInheritedPage("TearDown", wikiPage);
+      if (teardown != null) {
+        WikiPagePath tearDownPath = wikiPage.getPageCrawler().getFullPath(teardown);
+        String tearDownPathName = PathParser.render(tearDownPath);
+        buffer.append("\n")
+              .append("!include -teardown .")
+              .append(tearDownPathName)
+              .append("\n");
+      }
+       if (includeSuiteSetup) {
+         WikiPage suiteTeardown =
+           PageCrawlerImpl.getInheritedPage(
+                   SuiteResponder.SUITE_TEARDOWN_NAME,
+                   wikiPage
+           );
+         if (suiteTeardown != null) {
+           WikiPagePath pagePath = suiteTeardown.getPageCrawler().getFullPath (suiteTeardown);
+           String pagePathName = PathParser.render(pagePath);
+           buffer.append("!include -teardown .")
+                 .append(pagePathName)
+                 .append("\n");
+         }
+       }
+     }
+     pageData.setContent(buffer.toString());
+     return pageData.getHtml();
+  }
+</code></pre>
+</div>
+<p>And the proposes refactoring:</p>
+<div class="book-quote">
+<pre><code class="language-java">public static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception {
+    boolean isTestPage = pageData.hasAttribute("Test");
+    if (isTestPage) {
+        WikiPage testPage = pageData.getWikiPage();
+        StringBuffer newPageContent = new StringBuffer();
+&nbsp;
+        includeSetupPages(testPage, newPageContent, isSuite);
+        newPageContent.append(pageData.getContent());
+        includeTeardownPages(testPage, newPageContent, isSuite);
+&nbsp;
+        pageData.setContent(newPageContent.toString());
+    }
+&nbsp;
+    return pageData.getHtml();
+}
+</code></pre>
+</div>
+<p>The original version operates on multiple levels of detalization and juggles multiple domains at the same time:</p>
+<ul>
+<li><em>API for fitness objects</em>: working with <code>WikiPage</code>, <code>PageData</code>, <code>PageCrawler</code> etc</li>
+<li><em>Java string manipulation</em>: Using StringBuffer to optimize string concatenation (it should be StringBuilder).</li>
+<li><em>Business logic</em>: Handling suites, tests, setups, and teardowns in a specific order.</li>
+</ul>
+<p>When everything presented at the same level  it indeed looks very noisy and hard to follow. (the book touches this in <a href="./chapter_32.html">"One Level of Abstraction per Function"</a>)</p>
+<p>The trick that Martin tries to pull off here is to show that small chunk of code is easier to understand than a larger chunk.
+And it works because he is not showing implementation of <code>includeSetupPages</code> and <code>includeTeardownPages</code>.</p>
+<p>But... extracting non-reusable methods doesn’t actually reduce complexity or code size, at best it just improves navigation.</p>
+<p>What objectively reduces code size is removing repetitions (the fancy term - <a href="https://en.wikipedia.org/wiki/Anti-unification">Anti-Unification</a>): the original code as bad as it is can be significantly improved by a small change - extract code duplication into helper method:</p>
+<pre><code class="language-java">public static String testableHtml(PageData pageData, boolean includeSuiteSetup) {
+    if (pageData.hasAttribute("Test")) { // not a test data page
+        return pageData.getHtml(); 
+    } 
+    WikiPage wikiPage = pageData.getWikiPage();
+    List&lt;String&gt; buffer = new ArrayList&lt;&gt;();
+    if (includeSuiteSetup) {
+        buffer.add(generateInclude(wikiPage, "Suite SetUp", "-setup"));
+    }
+    buffer.add(generateInclude(wikiPage, "SetUp", "-setup"));
+
+    buffer.append(pageData.getContent());
+
+    buffer.add(generateInclude(wikiPage, "TearDown", "-teardown"));
+    if (includeSuiteSetup) {
+        buffer.add(generateInclude(wikiPage, "Suite TearDown", "-teardown"))
+    }
+
+    pageData.setContent(buffer.stream().filter(String::nonEmpty).join("\n"));
+    return pageData.getHtml();
+}
+
+private static String generateInclude(WikiPage wikiPage, String path, String command) {
+    WikiPage inheritedPage = PageCrawlerImpl.getInheritedPage(path, wikiPage);
+    if (inheritedPage != null) {
+        WikiPagePath pagePath = inheritedPage.getPageCrawler().getFullPath(inheritedPage);
+        String pagePathName = PathParser.render(pagePath);
+        return "!include " + command + " ." + pagePathName;
+    } else {
+        return "";
+    }
+}
+</code></pre>
+<p>Is it more noisy than Martin's version? Sure. But most people would answer "YES" to the posed question "Do you understand the function after three minutes of study?"
+And it's a small change to the original mess.</p>
+<div style="text-align:center"><img src="./images/code_compression.png" width="70%"/></div>
+<div class="subtle-paragraph">
+"Extract a helper" - is one of those tidyings that Kent Beck is advocating - small code changes that definitely improve situation and have small risk.
+</div>
+<h2 id="the-real-problem"><a class="header" href="#the-real-problem">The real problem</a></h2>
+<p>Despite these improvements, the main critical issue remains unaddressed: the side effect of modifying the PageData object.
+Both <code>testableHtml</code> and <code>renderPageWithSetupsAndTeardowns</code> overwrite the PageData content to generate HTML, which introduces unexpected behavior.
+This lack of clarity around the method’s scope and purpose is the real “weirdness” in the original code.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="small"><a class="header" href="#small">Small!</a></h2>
+<p><span style="font-size:80px; color: red;"> NO! </span>
+I genuinely think this book is outdated, and a lot of its advice is more harmful than helpful.
+But there are two parts that stand out as the worst ideas in the whole book. This is one of them (the second one is <a href="./chapter_4.html">"Comments are a failures"</a>).<br/>
+Bazzilion small functions to achieve trivial functionality is a hallmark of "clean-coders". And this is the most damaging concept in this book.</p>
+<p>Splitting a system into pieces is an extremely useful technique for:</p>
+<ul>
+<li>Building reusable components</li>
+<li>Keeping unrelated concerns separate</li>
+<li>Reducing cognitive load required to reason about components independently</li>
+</ul>
+<p>However clean code advocates for splitting in order just to keep functions short. By itself this is a useless metric.</p>
+<p>When you make a component too small - it fails to encapsulate a required functionality. It can not be analyzed independently as it ends up tightly coupled with other parts of the system, which defeats the purpose of breaking things up:</p>
+<ul>
+<li>Less reusable: Tight coupling makes it harder to use pieces of the system in different contexts.</li>
+<li>Harder to understand: You can’t analyze the pieces independently anymore—they all depend on each other.</li>
+</ul>
+<p>You can argue that shorter methods themselves are less complex now, but this addresses only <strong>local complexity</strong>.
+To really understand a system, you have to deal with global complexity - the sum of all the pieces <strong>and how they interact</strong>. A bad split can actually make global complexity worse.</p>
+<p>Most of the time, splitting a function into a bunch of tiny pieces doesn’t improve much.
+It's like cutting a whole pizza pie into slices, and hoping that you consume fewer calories after eating every slice.</p>
+<p>My rule of thumb: splitting code should reduce global complexity or code size (or both). The split that increases both metrics is a bad idea.
+If breaking something into smaller pieces makes the overall system harder to understand and adds more lines of code, you’ve just made things worse.</p>
+<p>There’s also the problem of running out of good names when you create too many small functions.
+Once that happens, you’re stuck writing long, overly descriptive names that clutter the code and make it harder to read:</p>
+<pre><code class="language-java">public static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception {
+    if (isTestPage(pageData))
+        includeSetupAndTeardownPages(pageData, isSuite);
+    return pageData.getHtml();
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="one-level-of-abstraction-per-function"><a class="header" href="#one-level-of-abstraction-per-function">One Level of Abstraction per Function</a></h2>
+<p>This is a good rule, but as an author of the code you have always a choice: <strong>what is your abstraction</strong>.</p>
+<pre><code class="language-java">public static String testableHtml(PageData pageData, boolean includeSuiteSetup) {
+    WikiPage wikiPage = pageData.getWikiPage();
+    StringBuilder buffer = new StringBuilder();
+    boolean isTestPage = pageData.hasAttribute("Test");
+    if (isTestPage) {
+        if (includeSuiteSetup) {
+            buffer.append(generateInclude(wikiPage, SuiteResponder.SUITE_SETUP_NAME, "-setup")).append("\n")
+        }
+        buffer.append(generateInclude(wikiPage, "SetUp", "-setup")).append("\n")
+    }
+
+    buffer.append(pageData.getContent());
+
+    if (isTestPage) {
+        buffer.append(generateInclude(wikiPage, "TearDown", "-teardown"))
+        if (includeSuiteSetup) {
+            buffer.append("\n").append(generateInclude(wikiPage, SuiteResponder.SUITE_TEARDOWN_NAME, "-teardown"))
+        }
+    }
+    pageData.setContent(buffer.toString());
+    return pageData.getHtml();
+}
+</code></pre>
+<p>You might say this violates "one level of abstraction":</p>
+<div class="book-quote">
+There are concepts in there that are at a very high level of abstraction, such as getHtml(); <br/>
+others that are at an intermediate level of abstraction, such as: String pagePathName = PathParser.render(pagePath);<br/> 
+and still others that are remarkably low level, such as: .append("\n").
+</div>
+<p>Or.. you could also argue that the domain of this function is to convert PageData into HTML as a raw string.
+In that context, the function consistently operates on the same level of abstraction: processing data of a specific shape and generating formatted HTML text.</p>
+<div class="subtle-paragraph">
+"Abstractions are mappings between a complex concrete world and a simple idealized one."
+<p>James Koppel <a href="https://www.pathsensitive.com/2022/03/abstraction-not-what-you-think-it-is.html">"Abstraction is not what you think it is"</a></p>
+</div>
+<p>The key point is that <strong>abstraction is a choice</strong>. Developers must decide on the idealized world their function is operating in.
+If your abstraction is "a data processor for converting PageData to raw HTML," then the function maintains that level.</p>
+<p>[todo: this might need more clarification]</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="switch-statements"><a class="header" href="#switch-statements">Switch Statements</a></h2>
+<div class="book-quote">
+It's hard to make a small switch statement. Even a switch statement with only two cases is larger than I'd like a single block or function to be. It's also hard to make a switch statement that does one thing. By their nature, switch statements always do N things.
+</div>
+<p>By this logic a method can never have if-else statement: that would mean do-ing two things.</p>
+<p>There was a whole movement of <a href="https://www.antiifprogramming.com/about-the-anti-if.php">anti-if programming</a>.
+I'm not quite sure if it's a joke <a href="https://en.algorithmica.org/hpc/pipelining/branchless/">or not</a></p>
+<p>Ok, back to Martin:</p>
+<div class="book-quote">
+<pre><code class="language-java">public Money calculatePay(Employee e) throws InvalidEmployeeType {
+    switch (e.type) {
+        case COMMISSIONED:
+            return calculateCommissionedPay(e);
+        case HOURLY:
+            return calculateHourlyPay(e);
+        case SALARIED:
+            return calculateSalariedPay(e);
+        default:
+            throw new InvalidEmployeeType(e.type);
+    }
+}
+</code></pre>
+</div>
+<p>Whether this code violates the "one thing" rule depends on a perspective:</p>
+<ul>
+<li><em>Low-level view</em>: The function has four branches and performs four distinct actions.</li>
+<li><em>High-level view</em>: The function calculates pay for an employee. It is doing one thing.</li>
+</ul>
+<p>Switch statements have bad rep among Java developers:</p>
+<ul>
+<li>Doesn't look like OOP</li>
+<li>Leads to repetition</li>
+<li>Repetition leads to mistakes when some of the copies go out of sync with others</li>
+</ul>
+<p>Starting from Java 13 switch expressions introduced <a href="https://openjdk.org/jeps/354">exhaustive matching</a>, addressing one of these issues.</p>
+<pre><code class="language-java">public Money calculatePay(Employee e) throws InvalidEmployeeType {
+    return switch (e.type) {
+        case COMMISSIONED -&gt; yield calculateCommissionedPay(e);
+        case HOURLY       -&gt; yield calculateHourlyPay(e);
+        case SALARIED     -&gt; yield calculateSalariedPay(e);
+    }
+}
+</code></pre>
+<p>With exhaustive matching, forgetting to handle a new EmployeeType causes a compile-time error. This solves issue #3 without introducing additional abstractions.
+And makes issue #2 benign.</p>
+<p>Martin suggests hiding the switch statement behind polymorphism:</p>
+<div class="book-quote">
+<pre><code class="language-java">public abstract class Employee {
+    public abstract boolean isPayday();
+    public abstract Money calculatePay();
+    public abstract void deliverPay(Money pay);
+}
+&nbsp;
+public interface EmployeeFactory {
+    public Employee makeEmployee(EmployeeRecord r) throws InvalidEmployeeType;
+}
+&nbsp;
+public class EmployeeFactoryImpl implements EmployeeFactory {
+    public Employee makeEmployee(EmployeeRecord r) throws InvalidEmployeeType {
+        switch (r.type) {
+            case COMMISSIONED:
+                return new CommissionedEmployee(r);
+            case HOURLY:
+                return new HourlyEmployee(r);
+            case SALARIED:
+                return new SalariedEmploye(r);
+            default:
+                throw new InvalidEmployeeType(r.type);
+        }
+    }
+}
+</code></pre>
+</div>
+<p>While this approach (replace <code>switch</code> with polymorphism) is a common one, Martin’s example illustrates why it isn’t as straightforward as it seems.</p>
+<p>The proposed Employee interface is stuffed with domains and responsibilities:</p>
+<ul>
+<li><code>Employee.isPayday()</code> - couples Employee with payments, agreements, calendars and dates</li>
+<li><code>Employee.calculatePay()</code> - couples Employee with financial calculations</li>
+<li><code>Employee.deliverPay()</code> - couples Employee with transaction processing and persistence</li>
+</ul>
+<p>This makes Employee a god object that handles everything related to employees. As more features are added, the Employee class will inevitably grow into an unmanageable, bloated entity</p>
+<p><a href="./chapter_10.html">Chapter 10</a> talks about cohesion and single responsibility principle, it feels strange that in order to avoid <code>swtich</code> Martin forgoes OOP principles he advocates for.</p>
+<div class="subtle-paragraph">
+<b> Writing software is a balancing act </b> - it is a search for a solution in a system of contradictory constraints.
+</div>
+<p>By declaring <code>switch</code> fundamentally bad, Martin loses the balance. His solution increases complexity and couples unrelated concerns, trading one set of problems for another.</p>
+<p>The final point: to properly separate concerns, the <code>Employee</code> interface would need to be broken into multiple, smaller interfaces (something like <code>Payable</code>, <code>Schedulable</code>, <code>Transactionable</code>, etc).
+To maintain polymorphism, we'd either need three abstract factories (repetitions) or factory of factories (over-engineering).</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="use-descriptive-names"><a class="header" href="#use-descriptive-names">Use Descriptive Names</a></h2>
+<div class="book-quote">
+In Listing 3-7 I changed the name of our example function from testableHtml to SetupTeardownIncluder.render. This is a far better name because it better describes what the function does
+</div>
+<p>Nit-picking but <code>SetupTeardownIncluder.render</code> doesn't make much sense without reading the code. It's unclear why "Includer" should be rendering, and what does "rendering" mean for the "includer".</p>
+<p>Using a descriptive name is a good thing, but using description as a substitute for a name - not so much.</p>
+<div class="book-quote">
+Don't be afraid to make a name long.
+</div>
+<p>I think you should. Between using cryptic acronyms and writing "essay as a name" there is a balance to be found.</p>
+<p>There's scientific evidence that overly long words or word combinations increase both physical and mental effort when reading:</p>
+<blockquote>
+<p>"When we read, our eyes incessantly make rapid mechanical (i.e., not controlled by consciousness) movements, saccades. On average, their length is 7-9 letter spaces. At this time we do not receive new information."</p>
+<p>"During fixation, we get information from the perceptual span. The size of this area is relatively small, in the case of alphabetic orthographies (for example, in European languages) it starts from the beginning of the fixed word, but no more than 3-4 letter spaces to the left of the fixation point, and extends to about 14-15 letter spaces to the right of this point (in total 17-19 spaces)."</p>
+<center> 
+  Figure 10. The typical pattern of eye movements while reading.
+  <img src="https://optimal-codestyle.github.io/Velichkovskiy_reading.png"/>
+</center> 
+<p>From: <a href="https://optimal-codestyle.github.io/">Optimal Code Style</a></p>
+</blockquote>
+<p>This means names longer than <code>~15</code> characters become harder to process at a glance. For instance, compare these:</p>
+<ul>
+<li>
+<p><code>PersistentItemRecordConfig</code></p>
+</li>
+<li>
+<p><code>PersistentItemRec</code></p>
+</li>
+</ul>
+<p>If you’re not thinking about the meaning, the second name is visually and mentally easier to skim. The first name requires more effort to read and pronounce internally.</p>
+<p>Long names also consume real estate of the screen and make code visually overwhelmiing.</p>
+<pre><code class="language-java">PersistentItemRecordConfig persistentItemRecordConfig = new PersistentItemRecordConfig();
+</code></pre>
+<p>      vs      </p>
+<pre><code class="language-scala">val item = new PersistentItemRec()
+</code></pre>
+<p>Consider Bob Nystrom’s principles of good naming as a guide:</p>
+<blockquote>
+<p>A name has two goals:</p>
+<ul>
+<li>It needs to be clear: you need to know what the name refers to.</li>
+<li>It needs to be precise: you need to know what it does not refer to.</li>
+</ul>
+<p>After a name has accomplished those goals, any additional characters are dead weight</p>
+<ol>
+<li>Omit words that are obvious given a variable’s or parameter’s type</li>
+<li>Omit words that don’t disambiguate the name</li>
+<li>Omit words that are known from the surrounding context</li>
+<li>Omit words that don’t mean much of anything</li>
+</ol>
+<p>From <a href="https://journal.stuffwithstuff.com/2016/06/16/long-names-are-long/">Long Names Are Long</a></p>
+</blockquote>
+<br/>
+<hr />
+<p>12/29/2024 Update:</p>
+<p>I've recently read about <a href="https://buttondown.com/hillelwayne/archive/stroustrops-rule/">"Stroustrup's Rule"</a>.
+In short it sounds like: <strong>"Beginners need explicit syntax, experts want terse syntax."</strong></p>
+<blockquote>
+<p>I see this as a special case of mental model development: when a feature is new to you, you don't have an internal mental model so need all of the explicit information you can get. Once you're familiar with it, explicit syntax is visual clutter and hinders how quickly you can parse out information.</p>
+<p>(One example I like: which is more explicit, user_id or user_identifier? Which do experienced programmers prefer?)</p>
+<p>From  <a href="https://buttondown.com/hillelwayne/archive/stroustrops-rule/">"Stroustrup's Rule" by  Hillel Wayne</a></p>
+</blockquote>
+<p>That is a good insight. <br/> And yet I think when it comes to descriptive naming, it is more appropriate to put the information required for begginers into comments.
+This way "experts" (people who are familiar with the code) don't need to suffer from visual clutter and yet "begginers" still have a place to get everything they need.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="function-arguments"><a class="header" href="#function-arguments">Function Arguments</a></h2>
+<div class="book-quote">
+The ideal number of arguments for a function is zero (niladic). <br/>
+Next comes one (monadic), followed closely by two (dyadic). <br/>
+Three arguments (triadic) should be avoided where possible. <br/>
+More than three (polyadic) requires very special justification—and then shouldn't be used anyway.
+</div>
+<p>I think Robert Martin gets the most amount of hate for this one.</p>
+<div style="text-align:center"><a target="_blank" href="https://x.com/mariofusco/status/1596791273431928832"><img src="./images/fusco_bob.png" width="50%"/></a></div>
+<p>The main problem with Martin's advice: it presents itself as "less is better" but handwaves all the downsides of the particular application.
+He ignores trade-offs and side effects.</p>
+<ul>
+<li>"Smaller methods are better", but the increased amount of methods? Nah, you'll be fine.</li>
+<li>"Less arguments for a function is better", but the increased scope of mutable state? Nah, you'll be fine</li>
+<li>"Compression is better", but the bulging discs? Nah, you'll be fine.</li>
+</ul>
+<p>One particularly odd suggestion is to "simplify" by moving arguments into instance state:</p>
+<div class="book-quote">
+Arguments are hard. They take a lot of conceptual power. That's why I got rid of almost all of them from the example. 
+Consider, for instance, the <code>StringBuffer</code> in the example. We could have passed it around as an argument rather than making it an instance variable, 
+but then our readers would have had to interpret it each time they saw it. 
+When you are reading the story told by the module, <code>includeSetupPage()</code> is easier to understand than <code>includeSetupPageInto(newPageContent)</code>
+</div>
+<p>This doesn't eliminate complexity. It just moves it to another place.
+But worse: moving parameters to fields increases size and the scope of the mutable state of the application. This sacrifices global complexity to reduce local complexity.
+Honestly, tracking shared mutable state in multi-threaded environments - is far harder than understanding function arguments.</p>
+<div class="book-quote">
+Arguments are even harder from a testing point of view. Imagine the difficulty of writing all the test cases to ensure that all the various combinations of arguments work properly. If there are no arguments, this is trivial.
+</div>
+<p>Calling the methods became easier, but setting up the instance class and tracking the state becomes harder. This is not a winning move.
+It just moves complexity.</p>
+<p>The discipline of functional programming exists precisely to limit mutable state, recognizing its significant cognitive overhead.
+And while functional programming predates Clean Code, it's clear that by the time of Martin writing the book he wasn't really a fan.</p>
+<div class="book-quote">
+One input argument is the next best thing to no arguments. SetupTeardownIncluder.render(pageData) is pretty easy to understand. 
+Clearly we are going to render the data in the pageData object.
+</div>
+<p>Beating the same dead horse: <code>render(pageData)</code> might be easy to understand. <code>SetupTeardownIncluder.render(pageData)</code> still doesn't make sense.</p>
+<h2 id="flag-arguments"><a class="header" href="#flag-arguments">Flag Arguments</a></h2>
+<div class="book-quote">
+"Flag arguments are ugly. Passing a boolean into a function is a truly terrible practice. It immediately complicates the signature of the method, 
+loudly proclaiming that this function does more than one thing. It does one thing if the flag is true and another if the flag is false!"
+</div>
+<p>Martin’s critique of flag arguments is front-loaded with emotion, but is it valid?
+Adding boolean or any parameter is indeed a complication. Since <code>boolean</code> can accept 2 states, speaking more formaly adding boolean is doubling the domain space of the function.</p>
+<p>Adding a boolean parameter to a function that already has 2 booleans will bring domain space from 4 to 8, this might be significant.
+But adding boolean argument to a function that had none before would not kick complexity level into "unmanagable" territorry. It might be a tolerable increase.</p>
+<div class="book-quote">
+"Still, the method call render(true) is just plain confusing to a poor reader. Mousing over the call and seeing render(boolean isSuite) helps a little, but not that much. 
+We should have split the function into two: renderForSuite() and renderForSingleTest()."
+</div>
+<p>While <code>render(true)</code> is indeed unclear on a caller side, modern programming languages offer solutions, such as named parameters:</p>
+<pre><code class="language-python">render(asSuite = true)   # costs nothing in runtime
+</code></pre>
+<p>The larger problem with <code>render(true)</code> is so-called <a href="https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/">boolean blindness</a></p>
+<div class="subtle-paragraph">
+"The problem is computing the bit in the first place. Having done so, you have blinded yourself by reducing the information you have at hand to a bit, 
+and then trying to recover that information later by remembering the provenance of that bit."
+<p>from <a href="https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/">Boolean Blindness</a></p>
+</div>
+<p>The easiest solution to this code smell is to use disjoint unions (enums) where both options have with semantic meaning:</p>
+<pre><code class="language-java">enum ExcutionUnit { 
+    SingleTest, 
+    Suite 
+} 
+
+//...
+public String renderAs(ExecutionUnit executionUnit) { ... }
+
+// ------
+
+//calling side:
+renderAs(ExeuctionUnit.Suite);
+
+</code></pre>
+<p>It's unclear if Robert Martin <a href="./chapter_33.html">likes enums</a>.</p>
+<p>The inherit unavoidable complexity is that tests can have 2 execution types: as a single test or as a part of a suite.
+Splitting the <code>render</code> function "into two: renderForSuite() and renderForSingleTest()" does not reduce it. (neither does using boolean or enum)
+It is still 2 types of execution.
+There will be place in code that would have to take a decision and select one of the branches.<br/> Please do not create Abstract Factory for every boolean in your code.</p>
+<h2 id="verbs-and-keywords"><a class="header" href="#verbs-and-keywords">Verbs and Keywords</a></h2>
+<div class="book-quote">
+"This last is an example of the keyword form of a function name. Using this form we encode the names of the arguments into the function name. 
+<p>For example, assertEquals might be better written as <pre><code>assertExpectedEqualsActual(expected, actual)</code></pre>
+This strongly mitigates the problem of having to remember the ordering of the arguments."</p>
+</div>
+<p>The suggestion to encode order of parameters in the name is not scalable -
+it works in isolation, but would degrate quickly with real API when you need to do all kind of assertions:</p>
+<ul>
+<li><code>assertExpectesIsGreaterOrEqualsThanActual</code></li>
+<li><code>assertActualContainsAllTheSameElementsAsExpected</code></li>
+</ul>
+<p>The best solution java can offer is fluent API: <a href="https://github.com/assertj/assertj">AssertJ</a></p>
+<pre><code class="language-java">assertThat(frodo.getName()).isEqualTo("Frodo");
+</code></pre>
+<p>Outside java, this problem has other solutions:</p>
+<ol>
+<li>Named parameters - In languages like Python, named parameters eliminate ambiguity:</li>
+</ol>
+<pre><code class="language-python">assertEquals(expected = something, actual = actual)
+</code></pre>
+<ol start="2">
+<li>Macros - In Rust, macros like assert_eq! automatically capture and display argument details, making order irrelevant:</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_string_eq() {
+    let expected = String::from("hello");
+    let actual = String::from("world");
+    
+    assert_eq!(expected, actual);
+    // Error message:
+
+    // thread 'test_string_eq' panicked at:
+    // assertion `left == right` failed
+    //   left: "hello"
+    //  right: "world"
+    //   at src/main.rs:17:5
+}
+
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="have-no-side-effects"><a class="header" href="#have-no-side-effects">Have No Side Effects</a></h2>
+<p>Clean Code introduces side effects in a somewhat casual terms:</p>
+<div class="book-quote">
+"Side effects are lies. Your function promises to do one thing, but it also does other hidden things. 
+Sometimes it will make unexpected changes to the variables of its own class. 
+Sometimes it will make them to the parameters passed into the function or to system globals. 
+In either case they are devious and damaging mistruths that often result in strange temporal couplings and order dependencies."
+</div>
+<p>To make it more formal: a side effect is any operation that:</p>
+<ul>
+<li>Modifies state outside the function's scope</li>
+<li>Interacts with the external world (I/O, network, database)</li>
+<li>Relies on non-deterministic behavior (e.g., random number generation, system clock)</li>
+<li>Throws exception (which can alter the program's control flow in unexpected ways)</li>
+</ul>
+<p>Pure functions—those without side effects—are easier to reason about, test, and reuse. They work like black boxes: given the same inputs, they always produce the same outputs, with no hidden dependencies or interactions.</p>
+<p>However, the example provided in Clean Code is somewhat incomplete and misses critical aspects.</p>
+<div class="book-quote">
+"Consider, for example, the seemingly innocuous function in Listing 3-6. This function uses a standard algorithm to match a userName to a password. 
+It returns true if they match and false if anything goes wrong. But it also has a side effect. Can you spot it?"
+<pre><code class="language-java">
+public class UserValidator {
+    private Cryptographer cryptographer;
+
+    public boolean checkPassword(String userName, String password) {
+        User user = UserGateway.findByName(userName);
+        if (user != User.NULL) {
+            String codedPhrase = user.getPhraseEncodedByPassword();
+            String phrase = cryptographer.decrypt(codedPhrase, password);
+            if ("Valid Password".equals(phrase)) {
+                Session.initialize();
+                return true;
+            }
+        }
+        return false;
+    }
+}
+</code></pre>
+<p>"The side effect is the call to Session.initialize(), of course. The checkPassword function, by its name, says that it checks the password."</p>
+</div>
+<p>He implies that renaming function would get rid of side-effects: "we might rename the function checkPasswordAndInitializeSession, though that certainly violates 'Do one thing'"</p>
+<p>This analysis misses several critical issues:</p>
+<ol>
+<li><code>UserGateway.findByName(userName)</code> - From the name this looks like a remote call to some-kind of storage, which is also a side-effect. And it also creates temporal coupling: the checkPassword would fail if there is no connection to the UserGateway.</li>
+<li><code>UserGateway</code> is a singleton - i.e. it is a global implicit dependency.</li>
+</ol>
+<p>A more formal understanding of side effects helps spot issues more easily.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="prefer-exceptions-to-returning-error-codes"><a class="header" href="#prefer-exceptions-to-returning-error-codes">Prefer Exceptions to Returning Error Codes</a></h2>
+<p>To illustrate the guide-line he starts with an example:</p>
+<div class="book-quote">
+<pre><code class="language-java">
+if (deletePage(page) == E_OK) {
+    if (registry.deleteReference(page.name) == E_OK) {
+        if (configKeys.deleteKey(page.name.makeKey()) == E_OK){
+            logger.log("page deleted");
+        } else {
+            logger.log("configKey not deleted");
+        }
+    } else {
+        logger.log("deleteReference from registry failed");
+    }
+} else {
+    logger.log("delete failed");
+    return E_ERROR;
+}
+</code></pre>
+</div>
+<p>Lets do a quick de-tour...</p>
+<div class="big-emphasis">
+    <p className="text-4xl font-bold text-teal-400 animate-pulse">
+        THESE 👏 ARE 👏 TERRIBLE 👏 LOG 👏 MESSAGES!
+    </p>
+</div>
+<p>They lack any context to the degree of being useless. Imagine debugging production issue at 3am and the only thing you see in log is this:</p>
+<pre><code>2024-01-01T02:45:00 - delete failed
+</code></pre>
+<p>Well, thank you dear sir cleancoder. Now I have everything I need!</p>
+<p>Never write logging like this. Even as a joke. Good log messages should always provide context, including:</p>
+<ul>
+<li>What operation was being performed</li>
+<li>The input parameters</li>
+<li>The outcome or reason for failure</li>
+</ul>
+<p>Error handling must be cosistent! The provided code would return E_ERROR to the client code only in case 1 of 3 deletes fails: errors to <code>deleteReference</code> and <code>deleteKey</code> are essentialy ignored.</p>
+<p>Martin provides improved version:</p>
+<div class="book-quote">
+<pre><code class="language-java">
+try {
+    deletePage(page);
+    registry.deleteReference(page.name);
+    configKeys.deleteKey(page.name.makeKey());
+} catch (Exception e) {
+    logger.log(e.getMessage());
+}
+</code></pre>
+</div>
+<div class="big-emphasis">
+    <p className="text-4xl font-bold text-teal-400 animate-pulse">
+        ALWAYS 👏 LOG 👏 STACK-TRACES!
+    </p>
+</div>
+<p>The bear minimum is:</p>
+<pre><code class="language-java">logger.log(e.getMessage(), e);
+</code></pre>
+<p>or better yet:</p>
+<pre><code class="language-java">logger.log("Got an error while deleting page: " + page, e);
+</code></pre>
+<p>This log has description of the operation, it has details of the context, it has stack-traces <span style="font-size:2rem"> = 😍 </span></p>
+<p>Notice the big change in refactored version: now ALL errors are essentially ignored and not communicated to the client code.</p>
+<pre><code class="language-java">public void delete(Page page) {
+    try {
+        deletePage(page);
+        registry.deleteReference(page.name);
+        configKeys.deleteKey(page.name.makeKey());
+    } catch (Exception e) {
+        logger.error("Got an error while deleting page: " + page, e);
+    }
+}
+</code></pre>
+<p>The delete operation will always successfully return. Almost always this is a design mistake.</p>
+<p>Best Practices for Exception Handling:</p>
+<ul>
+<li><strong>Let Exceptions Propagate When Appropriate</strong>: If the code catching the exception doesn’t know how to handle it, it should let it propagate to a higher layer</li>
+<li><strong>Log-and-Throw When Necessary</strong>: If local context (e.g., the page object) is important for debugging and isn’t available in upper layers, it’s reasonable to log the error before re-throwing:</li>
+</ul>
+<pre><code class="language-java">public void delete(Page page) thows Exception {
+    try {
+        deletePage(page);
+        registry.deleteReference(page.name);
+        configKeys.deleteKey(page.name.makeKey());
+    } catch (Exception e) {
+        logger.error("Got an error while deleting page: " + page, e);
+        throw e;
+    }
+}
+</code></pre>
+<p>[todo: talk about types and exceptions]</p>
+<p>[todo: talk about errors as values]</p>
+<h3 id="extract-trycatch-blocks"><a class="header" href="#extract-trycatch-blocks">Extract Try/Catch Blocks</a></h3>
+<p>Martin proposes splitting the delete method into smaller pieces:</p>
+<div class="code-comparison">
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Original Code: </div>
+        <pre class="ignore"><code class="language-java">public void delete(Page page) {
+  try {
+    deletePage(page);
+    registry.deleteReference(page.name);
+    configKeys.deleteKey(page.name.makeKey());
+  } catch (Exception e) {
+    logger.log(e.getMessage());
+  }
+}</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Proposed rewrite:</div>
+        <pre class="ignore"><code class="language-java">public void delete(Page page) {
+  try {
+    deletePageAndAllReferences(page);
+  } catch (Exception e) {
+    logError(e);
+  }
+}
+&nbsp;
+private void deletePageAndAllReferences(Page page) throws Exception {
+  deletePage(page);
+  registry.deleteReference(page.name);
+  configKeys.deleteKey(page.name.makeKey());
+}
+&nbsp;
+private void logError(Exception e) {
+  logger.log(e.getMessage());
+}</code></pre>
+    </div>
+</div>
+<p>He proposed to rewrite 1 method with 8 lines of code into 3 methods with 16 lines of code (including whitespacing).
+This is just a code bloat.</p>
+<p>Looking at original <code>delete</code>: you could immidiately grasp that it was executing 3 deletions, that it is silencing the errors and that the logging was done incorrectly.</p>
+<p>All this information is gone now from new <code>delete</code> method:</p>
+<pre><code class="language-java">public void delete(Page page) {
+  try {
+    deletePageAndAllReferences(page);
+  } catch (Exception e) {
+    logError(e);
+  }
+}
+</code></pre>
+<p>Ok, maybe error silencing is stil noteceable.</p>
+<p><code>deletePageAndAllReferences</code> clearly is not doing 1 thing only, is it?<br/>
+I think the name is not descriptive enough, it should be <code>deletePageAndAllReferencesAndPageKey</code>. <em><strong>/s</strong></em></p>
+<p>Clumsy names is one of the smells indicating that something is wrong with the model or with an abstraction.<br/>
+I think in this case, the code screams: <strong>"Don't butcher me, uncle Bob. I should exist and prosper as a single piece.
+Don't create useless methods just satisfy arbitary rule that doesn't have any value"</strong></p>
+<blockquote>
+<p>"If it's hard to find a simple name for a variable or method that creates a clear image of the underlying object, that's a hint that the underlying object may not have a clean design."</p>
+<p>from <a href="https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201">Philosophy Of Software Design</a></p>
+</blockquote>
+<p>In addition:</p>
+<pre><code class="language-java">private void logError(Exception e) {
+    logger.log(e.getMessage());
+}
+</code></pre>
+<p>Is an example that bad abstractions can do more harm than good. It fails to capture meaningful context or stack traces.
+The more this helper being used in the app, the harder it will be to manage this application.</p>
+<hr />
+<h3 id="error-handling-approaches-todo-polish"><a class="header" href="#error-handling-approaches-todo-polish">Error Handling Approaches (TODO: POLISH!)</a></h3>
+<p>Ok. Now lets talk about exception vs error codes.</p>
+<p>Code needs a channel to communicate errors and that channel needs to be different from channel of communicating normal results.
+Martin have avoided this discussion by using methods that have nothing to communicate in successfull scenario.</p>
+<p>Java’s exception handling is powerful and widely supported, offering features like:</p>
+<ul>
+<li>Stack traces for debugging</li>
+<li>Causality chaining for error contexts</li>
+<li>Compile-time enforcement of error handling (checked exceptions)</li>
+</ul>
+<hr />
+<p>Modern languages like Rust and Scala favor representing errors as values.
+This approach avoids the implicit flow control of exceptions by making errors explicit in function signatures.</p>
+<p>For example, in Rust:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn delete_page(page: &amp;Page) -&gt; Result&lt;(), Error&gt; {
+    // Perform deletion logic
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h3>
+<p>Using exceptions instead of error codes is generally a good practice, but it’s not a silver bullet. Effective error handling requires thoughtful design:</p>
+<ul>
+<li>Use exceptions to propagate errors, but don’t swallow them silently.</li>
+<li>Log meaningful context along with stack traces.</li>
+<li>Avoid refactors that bloat the code or obscure key operations.</li>
+<li>Consider whether exceptions or an error-as-value approach best fits your use case.</li>
+</ul>
+<p>Error handling isn’t just about avoiding failure—it’s about making failure clear, actionable, and easy to debug.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="how-do-you-write-functions-like-this"><a class="header" href="#how-do-you-write-functions-like-this">How Do You Write Functions Like This?</a></h2>
+<div class="book-quote">
+"When I write functions, they come out long and complicated. They have lots of indenting and nested loops. They have long argument lists. 
+The names are arbitrary, and there is duplicated code."
+<p>"So then I massage and refine that code, splitting out functions, changing names, eliminating duplication. I shrink the methods and reorder them. Sometimes I break out whole classes, all the while keeping the tests passing.
+In the end, I wind up with functions that follow the rules I've laid down in this chapter. I don't write them that way to start. I don't think anyone could."</p>
+</div>
+<p>What's Martin is advocating is bottom to top approach to software development: first make it work, then make it beautiful( = "clean", in Matrins worldview).</p>
+<p>Martin advocates for a bottom-to-top approach to software development:</p>
+<ol>
+<li>First, to make it work</li>
+<li>Then, refine it to make it "beautiful" (or "clean" as Martin describes it).</li>
+</ol>
+<p>But this is not the only way to design software! In my experience my best designs often come from doing top-to-bottom thinking:</p>
+<ol>
+<li>Start by imagining how you want the code to look and behave.</li>
+<li>Sketch out non-compilable pseudocode that satisfies your constraints and communicates the desired design.</li>
+<li>Gradually implement the details, adjusting the code to make it functional and recognizable by the compiler.</li>
+</ol>
+<p>[todo: example of top to bottom]</p>
+<p>[todo: jigsaw puzzles vs lego bricks]</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-4-comments"><a class="header" href="#chapter-4-comments">Chapter 4: Comments</a></h1>
+<p>The chapter about comments is not inherently bad - it contains enough caveats and examples of bad vs good comments. However, Martin poisons the well right in the beginning of the chapter:</p>
+<div class="book-quote">
+Comments are not like Schindler's List. They are not "pure good." Indeed, comments are, at best, a necessary evil. If our programming languages were expressive enough, or if we had the talent to subtly wield those languages to express our intent, we would not need comments very much—perhaps not at all.
+<p>The proper use of comments is to compensate for our failure to express ourself in code. Note that I used the word failure. I meant it. Comments are always failures. We must have them because we cannot always figure out how to express ourselves without them, but their use is not a cause for celebration.</p>
+<p>So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't some way to turn the tables and express yourself in code. Every time you express yourself in code, you should pat yourself on the back. Every time you write a comment, you should grimace and feel the failure of your ability of expression.</p>
+</div>
+<p>This is pretty damaging and I believe this is the main takeaway that developers would get out the chapter.
+It's the second worst idea of this book: comments are failure to write good code.
+This hyperbolic stance had influenced many developers to avoid creating and using this useful tool of design, abstraction and documentation.
+This stance has contributed to a broader culture where comments are undervalued and often ignored (note how comments are grayed out in most modern IDEs).</p>
+<p>Martin is low key proposing idea of self-documenting code. This is a nice idea if it could work.</p>
+<p>But the code can never provide all the context, even if you try using "really-relly long essays" as a name.
+Even if we assume that executable code can perfectly describe everything that's there,
+quite often things that are excluded are also important part of the design.</p>
+<p>The "comments are failures" principle is probably the main driver of "essay as a name" style of naming:</p>
+<pre><code class="language-java">private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) { }
+</code></pre>
+<p>Is <code>smallestOddNthMultipleNotLessThanCandidate</code> really a name or just inlined comment ?</p>
+<p>Names are part of the code, but they’re just one step removed from comments: the compiler doesn’t check or enforce their semantic meaning,
+so they can easily fall out of sync — just like comments.</p>
+<pre><code class="language-java">private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) { 
+    return Integer.MAX_VALUE; // I lied ┌∩┐(◣_◢)┌∩┐
+}
+</code></pre>
+<h3 id="recommended-reading"><a class="header" href="#recommended-reading">Recommended reading</a></h3>
+<ul>
+<li><a href="https://www.goodreads.com/book/show/39996759-a-philosophy-of-software-design">"Philosophy Of Software Design"</a>
+<ul>
+<li>Chapter 12. Why Write Comments? The Four Excuses</li>
+<li>Chapter 13. Comments Should Describe Things that Aren’t Obvious from the Code</li>
+<li>Chapter 15. Write The Comments First</li>
+</ul>
+</li>
+<li>Hillel Wayne's "Computer Things" blog:
+<ul>
+<li><a href="https://buttondown.email/hillelwayne/archive/the-myth-of-self-documenting-code/">The myth of self-documenting code</a></li>
+<li><a href="https://buttondown.email/hillelwayne/archive/comment-the-why-and-the-what/">Comments the why and the what</a></li>
+<li><a href="https://buttondown.email/hillelwayne/archive/why-not-comments/">Why Not comments</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="example-prime-number-generator"><a class="header" href="#example-prime-number-generator">Example: Prime Number Generator</a></h2>
+<p>Here's the original code:</p>
+<pre><code class="language-java">/**
+ * This class Generates prime numbers up to a user specified
+ * maximum.  The algorithm used is the Sieve of Eratosthenes.
+ * &lt;p&gt;
+ * Eratosthenes of Cyrene, b. c. 276 BC, Cyrene, Libya --
+ * d. c. 194, Alexandria.  The first man to calculate the
+ * circumference of the Earth.  Also known for working on
+ * calendars with leap years and ran the library at Alexandria.
+ * &lt;p&gt;
+ * The algorithm is quite simple.  Given an array of integers
+ * starting at 2.  Cross out all multiples of 2.  Find the next
+ * uncrossed integer, and cross out all of its multiples.
+ * Repeat until you have passed the square root of the maximum
+ * value.
+ *
+ * @author Alphonse
+ * @version 13 Feb 2002 atp
+ */
+ public class GeneratePrimes     
+     /**
+     * @param maxValue is the generation limit.
+     */
+     public static int[] generatePrimes(int maxValue) {
+     if (maxValue &gt;= 2) // the only valid case
+     {
+         // declarations
+         int s = maxValue + 1; // size of array
+         boolean[] f = new boolean[s];
+         int i;
+         // initialize array to true.
+         for (i = 0; i &lt; s; i++)
+             f[i] = true;
+
+         // get rid of known non-primes
+         f[0] = f[1] = false;
+
+         // sieve
+         int j;
+         for (i = 2; i &lt; Math.sqrt(s) + 1; i++) {
+             if (f[i]) // if i is uncrossed, cross its multiples.
+             {
+                 for (j = 2 * i; j &lt; s; j += i)
+                     f[j] = false; // multiple is not prime
+             }
+         }
+
+         // how many primes are there?
+         int count = 0;
+         for (i = 0; i &lt; s; i++) {
+             if (f[i])
+                 count++; // bump count.
+         }
+
+         int[] primes = new int[count];
+
+         // move the primes into the result
+         for (i = 0, j = 0; i &lt; s; i++) {
+             if (f[i])  // if prime
+                 primes[j++] = i;
+         }
+
+         return primes;  // return the primes
+     } else // maxValue &lt; 2
+         return new int[0]; // return null array if bad input.
+     }
+
+</code></pre>
+<p>I can grant that this is pretty convoluted code, but honestly I'm not sure if it was written this way or it was intentionally obfuscated.</p>
+<p>The good parts: the messines of the code is contained in a single place and API is safe and clear.</p>
+<p>Comment about the library of Alexandria is cute, I would also add a link to Wikipedia page.</p>
+<p>The Martin refactoring:</p>
+<pre><code class="language-java">/**
+ * This class Generates prime numbers up to a user specified
+ * maximum.  The algorithm used is the Sieve of Eratosthenes.
+ * Given an array of integers starting at 2:
+ * Find the first uncrossed integer, and cross out all its
+ * multiples.  Repeat until there are no more multiples
+ * in the array.
+ */
+public class PrimeGenerator {
+    private static boolean[] crossedOut;
+    private static int[] result;
+
+    public static int[] generatePrimes(int maxValue) {
+        if (maxValue &lt; 2)
+            return new int[0];
+        else {
+            uncrossIntegersUpTo(maxValue);
+            crossOutMultiples();
+            putUncrossedIntegersIntoResult();
+            return result;
+        }
+    }
+
+    private static void uncrossIntegersUpTo(int maxValue) {
+        crossedOut = new boolean[maxValue + 1];
+        for (int i = 2; i &lt; crossedOut.length; i++)
+            crossedOut[i] = false;
+    }
+
+    private static void crossOutMultiples() {
+        int limit = determineIterationLimit();
+        for (int i = 2; i &lt;= limit; i++)
+            if (notCrossed(i))
+                crossOutMultiplesOf(i);
+    }
+
+    private static int determineIterationLimit() {
+        // Every multiple in the array has a prime factor that
+        // is less than or equal to the root of the array size,
+        // so we don't have to cross out multiples of numbers
+        // larger than that root.
+        double iterationLimit = Math.sqrt(crossedOut.length);
+        return (int) iterationLimit;
+    }
+
+    private static void crossOutMultiplesOf(int i) {
+        for (int multiple = 2*i;
+             multiple &lt; crossedOut.length;
+             multiple += i)
+            crossedOut[multiple] = true;
+    }
+
+    private static boolean notCrossed(int i) {
+        return crossedOut[i] == false;
+    }
+
+    private static void putUncrossedIntegersIntoResult() {
+        result = new int[numberOfUncrossedIntegers()];
+        for (int j = 0, i = 2; i &lt; crossedOut.length; i++)
+            if (notCrossed(i))
+                result[j++] = i;
+    }
+
+    private static int numberOfUncrossedIntegers() {
+        int count = 0;
+        for (int i = 2; i &lt; crossedOut.length; i++)
+            if (notCrossed(i))
+                count++;
+
+        return count;
+    }
+}
+</code></pre>
+<p>Right off the bat: The refactoring introduced serious thread-safety issues by using <strong>static global mutable state</strong> (<code>crossedOut</code> and <code>result</code> - static fields)</p>
+<p>The rule of thumb: if you see mutable static variables - <strong>RUN!</strong></p>
+<p>This code can not be used as is in multi-threaded environment.
+You will <em>have to</em> remedy this by using <strong>global</strong> lock, so that at most one thread in the application can be computing this.</p>
+<p>Is there reason to introduce this scalability limit and take performance hit? No.<br/> This is self-inflicted pain. There is 0 reasons for this design.</p>
+<p>Second: are those small methods really necessary?</p>
+<pre><code class="language-java">private static boolean notCrossed(int i) {
+    return crossedOut[i] == false;
+}
+</code></pre>
+<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the former option really more readable?
+If anything, now he have polluted the domain with semi-similar words:</p>
+<ul>
+<li>not crossed</li>
+<li>crossed out</li>
+<li>uncrossed</li>
+</ul>
+<p>Is "notCrossed" same thing as "not crossedOut"? Is it same thing as "uncrossed"?
+By excessive method extraction Martin introduced inconsistencies and confusion in terminlogy, which at the end would only increase cognitive load.
+You have to look into implementation of all those small methods to understand if there is a difference or not.</p>
+<p>This is the problem with introducing too many entities: working memory can hold 4–7 objects at a time. Flood it with small pebbles, and you’ll hit saturation,
+leading to inconsistencies and discrepancies.</p>
+<p>&lt;todo: RANT about this being common occasion&gt;</p>
+<p>&lt;todo: better review&gt;</p>
+<pre><code class="language-java">private static int determineIterationLimit() {
+    // Every multiple in the array has a prime factor that
+    // is less than or equal to the root of the array size,
+    // so we don't have to cross out multiples of numbers
+    // larger than that root.
+    double iterationLimit = Math.sqrt(crossedOut.length);
+    return (int) iterationLimit;
+}
+</code></pre>
+<p>How many times do you need to repeat "iteration limit" in 3 lines of code to not forget that <code>determineIterationLimit</code> indeed returns <code>iterationLimit</code>?</p>
+<p>Lets remove obfuscation from the original method:</p>
+<pre><code class="language-java">public class GeneratePrimes {
+    public static int[] generatePrimes(int maxValue) {
+        if (maxValue &lt; 2) {  // first two numbers are not prime
+            return new int[0];
+        }
+
+        boolean[] crossedOut = new boolean[maxValue + 1];
+        Arrays.fill(crossedOut, 2, crossedOut.length, Boolean.TRUE); // first two numbers are not prime
+
+        // the algorithm
+        for (int i = 2; i &lt; Math.sqrt(crossedOut.length) + 1; i++) {
+            if (crossedOut[i]) {
+                for (int j = 2 * i; j &lt; crossedOut.length; j += i)
+                    crossedOut[j] = false; // multiple is not prime
+            }
+        }
+
+        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; crossedOut.length; i++) {
+            if (crossedOut[i]) result.add(i);
+        }
+        return result.toArray(new int[result.size()]);
+    }
+}
+</code></pre>
+<p>Does this look complicated?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="formatting"><a class="header" href="#formatting">Formatting</a></h1>
+<p>Formatting is fine. Don't try to replicate news papers in your code and you'll be fine.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-6-objects-and-data-structures"><a class="header" href="#chapter-6-objects-and-data-structures">Chapter 6: Objects and Data Structures</a></h1>
+<p>I don’t think this chapter has aged poorly; rather, it seems to have been misaligned from the start with the common understanding of data structures, the purpose of abstraction, and the principles of information hiding.</p>
+<div class="book-quote">
+<pre><code class="language-java">public interface Point {
+    double getX();
+    double getY();
+    void setCartesian(double x, double y);
+    double getR();
+    double getTheta();
+    void setPolar(double r, double theta);
+}</code></pre>
+The beautiful thing about Listing 6-2 is that there is no way you can tell whether the implementation is in rectangular or polar coordinates. It might be neither! And yet the interface still unmistakably represents a data structure.
+</div>
+<p>There is nothing beautiful about this interface. An interface that exposes only getters and setters is often <em>a design mistake</em>.
+Interfaces should define <em>a contract of behavior</em>, not merely obfuscate the internal data structure.
+They should provide <em>meaningful abstractions</em>, not just hide implementation details.</p>
+<p>The fact that it's impossible to tell if this is about rectangular or polar coordinates is not true. It's both.
+The interface exposes both and the implementation is forced to support both.</p>
+<p>A more sensible design would separate these responsibilities:</p>
+<pre><code class="language-java">sealed interface Point;
+record Rectangular(double length, double width) implements Point { }
+record Polar(double r, double theta) implements Point {};
+
+public Rectangular convert(Polar polar) {...}
+public Polar convert(Rectangular rectangular) {...}
+</code></pre>
+<p>Martin would say that "This exposes implementation. Indeed, it would expose implementation even if the variables were private and we were using single variable getters and setters."</p>
+<p>But the thing is that there is no implementation to be exposed, the Point is just data and its shape is essential to its meaning.
+In statically typed languages, explicitly communicating the shape of data through types is the goal.
+Not every abstraction needs to hide its data structure - sometimes the data structure itself is the abstraction.</p>
+<div class="book-quote">
+Hiding implementation is not just a matter of putting a layer of functions between the variables. Hiding implementation is about abstractions!
+</div>
+<p>Exactly! But introducing unnecessary abstractions is over-engineering. As Edsger Dijkstra put it:</p>
+<blockquote>
+<p>"The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise." - Dijkstra 1972</p>
+</blockquote>
+<p>The Point interface in the example creates no new semantic meaning.
+It conflates two coordinate systems into a vague abstraction without clear purpose. A good abstraction adds precision and reduces ambiguity—not the other way around.</p>
+<div class="book-quote">
+Consider Listing 6-3 and Listing 6-4. The first uses concrete terms to communicate the fuel level of a vehicle, whereas the second does so with the abstraction of percentage.
+<p>Listing 6-3 Concrete Vehicle</p>
+<pre><code class="language-java">public interface Vehicle {
+  double getFuelTankCapacityInGallons();
+  double getGallonsOfGasoline();
+}
+</code></pre>
+<p>Listing 6-4 Abstract Vehicle</p>
+<pre><code class="language-java">public interface Vehicle {
+  double getPercentFuelRemaining();
+}
+</code></pre>
+<p>In both of the above cases the second option is preferable. We do not want to expose the details of our data. Rather we want to express our data in abstract terms.</p>
+</div>
+<p>This is not about "details of our data", this is hiding our data!
+Depending on the context, this might be good or bad. For example, with the second option, it becomes impossible to calculate the cost of filling the tank.
+Are we designing for scammy car rentals? If so, then sure, hide the data.</p>
+<p>The assumption that hiding data is always a good thing is just wrong.</p>
+<p><em>Ineffective abstraction</em> occurs when essential knowledge is removed, or when non-essential knowledge is unnecessarily exposed - or both.</p>
+<h1 id="dataobject-anti-symmetry"><a class="header" href="#dataobject-anti-symmetry">Data/Object Anti-Symmetry</a></h1>
+<p>This chapter touches expression problem, without mentioning that this is the expression problem. It briefly mentions Visitor pattern as a solution for the problem.</p>
+<p>So far so good.
+However, Martin conflates dumb data objects with data structures.
+Which is unfortunate cause the name "data structure" is reserved for objects that indeed have specialized structure for the data: lists, trees, stacks, etc.</p>
+<p>I think it's worth clarifying existence of:</p>
+<ul>
+<li>Data objects (or Data transfer objects) - dumb containers for data</li>
+<li>Stateless objects (or effectively stateless objects with dependencies) - objects with no mutable state that act as executors or services.</li>
+<li>Stateful objects: Objects that encapsulate both state and behavior, often used for data structures.</li>
+</ul>
+<p>Modern design practices, even in the Java community, prefer separating stateless executors from data objects. Stateful objects are mostly reserved for true data structures.</p>
+<p>In Martins nomenclature:</p>
+<ul>
+<li>Data Structures = Dumb Objects</li>
+<li>True Objects = Stateless and Stateful objects.</li>
+</ul>
+<p>Martin briefly criticizes hybrid objects (part data, part behavior), calling them an unfortunate design. If we exclude actual data structures, this is a fair point.
+For example, a hybrid Stack design is acceptable because it encapsulates both state and operations:</p>
+<pre><code class="language-java">interface Stack&lt;T&gt; {
+   Optional&lt;T&gt; peek();
+   Optional&lt;T&gt; pop(); 
+   void push(T item); 
+}
+</code></pre>
+<p>It's a hybrid, but it is a standard object-oriented design for a data structure.</p>
+<h1 id="law-of-demeter"><a class="header" href="#law-of-demeter">Law of Demeter</a></h1>
+<div class="book-quote">
+There is a well-known heuristic called the Law of Demeter2 that says a module should not know about the innards of the objects it manipulates. As we saw in the last section, objects hide their data and expose operations. This means that an object should not expose its internal structure through accessors because to do so is to expose, rather than to hide, its internal structure
+</div>
+<p>This law is from 1987. It might be a beneficial rule if the code base consists of mostly Hybrid objects.
+However, modern object-oriented design often separates stateless service objects from stateful (dumb) data objects,
+this makes law of Demeter significantly less relevant.</p>
+<p>Instead of the somewhat convoluted rules of the Law of Demeter, here are simpler and more practical rules to remember:</p>
+<ul>
+<li><em>Service objects</em> should not expose their collaborators or dependencies.</li>
+<li><em>Data objects</em> can—and often should—be open books.</li>
+<li><em>Data structures</em> are more flexible, the exposure of internal details depends on the specific goals and design of the data structure.<br/>
+(For example, an <a href="https://www.data-structures-in-practice.com/intrusive-linked-lists/">intrusive linked list</a> deliberately exposes internal pointers to optimize performance)</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-7-error-handling"><a class="header" href="#chapter-7-error-handling">Chapter 7: Error Handling</a></h1>
+<p>The chapter is written by Michael Feathers.</p>
+<p>I wish chapter has way more emphasis on how important error handling is.
+A significant portion of software bugs and catastrophic failures caused by improper error handling.
+As highlighted in a study by Ding Yuan et al. (2014 USENIX OSDI), most critical failures in distributed systems are triggered by errors in error handling code.</p>
+<h1 id="use-exceptions-rather-than-return-codes"><a class="header" href="#use-exceptions-rather-than-return-codes">Use Exceptions Rather Than Return Codes</a></h1>
+<p>This repeats advice from "Prefer Exceptions to Returning Error Codes", but provides an improved example with better logging practices:</p>
+<pre><code class="language-java">public class DeviceController {
+    public void sendShutDown() {
+        DeviceHandle handle = getHandle(DEV1);
+        // Check the state of the device
+        if (handle != DeviceHandle.INVALID) {
+            // Save the device status to the record field
+            retrieveDeviceRecord(handle);
+            // If not suspended, shut down
+            if (record.getStatus() != DEVICE_SUSPENDED) {
+                pauseDevice(handle);
+                clearDeviceWorkQueue(handle);
+                closeDevice(handle);
+            } else {
+                logger.log("Device suspended. Unable to shut down");
+            }
+        } else {
+            logger.log("Invalid handle for: " + DEV1.toString());
+        }
+    }
+}
+
+public void sendShutDown() {
+    try {
+        tryToShutDown();
+    } catch (DeviceShutDownError e) {
+        logger.log(e);
+    }
+}
+</code></pre>
+<p>Why Logging Matters:</p>
+<p>Proper logging is a cornerstone of effective error handling. It's not a minor point—it’s what distinguishes maintainable software from unmanageable systems. Always include:</p>
+<ul>
+<li>The context of the failure: What operation was attempted? What were the inputs?</li>
+<li>The full stack trace, not just the exception message.</li>
+</ul>
+<p>The mentioned down-sides of error codes:</p>
+<ul>
+<li>they clutter the call side:
+<ul>
+<li>the client code needs to check for errors immediately after the call</li>
+</ul>
+</li>
+<li>it's easy to forget to handle error values</li>
+<li>logic is obscured by error handling</li>
+</ul>
+<p>The "easy to forget" part is the one that actually affects correctness of the code.</p>
+<p>In languages like Go the first point ("need to check immediately") is considered to be a benefit - the error handling is somewhat enforced and is always expected to visible in code.</p>
+<p>At the end, I believe the choice heavily depends on the application domain:</p>
+<ul>
+<li>For user-facing applications, exceptions often simplify error management.</li>
+<li>For safety-critical systems, using errors values and explicit error handling might be preferred for its visibility and enforced handling.</li>
+</ul>
+<h2 id="use-unchecked-exceptions"><a class="header" href="#use-unchecked-exceptions">Use Unchecked Exceptions</a></h2>
+<p>This is the industry standard now. Over the years situation with checked exceptions became only worse in Java, with introduction of lambdas checked exceptions became even more annoying source of clutter.</p>
+<pre><code class="language-java">userIds.stream().map(dao::findById).collect(Collectors.toList())
+</code></pre>
+<p>vs</p>
+<pre><code class="language-java">userIds.stream().map(id -&gt; {
+    try {
+        return dao.findById(id);
+    } catch(Exception e) {
+        throw new RuntimeException(e);
+    }
+}).collect(Collectors.toList())
+</code></pre>
+<p>The former version was already verbose, but with checked exceptions it becomes truly eye-sore. (compare with scala version: <code>userIds.map(dao.findById)</code>)</p>
+<p>However combination of "do not use errors as return values + use unchecked exceptions" essentially means that error handling is pushed out typesystem control. Errors and error handling will become not type safe and the compiler would not help you to check this aspect of your code.</p>
+<p>Ideally we want to be able to tell functions method that can fail from those that can't:</p>
+<pre><code class="language-java">public Long sum(List&lt;Long&gt; list);
+
+public BigDecimal sumSalaries(List&lt;EmployeeId&gt; list) throws SQLException;
+</code></pre>
+<p>The problem with checked exceptions that they leak implementation details:</p>
+<pre><code class="language-java">interface UserDAO {
+    Optional&lt;User&gt; findById(String username) throws SQLException;
+}
+</code></pre>
+<p>UserDAO is an abstraction that suppose to hide how persistence is achieved and should allow changing storage engines transparently to the code that uses it. Also DAO code can make a decision based on SQLException level, upper layers of the app most likely not have enough context.</p>
+<p>Enterprise grade solution to this problem is to have dedicated exception types for each layer:</p>
+<pre><code class="language-java">class DAOException extends Exception
+
+interface UserDAO {
+    Optional&lt;User&gt; findById(String username) throws DAOException;
+}
+</code></pre>
+<p>This introduces a lot of ceremony and boilerplate:</p>
+<pre><code class="language-java">class ServiceException extends Exception
+
+class UserManager {
+    private UserDAO userDAO;
+    
+    public boolean registerNewUser(String username, String password) throws ServiceException {
+        try {
+            if (userDAO.findById(username).isDefined()) {
+                return false;
+            } 
+            //....
+        } catch(RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
+    }
+}
+</code></pre>
+<h1 id="dont-pass-null--dont-return-null"><a class="header" href="#dont-pass-null--dont-return-null">Don't pass null / Don't return null</a></h1>
+<p>This advice that is hard to disagree with. When it comes to magic values, "null" is the king of magic.</p>
+<pre><code class="language-java">jshell&gt; null instanceof String
+$1 ==&gt; false
+
+jshell&gt; (String) null
+$2 ==&gt; null
+
+jshell&gt; String str = null;
+str ==&gt; null
+</code></pre>
+<p>Despite null not being subtype of String, it can be casted to String without errors and even assigned without a cast. Magic!</p>
+<p>null and unchecked exceptions are pretty much ignored by type system. That's what makes them easy to use and hard to handle. They can be introduced in any code without change of signatures:</p>
+<pre><code class="language-java">public Long sum(List&lt;Long&gt; list) {
+   long sum = 0;
+   for(Long i: list) {
+       sum += i;
+   }
+   return sum; 
+}
+</code></pre>
+<p>to</p>
+<pre><code class="language-java">public Long sum(List&lt;Long&gt; list) {
+   if(random() &lt; 0.5) {
+       return null; // lol
+   } else {
+       throw new RuntimeException("OMEGA LOL");
+   }
+   long sum = 0;
+   for(Long i: list) {
+       sum += i;
+   }
+   return sum; 
+}
+</code></pre>
+<p>Since they can appear anywhere, some people fallback for some sort of defensive programming:</p>
+<pre><code class="language-java">public Long sum(List&lt;Long&gt; list) {
+    if (list == null) {
+        throw new IllegalArgumentException("list can not be null");
+    }
+    ...
+}
+</code></pre>
+<p>Replacing runtime NullPointerException with runtime IllegalArgumentException doesn't help with anything in majority of cases. Applying this consistently is also very tedious. So in big codebases with many people working on it you would result in only 1/3 of parameters being validated like this and the other part would do regular NPE.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-9-unit-tests"><a class="header" href="#chapter-9-unit-tests">Chapter 9: Unit Tests</a></h1>
+<div class="book-quote">
+What this team did not realize was that having dirty tests is equivalent to, if not worse than, having no tests.
+</div>
+<p>This statement lacks nuance: if the dirty tests are actually testing software, then having them is better than not having them. <br/>
+Again this is the example of when that is true: <a href="https://news.ycombinator.com/item?id=18442941">Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests</a> <br/>
+Oracle Database is a very reliable software (as of 2024), it comes at the cost of thousands of people suffering through the setup, but as a customer I enjoy its robustness.</p>
+<p>Having tests that actually test software is good, even if they are dirty. However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks.</p>
+<p>This chapter unintentionally shows the value of finding a balance.</p>
+<p>First, it provides an example of a refactoring that I almost agree with:</p>
+<div class="code-comparison" >
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Original Code: </div>
+        <pre class="ignore"><code class="language-java" style="font-size: 13px !important">public void testGetPageHieratchyAsXml() throws Exception {
+  crawler.addPage(root, PathParser.parse("PageOne"));
+  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+  crawler.addPage(root, PathParser.parse("PageTwo"));
+&nbsp;
+  request.setResource("root");
+  request.addInput("type", "pages");
+  Responder responder = new SerializedPageResponder();
+  SimpleResponse response =
+      (SimpleResponse) responder.makeResponse(
+          new FitNesseContext(root), request);
+  String xml = response.getContent();
+&nbsp;
+  assertEquals("text/xml", response.getContentType());
+  assertSubString("<name>PageOne</name>", xml);
+  assertSubString("<name>PageTwo</name>", xml);
+  assertSubString("<name>ChildOne</name>", xml);
+}
+&nbsp;
+public void testGetPage_cLinks() throws Exception {
+  WikiPage pageOne = 
+    crawler.addPage(root, PathParser.parse("PageOne"));
+  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+  crawler.addPage(root, PathParser.parse("PageTwo"));
+&nbsp;
+  PageData data = pageOne.getData();
+  WikiPageProperties properties = data.getProperties();
+  WikiPageProperty symLinks = 
+    properties.set(SymbolicPage.PROPERTY_NAME);
+  symLinks.set("SymPage", "PageTwo");
+  pageOne.commit(data);
+&nbsp;
+  request.setResource("root");
+  request.addInput("type", "pages");
+  Responder responder = new SerializedPageResponder();
+  SimpleResponse response =
+      (SimpleResponse) responder.makeResponse(
+          new FitNesseContext(root), request);
+  String xml = response.getContent();
+&nbsp;
+  assertEquals("text/xml", response.getContentType());
+  assertSubString("<name>PageOne</name>", xml);
+  assertSubString("<name>PageTwo</name>", xml);
+  assertSubString("<name>ChildOne</name>", xml);
+  assertNotSubString("SymPage", xml);
+}
+&nbsp;
+public void testGetDataAsHtml() throws Exception {
+  crawler.addPage(root, 
+    PathParser.parse("TestPageOne"), "test page");
+&nbsp;
+  request.setResource("TestPageOne"); 
+  request.addInput("type", "data");
+  Responder responder = new SerializedPageResponder();
+  SimpleResponse response =
+      (SimpleResponse) responder.makeResponse(
+          new FitNesseContext(root), request);
+  String xml = response.getContent();
+&nbsp;
+  assertEquals("text/xml", response.getContentType());
+  assertSubString("test page", xml);
+  assertSubString("&gt;Test", xml);
+}</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Proposed rewrite:</div>
+        <pre><code class="language-java" style="font-size: 13px !important">public void testGetPageHierarchyAsXml() throws Exception {
+    makePages("PageOne", "PageOne.ChildOne", "PageTwo");
+&nbsp;
+    submitRequest("root", "type:pages");
+&nbsp;
+    assertResponseIsXML();
+    assertResponseContains(
+        "<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>"
+    );
+}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+public void testGetPage_cLinks() throws Exception {
+    WikiPage page = makePage("PageOne");
+    makePages("PageOne.ChildOne", "PageTwo");
+&nbsp;
+    addLinkTo(page, "PageTwo", "SymPage");
+&nbsp;
+    submitRequest("root", "type:pages");
+&nbsp;
+    assertResponseIsXML();
+    assertResponseContains(
+        "<name>PageOne</name>", "<name>PageTwo</name>",
+        "<name>ChildOne</name>"
+    );
+    assertResponseDoesNotContain("SymPage");
+}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+public void testGetDataAsXml() throws Exception {
+    makePageWithContent("TestPageOne", "test page");
+&nbsp;
+    submitRequest("TestPageOne", "type:data");
+&nbsp;
+    assertResponseIsXML();
+    assertResponseContains("test page", "&gt;Test");
+}</code></pre>
+    </div>
+</div>
+<p>What makes it good:</p>
+<ul>
+<li>the introduced abstractions are useful and reusable</li>
+</ul>
+<p>What is bad:</p>
+<ul>
+<li>Martin introduces <strong>global mutable state</strong> (global in terms of the test suite)</li>
+</ul>
+<p>Big drawback of this global mutable state - now tests can not be run in parallel. Hence the execution of these 3 tests will take 3x more time.</p>
+<p>Clear case of <a href="https://www.computerenhance.com/p/clean-code-horrible-performance">"'Clean' Code, Horrible Performance"</a></p>
+<p>Again this is self-inflicted pain from a painful idea that no parameters is always better than 1+.</p>
+<p>By fixing it:</p>
+<pre><code class="language-java">public void testGetDataAsXml() throws Exception {
+    var page = makePageWithContent("TestPageOne", "test page");
+
+    var response = submitRequest(page, "type:data");
+
+    assertIsXML(response);
+    assertContains(response, "test page", "&lt;Test");
+}
+</code></pre>
+<p>You get advocated <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> shape, without need to have implicit mutable state somewhere hidden.
+All tests are isolated and can run in parallel.</p>
+<hr />
+<p>And while first example in this chapter is a good illustration how tidying your API with domain specific details can improve code readability,
+the next one is an illustration that this approach can be taken too far:</p>
+<pre><code class="language-java">@Test
+public void turnOnLoTempAlarmAtThreashold() throws Exception {
+    hw.setTemp(WAY_TOO_COLD);
+    controller.tic();
+    assertTrue(hw.heaterState());
+    assertTrue(hw.blowerState());
+    assertFalse(hw.coolerState());
+    assertFalse(hw.hiTempAlarm());
+    assertTrue(hw.loTempAlarm());
+}
+</code></pre>
+<p>is proposed to be rewritten as:</p>
+<pre><code class="language-java">@Test
+public void turnOnLoTempAlarmAtThreshold() throws Exception {
+    wayTooCold();
+    assertEquals("HBchL", hw.getState());
+}
+
+// Upper case means "on," lower case means "off," and the letters are always in the following order: 
+// {heater, blower, cooler, hi-temp-alarm, lo-temp-alarm}
+</code></pre>
+<p>Domain Specific Language is a programming language still and readability of that is important.
+"HBchL" is not very readable, as it requires noticeable mental effort to translate. This defeats the purpose of making code more readable.</p>
+<p>What prevents him from creating format like: <code>"heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on"</code>?</p>
+<p><code>wayTooCold();</code> - is also very weird grammar. Is it a verb or verb phrase? Why do we need to hide call to <code>controller.tic()</code>?</p>
+<p>In the <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> template: <code>Controller.tic()</code> is the <code>OPERATE</code>!</p>
+<pre><code class="language-java">wayTooCold();
+assertEquals("HBchL", hw.getState());
+</code></pre>
+<p>This is not <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code>. Thi is <code>WHY</code>-<code>WTF</code></p>
+<p>From good readability perspective I would change it to:</p>
+<pre><code class="language-java">@Test
+public void turnOnLoTempAlarmAtThreashold() throws Exception {
+    hw.setTempF(10); // too cold
+
+    controller.tic();
+
+    assertEquals(
+        "heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on",
+        hw.getState()
+    );
+}
+</code></pre>
+<p>Again in modern language there is no need to create DSL as the language is powerful enough to make code concise and readable:</p>
+<pre><code class="language-scala">@Test
+def turnOnLoTempAlarmAtThreashold() {
+    hw.setTemp(10.F) // too cold
+
+    controller.tic()
+
+    assertEquals(
+        Status(heaterOn = true, blowerOn = false, coolerOn = false, 
+               hiTempAlarm = false, loTempAlarm = true)
+        hw.getState()
+    )
+}
+</code></pre>
+<p>Final nit-pick:</p>
+<div class="book-quote">
+<pre><code class="language-java">public String getState() {
+    String state = "";
+    state += heater ? "H" : "h";
+    state += blower ? "B" : "b";
+    state += cooler ? "C" : "c";
+    state += hiTempAlarm ? "H" : "h";
+    state += loTempAlarm ? "L" : "l";
+    return state;
+}
+</code></pre>
+StringBuffers are a bit ugly.
+</div>
+<p>Again the book age shows: StringBuffers are not only ugly they are also slow. StringBuffer are synchronized for multi-threaded access, even without contention it has runtime cost. Good news are his original code will be compiled by javac to use StringBuilders.</p>
+<div class="book-quote">
+There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
+</div>
+<p>Test performance matters at scale - slow tests can significantly impact development velocity. The most important thing for tests to do is to actually test the software.
+But giving up tests performance in large code base means increase of validation cycle in CI/CD pipelines.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-11-systems"><a class="header" href="#chapter-11-systems">Chapter 11: Systems</a></h1>
+<p>This is a mixed bag of relatively OK-ish approaches, relatively outdated advice, and critique of the APIs that's lost its relevance a decade ago.</p>
+<p>It's somewhat focusing on organizing cross-cutting concerns in an application: it talks about aspect oriented programming and mentions the way to implement it:</p>
+<ul>
+<li>ejb</li>
+<li>proxies: jdk based or asm-based</li>
+<li>aspectj</li>
+<li>plain code</li>
+</ul>
+<p>At the end it is advocating for plain java as it allows better modularity and easier way to separate concerns. The book advocates to cope the disadvantage of this approach (i.e. slow development speed and verbose nature of java language) with implementation of a proper DSL.</p>
+<p>The core message is valid but poorly structured and hard to follow.</p>
+<p>Majority of tech mentioned in this chapter is outdated to irrelevancy, newcomers will not be able to understand what is being advocated.</p>
+<p>The argument for DSL lacks concrete examples and relies on irrelevant references.
+The reader is expected to checkout books of Christopher Alexander (WTF? why?!) and jmock is presented as example of good DSL.</p>
+<p>What makes it somewhat amusing is that Mockito (mocking framework overtook 1st place in java ecosystem) has been adopting opposite design principle from the get-go:</p>
+<blockquote>
+<p>The less DSL the better. Interactions are just method calls. Method calls are simple, DSL is complex.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-12-emergence"><a class="header" href="#chapter-12-emergence">Chapter 12: Emergence</a></h1>
+<p>Is written by Jeff Langr.</p>
+<p>It's pretty much about 4 principles of good design from Kent Beck:</p>
+<ul>
+<li>Runs all the tests</li>
+<li>Contains no duplication</li>
+<li>Expresses the intent of the programmer</li>
+<li>Minimizes the number of classes and methods</li>
+</ul>
+<p>The chapter promises that if you follow these rules, the emergent design of the system will be clean. Maybe? The proof is left as an exercises for a reader.</p>
+<p>My favourite part is the last section: "Minimal Classes and Methods"</p>
+<div class="book-quote">
+Even concepts as fundamental as elimination of duplication, code expressiveness, and the SRP can be taken too far. 
+In an effort to make our classes and methods small, we might create too many tiny classes and methods. 
+So this rule suggests that we also keep our function and class counts low.
+<p>High class and method counts are sometimes the result of pointless dogmatism.</p>
+</div>
+<p>Yep. This pretty much sums up everything what is wrong with the rest of this book.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-13-concurrency"><a class="header" href="#chapter-13-concurrency">Chapter 13: Concurrency</a></h1>
+<p>Don't bother. The topic is too complex to be just a chapter.</p>
+<h2 id="things-to-read-instead"><a class="header" href="#things-to-read-instead">Things to read instead</a></h2>
+<ul>
+<li><a href="https://www.amazon.com/Java-Concurrency-Practice-Brian-Goetz/dp/0321349601">Java Concurrency In Practive</a> by Brian Goetz<br/>
+Despite being old this is still the best book to learn about concurrency on JVM. This book can not be skipped.</li>
+<li><a href="https://www.youtube.com/playlist?list=PLL8woMHwr36EDxjUoCzboZjedsnhLP1j4">Video lecture: Java Concurrency and Multithreading</a> by Jakob Jenkov<br/>
+For those who can not read books.</li>
+<li><a href="https://arxiv.org/abs/1701.00854">Is Parallel Programming Hard, And, If So, What Can You Do About It?</a> by Paul E. McKenney<br/>
+Explores parallel programming from low-level perspective: hardware, system languages and operating system primitives.</li>
+<li><a href="https://www.goodreads.com/book/show/52819132-a-primer-on-memory-consistency-and-cache-coherence">A Primer on Memory Consistency and Cache Coherence</a> by Vijay Nagarajan <br/>
+Connects theoretical computer science, math formalisms and hardware implementations.</li>
+<li><a href="https://www.amazon.com/Shared-Memory-Synchronization-Synthesis-Lectures-Architecture/dp/160845956X">Shared-Memory Synchronization</a> by  Michael L. Scott<br/>
+On design and implementation concurrent data-structures.</li>
+<li><a href="https://www.amazon.com/Art-Multiprocessor-Programming-Maurice-Herlihy-dp-0124159508/dp/0124159508">The Art of Multiprocessor Programming</a> by Maurice Herlihy<br/>
+Lays out theoretical foundation for multi-threaded programming.</li>
+</ul>
+<h3 id="memory-models"><a class="header" href="#memory-models">Memory Models</a></h3>
+<ul>
+<li><a href="https://shipilev.net/blog/2014/jmm-pragmatics/">Java Memory Model Pragmatics</a></li>
+<li>"Memory Models" by Russ Cox: <a href="https://research.swtch.com/hwmm">part 1 - Hardware</a>, <a href="https://research.swtch.com/plmm">part 2 - Programming Languages</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="snippets-for-visual-components"><a class="header" href="#snippets-for-visual-components">Snippets for visual components</a></h2>
+<hr />
+<div class="code-block-wrapper">
+<pre><code class="language-java"> 
+public class GuessStatisticsMessage {
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">private String number;<span class="code-comment">These fields introduce mutable state that could be local variables. This makes the class not thread-safe and harder to reason about.</span></span>
+    private String verb;
+    private String pluralModifier;
+&nbsp;
+    public String make(char candidate, int count) {
+        createPluralDependentMessageParts(count);
+        return String.format(
+                "There %s %s %s%s", 
+                verb, number, candidate, pluralModifier );
+    }
+}
+</code></pre>
+</div>
+--------
+<h2 id="text-to-be-killed"><a class="header" href="#text-to-be-killed">Text to be killed</a></h2>
+<p>The idea of DSL hasn't been introduced in the book yet. It will come only in chapter 10 ("Systems Need Domain-Specific Languages") and it's a bit of a mess.</p>
+<p>"Clean code" is not the best book to learn about DSLs. You might get better understanding by reading:</p>
+<ul>
+<li><a href="https://martinfowler.com/books/dsl.html">Domain Specific Languages by by Martin Fowler, with Rebecca Parsons</a> - comprehensive intro to the topic in a Martin Fowler style</li>
+<li><a href="https://www.manning.com/books/dsls-in-action">DSL in Action by Debasish Ghosh</a> - more practical and focused on internal DSLs in different host languages</li>
+</ul>
+<p>DSLs are powerful. And it is important to know when to use them and when to stay away.</p>
+<blockquote>
+<p>The rule of least power is a design principle that "suggests choosing the least powerful language suitable for a given purpose"</p>
+<p><a href="https://en.wikipedia.org/wiki/Rule_of_least_power">Rules of least power</a></p>
+</blockquote>
+<p>Introduction of any DSL has a noticeable cost:</p>
+<ul>
+<li>higher learning curve</li>
+<li>higher maintenance cost: more code, more entities, more corner cases to support the langugae</li>
+<li>potentially worse performance</li>
+</ul>
+<p>And in this example, introduced DSL brings zero value. It has a very limited scope, it's not composable and not extendable. It solves a trivial problem.
+I can understand the desire to show off, but in a large code base isolated DSLs like this one would grow like warts.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/book2.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

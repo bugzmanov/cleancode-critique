@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Chapter 6: Objects and Data Structures - Clean Code - Critical Analysis</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Clean Code - Critical Analysis</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="chapter-6-objects-and-data-structures"><a class="header" href="#chapter-6-objects-and-data-structures">Chapter 6: Objects and Data Structures</a></h1>
+<p>I don’t think this chapter has aged poorly; rather, it seems to have been misaligned from the start with the common understanding of data structures, the purpose of abstraction, and the principles of information hiding.</p>
+<div class="book-quote">
+<pre><code class="language-java">public interface Point {
+    double getX();
+    double getY();
+    void setCartesian(double x, double y);
+    double getR();
+    double getTheta();
+    void setPolar(double r, double theta);
+}</code></pre>
+The beautiful thing about Listing 6-2 is that there is no way you can tell whether the implementation is in rectangular or polar coordinates. It might be neither! And yet the interface still unmistakably represents a data structure.
+</div>
+<p>There is nothing beautiful about this interface. An interface that exposes only getters and setters is often <em>a design mistake</em>.
+Interfaces should define <em>a contract of behavior</em>, not merely obfuscate the internal data structure.
+They should provide <em>meaningful abstractions</em>, not just hide implementation details.</p>
+<p>The fact that it's impossible to tell if this is about rectangular or polar coordinates is not true. It's both.
+The interface exposes both and the implementation is forced to support both.</p>
+<p>A more sensible design would separate these responsibilities:</p>
+<pre><code class="language-java">sealed interface Point;
+record Rectangular(double length, double width) implements Point { }
+record Polar(double r, double theta) implements Point {};
+
+public Rectangular convert(Polar polar) {...}
+public Polar convert(Rectangular rectangular) {...}
+</code></pre>
+<p>Martin would say that "This exposes implementation. Indeed, it would expose implementation even if the variables were private and we were using single variable getters and setters."</p>
+<p>But the thing is that there is no implementation to be exposed, the Point is just data and its shape is essential to its meaning.
+In statically typed languages, explicitly communicating the shape of data through types is the goal.
+Not every abstraction needs to hide its data structure - sometimes the data structure itself is the abstraction.</p>
+<div class="book-quote">
+Hiding implementation is not just a matter of putting a layer of functions between the variables. Hiding implementation is about abstractions!
+</div>
+<p>Exactly! But introducing unnecessary abstractions is over-engineering. As Edsger Dijkstra put it:</p>
+<blockquote>
+<p>"The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise." - Dijkstra 1972</p>
+</blockquote>
+<p>The Point interface in the example creates no new semantic meaning.
+It conflates two coordinate systems into a vague abstraction without clear purpose. A good abstraction adds precision and reduces ambiguity—not the other way around.</p>
+<div class="book-quote">
+Consider Listing 6-3 and Listing 6-4. The first uses concrete terms to communicate the fuel level of a vehicle, whereas the second does so with the abstraction of percentage.
+<p>Listing 6-3 Concrete Vehicle</p>
+<pre><code class="language-java">public interface Vehicle {
+  double getFuelTankCapacityInGallons();
+  double getGallonsOfGasoline();
+}
+</code></pre>
+<p>Listing 6-4 Abstract Vehicle</p>
+<pre><code class="language-java">public interface Vehicle {
+  double getPercentFuelRemaining();
+}
+</code></pre>
+<p>In both of the above cases the second option is preferable. We do not want to expose the details of our data. Rather we want to express our data in abstract terms.</p>
+</div>
+<p>This is not about "details of our data", this is hiding our data!
+Depending on the context, this might be good or bad. For example, with the second option, it becomes impossible to calculate the cost of filling the tank.
+Are we designing for scammy car rentals? If so, then sure, hide the data.</p>
+<p>The assumption that hiding data is always a good thing is just wrong.</p>
+<p><em>Ineffective abstraction</em> occurs when essential knowledge is removed, or when non-essential knowledge is unnecessarily exposed - or both.</p>
+<h1 id="dataobject-anti-symmetry"><a class="header" href="#dataobject-anti-symmetry">Data/Object Anti-Symmetry</a></h1>
+<p>This chapter touches expression problem, without mentioning that this is the expression problem. It briefly mentions Visitor pattern as a solution for the problem.</p>
+<p>So far so good.
+However, Martin conflates dumb data objects with data structures.
+Which is unfortunate cause the name "data structure" is reserved for objects that indeed have specialized structure for the data: lists, trees, stacks, etc.</p>
+<p>I think it's worth clarifying existence of:</p>
+<ul>
+<li>Data objects (or Data transfer objects) - dumb containers for data</li>
+<li>Stateless objects (or effectively stateless objects with dependencies) - objects with no mutable state that act as executors or services.</li>
+<li>Stateful objects: Objects that encapsulate both state and behavior, often used for data structures.</li>
+</ul>
+<p>Modern design practices, even in the Java community, prefer separating stateless executors from data objects. Stateful objects are mostly reserved for true data structures.</p>
+<p>In Martins nomenclature:</p>
+<ul>
+<li>Data Structures = Dumb Objects</li>
+<li>True Objects = Stateless and Stateful objects.</li>
+</ul>
+<p>Martin briefly criticizes hybrid objects (part data, part behavior), calling them an unfortunate design. If we exclude actual data structures, this is a fair point.
+For example, a hybrid Stack design is acceptable because it encapsulates both state and operations:</p>
+<pre><code class="language-java">interface Stack&lt;T&gt; {
+   Optional&lt;T&gt; peek();
+   Optional&lt;T&gt; pop(); 
+   void push(T item); 
+}
+</code></pre>
+<p>It's a hybrid, but it is a standard object-oriented design for a data structure.</p>
+<h1 id="law-of-demeter"><a class="header" href="#law-of-demeter">Law of Demeter</a></h1>
+<div class="book-quote">
+There is a well-known heuristic called the Law of Demeter2 that says a module should not know about the innards of the objects it manipulates. As we saw in the last section, objects hide their data and expose operations. This means that an object should not expose its internal structure through accessors because to do so is to expose, rather than to hide, its internal structure
+</div>
+<p>This law is from 1987. It might be a beneficial rule if the code base consists of mostly Hybrid objects.
+However, modern object-oriented design often separates stateless service objects from stateful (dumb) data objects,
+this makes law of Demeter significantly less relevant.</p>
+<p>Instead of the somewhat convoluted rules of the Law of Demeter, here are simpler and more practical rules to remember:</p>
+<ul>
+<li><em>Service objects</em> should not expose their collaborators or dependencies.</li>
+<li><em>Data objects</em> can—and often should—be open books.</li>
+<li><em>Data structures</em> are more flexible, the exposure of internal details depends on the specific goals and design of the data structure.<br/>
+(For example, an <a href="https://www.data-structures-in-practice.com/intrusive-linked-lists/">intrusive linked list</a> deliberately exposes internal pointers to optimize performance)</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter_5.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter_7.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter_5.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter_7.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/book2.js"></script>
+
+
+    </div>
+    </body>
+</html>

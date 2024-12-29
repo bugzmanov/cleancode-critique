@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Chapter 1: Clean Code - Clean Code - Critical Analysis</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Clean Code - Critical Analysis</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="chapter-1-clean-code"><a class="header" href="#chapter-1-clean-code">Chapter 1: Clean Code</a></h1>
+<p>Here is Martin's main thesis: <strong>bad code destroys companies</strong>.</p>
+<p>Ergo: Writing bad code is a mistake, and no excuse can justify it.</p>
+<div class="book-quote">
+I know of one company that, in the late 80s, wrote a killer app. It was very popular, and lots of professionals bought and used it. But then the release cycles began to stretch. Bugs were not repaired from one release to the next. Load times grew and crashes increased. I remember the day I shut the product down in frustration and never used it again. The company went out of business a short time after that.
+<p>Two decades later I met one of the early employees of that company and asked him what had happened. The answer confirmed my fears. They had rushed the product to market and had made a huge mess in the code. As they added more and more features, the code got worse and worse until they simply could not manage it any longer.</p>
+<p><em>It was the bad code that brought the company down.</em></p>
+</div>
+<h4 id="a-counter-anecdote"><a class="header" href="#a-counter-anecdote">A Counter-Anecdote:</a></h4>
+<blockquote>
+<p>"Oracle Database 12.2.</p>
+<p>It is close to 25 million lines of C code. What an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests. Generations of programmers have worked on that code under difficult deadlines and filled the code with all kinds of crap.</p>
+<p>Very complex pieces of logic, memory management, context switching, etc. are all held together with thousands of flags. The whole code is ridden with mysterious macros that one cannot decipher without picking a notebook and expanding relevant parts of the macros by hand. It can take a day to two days to really understand what a macro does.</p>
+<p>Sometimes one needs to understand the values and the effects of 20 different flags to predict how the code would behave in different situations. Sometimes 100s too! I am not exaggerating."</p>
+<p>From <a href="https://news.ycombinator.com/item?id=18442941">HN: What's the largest amount of bad code you have ever seen work?</a></p>
+</blockquote>
+<p>As horrific as this sounds, Oracle won't go out business <a href="https://www.macrotrends.net/stocks/charts/ORCL/oracle/gross-profit">anytime soon</a>. I can bet my life on that.</p>
+<h4 id="a-personal-anecdote"><a class="header" href="#a-personal-anecdote">A personal anecdote:</a></h4>
+<p>I worked in a small Series-A startup that had the most elegant code I've ever seen. The code was highly attuned to the domain model, well-structured and was so ergonomic that adding new features was a joy. It was the third iteration of the codebase. They run out of money. <del>It was the hunt for the clean code that brought the company down</del>. Nah. I'm kidding. World of business is far more complex than just code quality.</p>
+<p>Reading Clean Code in 2009, the idea that bad code being the root of all evil impressed me and I became a convert. It took me a decade to finally admit "ok. this doesn't match with reality." "Bad" code is pretty much the norm. Success or failure of an enterprise has nothing to do with it. And code that's good today will be very questionable from tomorrow's standards (this book is a perfect illustration of this).</p>
+<p>The focus on "cleanliness" of the code often feels like bike-shedding. The real challenge is to keep the balance between complexity vs available resources to manage it.
+Oracle can afford to have complex code base as they have enough resources and (<em>I'm speculating</em>) keep throwing more bodies at the problem.</p>
+<div class="book-quote">
+Of course you have been impeded by bad code. So then—why did you write it? <...> 
+<p>Were you trying to go fast? Were you in a rush? Probably so. Perhaps you felt that you didn't have time to do a good job</p>
+</div> 
+<p>"Not having enough time" might be an easy excuse and rationalization. But in my experience, I'm writing bad code because:</p>
+<ul>
+<li>I don't know that it is bad</li>
+<li>I don't know how to make it good within the constraints</li>
+<li>The existing architecture or design</li>
+</ul>
+<p>More often, it's a combination: accepting the existing design because I don't know how to make it better.</p>
+<p>You don't know what you don't know. Unfortunately, just reading "Clean Code" helps very little with discovering unknowns.</p>
+<div class="emphasis-block">
+    What might help is diving in and working on high quality code bases, having an experienced mentor, learning and studying different domains, ecosystems, languages and frameworks.
+</div>
+<h2 id="the-boy-scout-rule"><a class="header" href="#the-boy-scout-rule">The Boy Scout Rule</a></h2>
+<p>"Leave the campground cleaner than you found it". This is the call to action: always improve code that you're touching.</p>
+<p>In corporate america anything that has a catchy name has a chance to spread. I've heard of CTO at a mid-size company who knew two things about IT: how to hire contractors to adapt <a href="https://scaledagileframework.com/">Scaled Agile Framework</a> and "the Boy Scout Rule" of programming.</p>
+<div class="book-quote">
+Can you imagine working on a project where the code simply got better as time passed?
+</div>
+<p>This sounds appealing and might work on a small scale (think couple lines of code) and in isolation. But on this scale, it quickly hits diminishing returns. Applied on a larger scale, it creates chaos, random failures, and placing unnecessary burden on people working with the system and the codebase.</p>
+<!-- The analogy: you wake up every day in your apartment, and sometimes some of your stuff (furniture, clothes, appliances) are misplaced, moved or reorganized. Even if it's a slightly better organization, this will drive you insane if this will keep happening. --> 
+<p>What makes things worse: <strong>cleanliness of code is not an objective metric</strong>.</p>
+<p>In a campground, everyone agrees a plastic cup is trash and doesn’t belong. In code, readability and elegance are far more subjective.
+The most elegant OCaml code will be unreadable and weird in the eyes of average java Bob.</p>
+<div class="small-image-right">
+ <img src="./images/tidy_first.png"/>
+</div>
+<p>Kent Beck offers the idea of tidyings - small code changes that will unquestionably improve code base. While reading the book "Tidy first?" you'll notice two things:</p>
+<ul>
+<li>These are very small changes</li>
+<li>Question mark in the title of the book</li>
+</ul>
+<p>Clean Code advocates for significantly more radical interventions.
+<br/>
+<br/>
+<br/>
+<br/></p>
+<p>The boy scout rule is the opposite of:
+<br/></p>
+<div class="big-emphasis">Do not "fix" stuff that is not broken</div>
+<center style="font-style:italic">(this needs a catchy name)</center>
+<p>To Sum Up:</p>
+<p>Focusing obsessively on clean code often misses the bigger picture. The real game lies in managing complexity effectively while balancing the resources and the constraints.</p>
+<p><br/><br/></p>
+<hr />
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter_2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter_2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/book2.js"></script>
+
+
+    </div>
+    </body>
+</html>

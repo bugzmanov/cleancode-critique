@@ -1,0 +1,329 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Function Arguments - Clean Code - Critical Analysis</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Clean Code - Critical Analysis</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="function-arguments"><a class="header" href="#function-arguments">Function Arguments</a></h2>
+<div class="book-quote">
+The ideal number of arguments for a function is zero (niladic). <br/>
+Next comes one (monadic), followed closely by two (dyadic). <br/>
+Three arguments (triadic) should be avoided where possible. <br/>
+More than three (polyadic) requires very special justification—and then shouldn't be used anyway.
+</div>
+<p>I think Robert Martin gets the most amount of hate for this one.</p>
+<div style="text-align:center"><a target="_blank" href="https://x.com/mariofusco/status/1596791273431928832"><img src="./images/fusco_bob.png" width="50%"/></a></div>
+<p>The main problem with Martin's advice: it presents itself as "less is better" but handwaves all the downsides of the particular application.
+He ignores trade-offs and side effects.</p>
+<ul>
+<li>"Smaller methods are better", but the increased amount of methods? Nah, you'll be fine.</li>
+<li>"Less arguments for a function is better", but the increased scope of mutable state? Nah, you'll be fine</li>
+<li>"Compression is better", but the bulging discs? Nah, you'll be fine.</li>
+</ul>
+<p>One particularly odd suggestion is to "simplify" by moving arguments into instance state:</p>
+<div class="book-quote">
+Arguments are hard. They take a lot of conceptual power. That's why I got rid of almost all of them from the example. 
+Consider, for instance, the <code>StringBuffer</code> in the example. We could have passed it around as an argument rather than making it an instance variable, 
+but then our readers would have had to interpret it each time they saw it. 
+When you are reading the story told by the module, <code>includeSetupPage()</code> is easier to understand than <code>includeSetupPageInto(newPageContent)</code>
+</div>
+<p>This doesn't eliminate complexity. It just moves it to another place.
+But worse: moving parameters to fields increases size and the scope of the mutable state of the application. This sacrifices global complexity to reduce local complexity.
+Honestly, tracking shared mutable state in multi-threaded environments - is far harder than understanding function arguments.</p>
+<div class="book-quote">
+Arguments are even harder from a testing point of view. Imagine the difficulty of writing all the test cases to ensure that all the various combinations of arguments work properly. If there are no arguments, this is trivial.
+</div>
+<p>Calling the methods became easier, but setting up the instance class and tracking the state becomes harder. This is not a winning move.
+It just moves complexity.</p>
+<p>The discipline of functional programming exists precisely to limit mutable state, recognizing its significant cognitive overhead.
+And while functional programming predates Clean Code, it's clear that by the time of Martin writing the book he wasn't really a fan.</p>
+<div class="book-quote">
+One input argument is the next best thing to no arguments. SetupTeardownIncluder.render(pageData) is pretty easy to understand. 
+Clearly we are going to render the data in the pageData object.
+</div>
+<p>Beating the same dead horse: <code>render(pageData)</code> might be easy to understand. <code>SetupTeardownIncluder.render(pageData)</code> still doesn't make sense.</p>
+<h2 id="flag-arguments"><a class="header" href="#flag-arguments">Flag Arguments</a></h2>
+<div class="book-quote">
+"Flag arguments are ugly. Passing a boolean into a function is a truly terrible practice. It immediately complicates the signature of the method, 
+loudly proclaiming that this function does more than one thing. It does one thing if the flag is true and another if the flag is false!"
+</div>
+<p>Martin’s critique of flag arguments is front-loaded with emotion, but is it valid?
+Adding boolean or any parameter is indeed a complication. Since <code>boolean</code> can accept 2 states, speaking more formaly adding boolean is doubling the domain space of the function.</p>
+<p>Adding a boolean parameter to a function that already has 2 booleans will bring domain space from 4 to 8, this might be significant.
+But adding boolean argument to a function that had none before would not kick complexity level into "unmanagable" territorry. It might be a tolerable increase.</p>
+<div class="book-quote">
+"Still, the method call render(true) is just plain confusing to a poor reader. Mousing over the call and seeing render(boolean isSuite) helps a little, but not that much. 
+We should have split the function into two: renderForSuite() and renderForSingleTest()."
+</div>
+<p>While <code>render(true)</code> is indeed unclear on a caller side, modern programming languages offer solutions, such as named parameters:</p>
+<pre><code class="language-python">render(asSuite = true)   # costs nothing in runtime
+</code></pre>
+<p>The larger problem with <code>render(true)</code> is so-called <a href="https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/">boolean blindness</a></p>
+<div class="subtle-paragraph">
+"The problem is computing the bit in the first place. Having done so, you have blinded yourself by reducing the information you have at hand to a bit, 
+and then trying to recover that information later by remembering the provenance of that bit."
+<p>from <a href="https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/">Boolean Blindness</a></p>
+</div>
+<p>The easiest solution to this code smell is to use disjoint unions (enums) where both options have with semantic meaning:</p>
+<pre><code class="language-java">enum ExcutionUnit { 
+    SingleTest, 
+    Suite 
+} 
+
+//...
+public String renderAs(ExecutionUnit executionUnit) { ... }
+
+// ------
+
+//calling side:
+renderAs(ExeuctionUnit.Suite);
+
+</code></pre>
+<p>It's unclear if Robert Martin <a href="./chapter_33.html">likes enums</a>.</p>
+<p>The inherit unavoidable complexity is that tests can have 2 execution types: as a single test or as a part of a suite.
+Splitting the <code>render</code> function "into two: renderForSuite() and renderForSingleTest()" does not reduce it. (neither does using boolean or enum)
+It is still 2 types of execution.
+There will be place in code that would have to take a decision and select one of the branches.<br/> Please do not create Abstract Factory for every boolean in your code.</p>
+<h2 id="verbs-and-keywords"><a class="header" href="#verbs-and-keywords">Verbs and Keywords</a></h2>
+<div class="book-quote">
+"This last is an example of the keyword form of a function name. Using this form we encode the names of the arguments into the function name. 
+<p>For example, assertEquals might be better written as <pre><code>assertExpectedEqualsActual(expected, actual)</code></pre>
+This strongly mitigates the problem of having to remember the ordering of the arguments."</p>
+</div>
+<p>The suggestion to encode order of parameters in the name is not scalable -
+it works in isolation, but would degrate quickly with real API when you need to do all kind of assertions:</p>
+<ul>
+<li><code>assertExpectesIsGreaterOrEqualsThanActual</code></li>
+<li><code>assertActualContainsAllTheSameElementsAsExpected</code></li>
+</ul>
+<p>The best solution java can offer is fluent API: <a href="https://github.com/assertj/assertj">AssertJ</a></p>
+<pre><code class="language-java">assertThat(frodo.getName()).isEqualTo("Frodo");
+</code></pre>
+<p>Outside java, this problem has other solutions:</p>
+<ol>
+<li>Named parameters - In languages like Python, named parameters eliminate ambiguity:</li>
+</ol>
+<pre><code class="language-python">assertEquals(expected = something, actual = actual)
+</code></pre>
+<ol start="2">
+<li>Macros - In Rust, macros like assert_eq! automatically capture and display argument details, making order irrelevant:</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_string_eq() {
+    let expected = String::from("hello");
+    let actual = String::from("world");
+    
+    assert_eq!(expected, actual);
+    // Error message:
+
+    // thread 'test_string_eq' panicked at:
+    // assertion `left == right` failed
+    //   left: "hello"
+    //  right: "world"
+    //   at src/main.rs:17:5
+}
+
+<span class="boring">}</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter_34.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter_36.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter_34.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter_36.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/book2.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Chapter 2: Meaningful Names - Clean Code - Critical Analysis</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Clean Code - Critical Analysis</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="chapter-2-meaningful-names"><a class="header" href="#chapter-2-meaningful-names">Chapter 2: Meaningful names</a></h1>
+<p>I generally agree with the theme of this chapter: names are important. Naming is the main component of building abstractions and abstraction boundaries.
+In smaller languages like C or Go-Lang, naming is <em>the</em> primary mechanism for abstraction.</p>
+<p>Naming brings the problem domain into the computational domain:</p>
+<pre><code class="language-java">static int TEMPERATURE_LIMIT_F = 1000;
+</code></pre>
+<p>Named code constructs — such as functions and variables — are the building blocks of composition in virtually every programming paradigm.</p>
+<blockquote>
+<p>Names are a form of abstraction: they provide a simplified way of thinking about a more complex underlying entity. Like other forms of abstraction, the best names are those that focus attention on what is most important about the underlying entity while omitting details that are less important.</p>
+<p>Fom <a href="https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201">"Philosophy of software design"</a></p>
+</blockquote>
+<p>However, I disagree with Clean Code's specific approach to naming and its examples of "good" names. Quite often the book declares a good rule but then shows horrible application.</p>
+<h2 id="use-intention-revealing-names"><a class="header" href="#use-intention-revealing-names">Use intention-revealing names</a></h2>
+<p>The advocated principle is the title - the name should reveal intent. But the application:</p>
+<div class="book-quote">
+The name of a variable, function, or class, should answer all the big questions. It should tell you why it exists, what it does, and how it is used. If a name requires a comment, then the name does not reveal its intent.
+</div>
+<p>This sounds like an impossible task. First, the name that reveals all of those details fails to be an abstraction boundary.
+Second, what you notice in many examples in this book that this approach to naming leads to using "description as a name".</p>
+<p>Martin presents 3 versions of the same code:</p>
+<div class="code-comparison">
+    <div class="code-column">
+    <pre><code class="language-java">
+public List&lt;int[]&gt; getThem() {
+  List&lt;int[]&gt; list1 
+       = new ArrayList&lt;int[]&gt;();
+  for (int[] x : theList)
+    if (x[0] == 4)
+      list1.add(x);
+  return list1;
+} </pre></code>
+       <div class="code-column-title" style="padding-top:10px; text-align: center; margin-bottom: 0px;">(Might be) Obfuscated and unrealistic</div>
+    </div>
+    <div class="code-column">
+        <pre><code class="language-java">
+public List&lt;int[]&gt; getFlaggedCells() {
+  List&lt;int[]&gt; flaggedCells 
+     = new ArrayList&lt;int[]&gt;();
+  for (int[] cell : gameBoard)
+    if (cell[STATUS_VALUE] == FLAGGED)
+      flaggedCells.add(cell);
+  return flaggedCells;
+}</code></pre>
+        <div class="code-column-title" style="padding-top:10px; text-align: center; margin-bottom: 0px;">(Migh be) Good enough</div>
+    </div>
+    <div class="code-column">
+        <pre><code class="language-java">
+public List&lt;Cell&gt; getFlaggedCells() {
+  List&lt;Cell&ht; flaggedCells 
+      = new ArrayList&lt;Cell&gt;();
+  for (Cell cell : gameBoard)
+    if (cell.isFlagged())
+        flaggedCells.add(cell);
+  return flaggedCells;
+}
+</code></pre>
+        <div class="code-column-title" style="padding-top:10px; text-align: center; margin-bottom: 0px;">(Might be) Premature abstraction</div>
+    </div>
+</div>
+<p>My main disagreement is this: not all code chunks need a name. In modern languages, this method can be a one-liner:</p>
+<pre><code class="language-scala">gameBoard.filter(cell =&gt; cell(STATUS_VALUE) == FLAGGED)
+</code></pre>
+<p>That's it. This code can be inlined and used as is.</p>
+<p>Second, while <code>getFlaggedCells</code> looks like an improvement over obfuscated <code>getThem</code>, it's not really a name, it's a description of what the method does.
+If the description is as long as the code, it's often redundant.</p>
+<p>Martin writes about it in passing: "if you can extract another function from it with <strong>a name that is not merely a restatement of its implementation</strong>".<br/>
+But he violates this principle quite often.</p>
+<p>Third, if for readability alone, I'd argue that the second version is as clear as the third. If readability is the only reason for introducing Cell abstraction, this is an overkill.</p>
+<div class="collapsible-rant">
+    <div class="collapsible-header">
+        <span class="collapsible-title">To be fair there are good reasons to introduce Cell abstraction, but also there are reasons not to</span>
+        <span class="collapsible-arrow">↓</span>
+    </div>
+    <div class="collapsible-content">
+        <code>List&lt;int[]&gt;</code> is a generic type - devoid of meaning without a context. <br/><code>List&lt;Cell&gt;</code> - has more semantic meaning and is harder to misuse.<br/>
+        <pre><code class="language-java">
+List&lt;int[]&gt; list = getFlaggedCells();
+list.get(0)[0] = list.get(0)[1] - list.get(0)[0];
+        </code></pre>
+        This compiles and runs, but the transformation is non-sensical and will corrupt data (the first element is a status field). <br/> 
+        <code>List&lt;Cell&gt;</code> has a better affordance than <code>List&lt;int[]&gt;</code>, and makes such mistakes less likely. But improved affordance comes from the specialized type, not just the name.<br/><br/>
+        But there is a the downside - specialized types needs specialized processing code. 
+&nbsp;
+        Serialization libraries, for example, would have support for <code>List&lt;int[]&gt;</code> out of the box, 
+        but would need custom ser-de for the Cell class.<br/><br/>
+        Since Clean Code, Robert Martin has embraced Clojure and functional programming. One of the tenets of Clojure philosophy: <b>use generic types to represent the data</b> and you'll have enormous library of processing functions that can be reused and combined.<br/>
+        I'm curious if he would ever finish the second edition and if he had changed his mind about types.
+    </div>
+</div>
+<!--To be fair there are good reasons to introduce Cell abstraction, but also there are reasons not to. `List<int[]>` is a generic type - devoid of meaning without a context. `List<Cell>` - has more semantic meaning and is harder to misuse.-->
+<!---->
+<!--```java-->
+<!--List<int[]> list = getFlaggedCells();-->
+<!--list.get(0)[0] = list.get(0)[1] - list.get(0)[0];-->
+<!--```-->
+<!---->
+<!--This compiles and runs, but the transformation is non-sensical and will corrupt data (the first element is a status field). `List<Cell>` has a better affordance than `List<int[]>`, and makes such mistakes less likely. But improved affordance comes from the specialized type, not just the name.-->
+<!---->
+<!--It comes with the downside - specialized types needs specialized processing code. Serialization libraries, for example, would have support for `List<int[]>` out of the box, -->
+<!--but would need custom ser-de for the Cell class.-->
+<!---->
+<!--Since Clean Code, Robert Martin has embraced Clojure and functional programming. One of the tenets of Clojure philosophy: *use generic types to represent the data* and you'll have enormous library of processing functions that can be reused and combined.-->
+<!---->
+<!--I'm curious if he would ever finish the second edition and if he had changed his mind about types.-->
+<!---->
+<h2 id="avoid-disinformation--use-problem-domain-name"><a class="header" href="#avoid-disinformation--use-problem-domain-name">Avoid disinformation ... Use Problem Domain Name</a></h2>
+<p>Martin pretty much advocates for informative style of writing in code: be clear, avoid quirks and puns.</p>
+<p>These are examples of "good" names from his perspective:</p>
+<ul>
+<li><code>bunchOfAccounts</code></li>
+<li><code>XYZControllerForEfficientStorageOfStrings</code></li>
+</ul>
+<div class="book-quote">
+Do not refer to a grouping of accounts as an accountList unless it's actually a List. The word list means something specific to programmers. If the container holding the accounts is not actually a List, it may lead to false conclusions. So accountGroup or bunchOfAccounts or just plain accounts would be better.
+</div>
+<p>This might be stylistic preferences, but <code>accountsList</code> is easier to read and write than <code>bunchOfAccounts</code>: it's shorter and has fewer words - it is more concise. If by looking at word List the first thing you're thinking is <code>java.util.List</code>, then you might need some time away from Java. Touch some grass, write some Haskell.</p>
+<div class="subtle-paragraph">
+XYZControllerForEfficientStorageOfStrings - this is not a name - it's an essay. It tells the whole story of (web) application working with strings and storing them efficiently.
+</div>
+<p>Martin states that acronyms and word shortenings are bad, but doesn't see the problem in a name that has 7 words and 40 characters in it.</p>
+<p>There is a simple solution to this - comments that expand acronyms and explain shortenings. But because Martin believes that <a href="./chapter_4.html">comments are a failure</a>, he has to insist on using essays as a name.</p>
+<p>By the end of the chapter he finally mentions:</p>
+<div class="book-quote">
+Shorter names are generally better than longer ones, so long as they are clear.
+<p>...The resulting names are more precise, which is the point of all naming.</p>
+</div>
+<p>These are really good points! But most of the examples in the chapter are not aligned with them. And I don't think "short and concise naming" is a takeaway people are getting from reading this chapter.</p>
+<p>If anything, in most examples he proposed to replace short (albeit cryptic) names with 3-4 word long slugs.</p>
+<div class="collapsible-rant">
+    <div class="collapsible-header">
+        <span class="collapsible-title">Opinion: Code Conventions for the Java Programming Language</span>
+        <span class="collapsible-arrow">↓</span>
+    </div>
+    <div class="collapsible-content">
+        Pascal and Camel case in Java was proposed in <a href="https://checkstyle.sourceforge.io/styleguides/sun-code-conventions-19990420/CodeConventions.doc8.html">Sun's Java Style</a> as a way to enforce <b>"names should be short yet meaningful"</b>. 
+        <br/><br/>
+        The idea being that <code>ItIsReallyUncomfortableToReadLongSentencesWrittenInThisStyle</code>. Hence people will be soft forced to limit the size of names.<br/>
+        <br/>
+        The assumption was wrong.
+        <br/><br/>
+        <div style="text-align:center"><img src="./images/names.png" width="70%"/></div>
+    </div>
+</div>
+<!--Pascal and Camel case in Java was proposed in Sun's Java Style as way to enforce "names should be short yet meaningful". <br/>-->
+<!--The idea being that `ItIsReallyUncomfortableToReadLongSentencesWrittenInThisStyle`. Hence people will be soft forced to limit the size of names.<br/>-->
+<!--The assumption was wrong.-->
+<!---->
+<!--<div style="text-align:center"><img src="./images/names.png" width="70%"/></div>-->
+<h2 id="add-meaningful-context"><a class="header" href="#add-meaningful-context">Add meaningful context</a></h2>
+<p>I believe this was my first big WTF moment in the book:</p>
+<div class="code-comparison">
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Original Code: </div>
+        <pre class="ignore"><code class="language-java">private void printGuessStatistics(char candidate, 
+                                  int count) {   
+    String number;
+    String verb;
+    String pluralModifier;
+    if (count == 0) {
+        number = "no";
+        verb = "are";
+        pluralModifier = "s";
+    } else if (count == 1) {
+        number = "1";
+        verb = "is";
+        pluralModifier = "";
+    } else {
+        number = Integer.toString(count);
+        verb = "are";
+        pluralModifier = "s";
+    }
+    String guessMessage = String.format(
+        "There %s %s %s%s", verb, number, 
+        candidate, pluralModifier
+    );
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">print(guessMessage);<span class="code-comment">Instead of printing, the method should just return guessMessage String result</span></span>
+    &nbsp;
+    &nbsp;
+}</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Proposed rewrite:</div>
+        <pre class="ignore"><code class="language-java">public class GuessStatisticsMessage {
+    private String number;
+    private String verb;
+    private String pluralModifier;
+&nbsp; 
+    public String make(char candidate, int count) {
+        createPluralDependentMessageParts(count);
+        return String.format(
+                "There %s %s %s%s", 
+                verb, number, candidate, pluralModifier );
+    }
+&nbsp; 
+    private void createPluralDependentMessageParts(int count) {
+        if (count == 0) {
+            thereAreNoLetters();
+        } else if (count == 1) {
+            thereIsOneLetter();
+        } else {
+            thereAreManyLetters(count);
+        }
+    }
+&nbsp; 
+    private void thereAreManyLetters(int count) {
+        number = Integer.toString(count);
+        verb = "are";
+        pluralModifier = "s";
+    }
+&nbsp; 
+    private void thereIsOneLetter() {
+        number = "1";
+        verb = "is";
+        pluralModifier = "";
+    }
+&nbsp; 
+    private void thereAreNoLetters() {
+        number = "no";
+        verb = "are";
+        pluralModifier = "s";
+    }
+}</code></pre>
+    </div>
+</div>
+<p>In no way the second option is better than the first one. The original has only one problem: side-effect. Instead of printing to the console it should have just return String.</p>
+<p>And that is it:</p>
+<ul>
+<li>1 method, 20 lines of code, can be read top to bottom,</li>
+<li>3 mutable local variables to capture local mutable state that can not escape.</li>
+<li>It is thread-safe. I's impossible to misuse this API.</li>
+</ul>
+<p>Second option:</p>
+<ul>
+<li>5 methods, 40 lines of code, +1 new class with mutable state.</li>
+<li>Because it's a class, the state can escape and be observed from the outside.</li>
+<li>Which makes it not thread safe.</li>
+</ul>
+<p>The second option introduced more code, more concepts and more entities, introduced thread safety concerns.. while getting the exactly same results.</p>
+<p>It also violates one of the rules laid out in the chapter about method names: "Methods should have verb or verb phrase names". <code>thereIsOneLetter()</code> is not really a verb or a verb phrase.</p>
+<p>If I'll try to be charitable here: Martin is creating internal Domain Specific Language(DSL) for a problem.</p>
+<div class="subtle-paragraph">
+A good indicator of an internal DSL: there are parts of API that doesn't make sense outside specific context/grammar. 
+<p>For example, <code>new GuessStatisticsMessage().thereAreNoLetters()</code> looks weird and doesn't make sense.</p>
+<p>On the other hand, language consturcts are presented in a somewhat declarative style:</p>
+<pre><code class="language-java">private void thereAreNoLetters() {
+    number = "no";
+    verb = "are";
+    pluralModifier = "s";
+}
+
+private void thereIsOneLetter() {
+    number = "1";
+    verb = "is";
+    pluralModifier = "";
+}
+</code></pre>
+<p>I hope you agree that methods like this is not a typical Java. If anything, this looks closer to typical ruby.</p>
+</div>
+<p>At the end, OOP and DSL are the wrong tool for the task of creating string.
+In a powerful-enough language, keeping this code procedural gives you result that is short and easy to understand:</p>
+<pre><code class="language-scala">def formatGuessStatistics(candidate: Char, count: Int): String = {   
+   count match {
+       case i if i &lt; 0 =&gt; throw new IllegalArgumentException(s"count=$count: negative counts are not supported")
+       case 0 =&gt; s"There are no ${candidate}s"
+       case 1 =&gt; s"There is 1 ${candidate}"
+       case x =&gt; s"There are $x ${candidate}s"
+   }
+}
+</code></pre>
+<br/>
+<hr />
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter_1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter_3.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter_1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter_3.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/book2.js"></script>
+
+
+    </div>
+    </body>
+</html>
