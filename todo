@@ -1,0 +1,11 @@
+line width: 80 chars max
+line hight: 1.5
+font-size: 1rem
+
+
+still needs to cover:
+- composability is the key
+- non-reusable tiny methods don't have benefit
+- the goal of "good" the code is to accomodate changes and coupling makes changes hard
+-
+

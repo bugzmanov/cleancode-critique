@@ -1,0 +1,22 @@
+[book]
+authors = ["bugzmanov"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Clean Code - Critical Analysis"
+chapter-number = false
+
+[output.html] 
+additional-js = ["theme/book2.js"]
+additional-css = ["theme/css/custom.css"]
+highlight = true
+playground_copyable = false
+default-theme = "navy"
+preferred-dark-theme = "navy" 
+external-links.target = "_blank"  # all external links will open in a new tab
+
+[output.html.copy-button]
+enable = false
+
+[preprocessor.html]
+
