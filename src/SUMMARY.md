@@ -18,11 +18,11 @@
 - [Chapter 7: Error Handling](chapter_7.md)
 - [Chapter 8: Boundaries]()
 - [Chapter 9: Unit Tests](chapter_9.md)
-- [Chapter 10: Classes](chapter_10.md)
+- [TODO: Chapter 10: Classes]()
 - [Chapter 11: Systems](chapter_11.md)
 - [Chapter 12: Emergence](chapter_12.md)
 - [Chapter 13: Concurrency](chapter_13.md)
-- [Chapter 14: Successive Refinement](chapter_14.md)
+- [TODO:Chapter 14: Successive Refinement]()
 - [Chapter 15: JUnit Internals]()
 - [Chapter 16: Refactoring SerialDate]()
 -------

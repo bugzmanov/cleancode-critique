@@ -40,6 +40,14 @@ window.addEventListener('load', function() {
         document.head.appendChild(script);
     })();
 
+    if (window.localStorage) {
+        window.localStorage.setItem('mdbook-theme', 'navy');
+        if (!window.localStorage.getItem('mdbook-sidebar')) {
+            window.localStorage.setItem('mdbook-sidebar', 'visible');
+        }
+    }
+
+    
 // random animations and stuff
     document.querySelectorAll('.collapsible-header').forEach(header => {
         header.addEventListener('click', () => {

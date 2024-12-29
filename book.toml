@@ -8,7 +8,9 @@ chapter-number = false
 
 [output.html] 
 additional-js = ["theme/book2.js"]
-additional-css = ["theme/css/custom.css"]
+additional-css = ["theme/css/custom.css"
+, "theme/css/custom-flex.css"
+]
 highlight = true
 playground_copyable = false
 default-theme = "navy"
