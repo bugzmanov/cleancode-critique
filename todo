@@ -9,3 +9,11 @@ still needs to cover:
 - the goal of "good" the code is to accomodate changes and coupling makes changes hard
 -
 
+
+1) Themes use local storage - conflicts with nes
+2) og:image tag for thumnails, meta description  and friends. 
+
+
+
+Ideas:
+- github + mdbook reviewing tool

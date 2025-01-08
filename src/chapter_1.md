@@ -101,7 +101,7 @@ The boy scout rule is the opposite of:
 
 To Sum Up:
 
-Focusing obsessively on clean code often misses the bigger picture. The real game lies in managing complexity effectively while balancing the resources and the constraints.
+Focusing obsessively on clean code often misses the bigger picture. The real game lies in managing complexity while balancing the resources and the constraints.
 
 <br/><br/>
 

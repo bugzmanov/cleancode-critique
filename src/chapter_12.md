@@ -2,7 +2,7 @@
 
 Is written by Jeff Langr.
 
-It's pretty much about 4 principles of good design from Kent Beck:
+It's pretty much about 4 principles of [good design from Kent Beck](https://www.amazon.com/gp/product/0201616416):
 * Runs all the tests
 * Contains no duplication
 * Expresses the intent of the programmer

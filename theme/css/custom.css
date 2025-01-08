@@ -187,7 +187,7 @@
 .collapsible-rant {
     /*border: 1px solid rgba(94, 234, 212, 0.2);*/
     border-radius: 8px;
-    margin: 2rem 0;
+    margin: 2rem -1.5rem;
     background: rgba(31, 41, 55, 0.4);
     /*background: linear-gradient(90deg, var(--bg-secondary) 0%, transparent 100%);*/
 }
@@ -229,7 +229,7 @@
 .collapsible-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    transition: max-height 0.1s ease-out;
     padding: 0 1.5rem;
 }
 

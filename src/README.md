@@ -23,7 +23,8 @@ If you're just starting your career and seeking books to improve your coding ski
   This might be the best book to unlearn "Clean Code" style of development.
 
 - [The Art of Software Design: Balancing Flexibility and Coupling](https://www.amazon.com/Balancing-Coupling-Software-Design-Addison-wesley/dp/0137353480)
-
+  A thought-provoking book that explores software complexity through the lenses of abstraction, coupling, and modularity. 
+  It is as an excellent and in-depth complement to "A Philosophy of Software Design"
 
 Also Robert Martin is working on the second edition of *Clean Code*. It will be fun to see how much of this critique will become irrelevant 😃
 

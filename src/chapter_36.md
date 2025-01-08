@@ -55,3 +55,83 @@ This analysis misses several critical issues:
 
 A more formal understanding of side effects helps spot issues more easily.
 
+This also makes it obvious that moving [input arguments](./chapter_35.html) to object fields, especially when function has to mutate them to keep intermediate state, is incompatible
+with idea of side-effect free. 
+
+In rewrite suggestion from [chapter 2](./chapter_2.html), all new methods have a side effect - they mutate fields - Modify "state outside the function's scope": 
+
+<div class="code-comparison">
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Original Code: </div>
+        <pre class="ignore"><code class="language-java">private void printGuessStatistics(char candidate, 
+                                  int count) {   
+    String number;
+    String verb;
+    String pluralModifier;
+    if (count == 0) {
+        number = "no";
+        verb = "are";
+        pluralModifier = "s";
+    } else if (count == 1) {
+        number = "1";
+        verb = "is";
+        pluralModifier = "";
+    } else {
+        number = Integer.toString(count);
+        verb = "are";
+        pluralModifier = "s";
+    }
+    String guessMessage = String.format(
+        "There %s %s %s%s", verb, number, 
+        candidate, pluralModifier
+    );
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">print(guessMessage);<span class="code-comment">Interracts with the outside world - prints to STD-IO</span></span>
+    &nbsp;
+    &nbsp;
+}</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Proposed rewrite:</div>
+        <pre class="ignore"><code class="language-java">public class GuessStatisticsMessage {
+    private String number;
+    private String verb;
+    private String pluralModifier;
+&nbsp; 
+    public String make(char candidate, int count) {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">createPluralDependentMessageParts(count);<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        return String.format(
+                "There %s %s %s%s", 
+                verb, number, candidate, pluralModifier );
+    }
+&nbsp; 
+    private void createPluralDependentMessageParts(int count) {
+        if (count == 0) {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereAreNoLetters();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        } else if (count == 1) {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereIsOneLetter();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        } else {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereAreManyLetters();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        }
+    }
+&nbsp; 
+    private void thereAreManyLetters(int count) {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = Integer.toString(count);<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "are";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "s";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+&nbsp; 
+    private void thereIsOneLetter() {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = "1";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "is";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+&nbsp; 
+    private void thereAreNoLetters() {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = "no";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "are";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "s";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+}</code></pre>
+    </div>
+</div>
+

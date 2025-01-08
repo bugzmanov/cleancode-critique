@@ -22,7 +22,7 @@ There's scientific evidence that overly long words or word combinations increase
 >
 > <center> 
 >   Figure 10. The typical pattern of eye movements while reading.
->   <img src="https://optimal-codestyle.github.io/Velichkovskiy_reading.png"/>
+>   <img src="https://optimal-codestyle.github.io/Velichkovskiy_reading.png" style=" -webkit-filter: invert(1); filter: invert(1);"/>
 > </center> 
 >
 > From: [Optimal Code Style](https://optimal-codestyle.github.io/)
@@ -70,7 +70,7 @@ Consider Bob Nystrom’s principles of good naming as a guide:
 12/29/2024 Update:
 
 I've recently read about ["Stroustrup's Rule"](https://buttondown.com/hillelwayne/archive/stroustrops-rule/).
-In short it sounds like: **"Beginners need explicit syntax, experts want terse syntax."**
+The short version sounds like: **"Beginners need explicit syntax, experts want terse syntax."**
 
 > I see this as a special case of mental model development: when a feature is new to you, you don't have an internal mental model so need all of the explicit information you can get. Once you're familiar with it, explicit syntax is visual clutter and hinders how quickly you can parse out information.
 >
@@ -78,5 +78,5 @@ In short it sounds like: **"Beginners need explicit syntax, experts want terse s
 > 
 > From  ["Stroustrup's Rule" by  Hillel Wayne](https://buttondown.com/hillelwayne/archive/stroustrops-rule/)
 
-That is a good insight. <br/> And yet I think when it comes to descriptive naming, it is more appropriate to put the information required for begginers into comments. 
-This way "experts" (people who are familiar with the code) don't need to suffer from visual clutter and yet "begginers" still have a place to get everything they need. 
+That is a good insight. <br/> And yet I think when it comes to (descriptive) naming, it is more appropriate to put the information required for "begginers" (those who are unfamiliar with a code base) into comments. 
+This way "experts"  don't need to suffer from visual clutter.

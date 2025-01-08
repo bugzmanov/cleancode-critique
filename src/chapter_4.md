@@ -10,18 +10,18 @@ The proper use of comments is to compensate for our failure to express ourself i
 So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't some way to turn the tables and express yourself in code. Every time you express yourself in code, you should pat yourself on the back. Every time you write a comment, you should grimace and feel the failure of your ability of expression.
 </div>
 
-This is pretty damaging and I believe this is the main takeaway that developers would get out the chapter. 
+This is pretty damaging and I believe this is the main takeaway that developers get out the chapter. 
 It's the second worst idea of this book: comments are failure to write good code.
-This hyperbolic stance had influenced many developers to avoid creating and using this useful tool of design, abstraction and documentation.
-This stance has contributed to a broader culture where comments are undervalued and often ignored (note how comments are grayed out in most modern IDEs).
+This hyperbolic stance had influenced many developers to avoid creating and using the useful tool. The tool of design, abstraction and documentation.
+This view has contributed to a broader culture where comments are undervalued and often ignored (note how comments are grayed out in most modern IDEs).
 
 Martin is low key proposing idea of self-documenting code. This is a nice idea if it could work. 
 
-But the code can never provide all the context, even if you try using "really-relly long essays" as a name.
+But the code can never provide all the context, even if you try using "really-relly long essays" as names.
 Even if we assume that executable code can perfectly describe everything that's there, 
 quite often things that are excluded are also important part of the design.
 
-The "comments are failures" principle is probably the main driver of "essay as a name" style of naming: 
+The "comments are failures" principle is probably the main driver of this verbose overdescriptive style of naming: 
 
 ```java
 private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) { }
@@ -125,11 +125,11 @@ I can grant that this is pretty convoluted code, but honestly I'm not sure if it
 
 The good parts: the messines of the code is contained in a single place and API is safe and clear. 
 
-Comment about the library of Alexandria is cute, I would also add a link to Wikipedia page.
+Comment about the library of Alexandria is cute, I would also add a link to the Wikipedia page.
 
-The Martin refactoring:
+The Martins refactoring:
 
-```java
+<pre class="ignore"><code class="language-java">
 /**
  * This class Generates prime numbers up to a user specified
  * maximum.  The algorithm used is the Sieve of Eratosthenes.
@@ -139,8 +139,8 @@ The Martin refactoring:
  * in the array.
  */
 public class PrimeGenerator {
-    private static boolean[] crossedOut;
-    private static int[] result;
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">private static boolean[] crossedOut;<span class="code-comment">GLOBAL <b>MUTABLE</b> STATE!<br/> This is intermediate state</span></span>
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">private static int[] result<span class="code-comment">GLOBAL <b>MUTABLE</b> STATE!<br/> This is final state of computation</span></span>
 
     public static int[] generatePrimes(int maxValue) {
         if (maxValue < 2)
@@ -171,7 +171,7 @@ public class PrimeGenerator {
         // is less than or equal to the root of the array size,
         // so we don't have to cross out multiples of numbers
         // larger than that root.
-        double iterationLimit = Math.sqrt(crossedOut.length);
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">double iterationLimit = Math.sqrt(crossedOut.length);<span class="code-comment">Nitpick, but why is this extraction needed? </span></span>
         return (int) iterationLimit;
     }
 
@@ -202,7 +202,7 @@ public class PrimeGenerator {
         return count;
     }
 }
-```
+</code></pre>
 
 Right off the bat: The refactoring introduced serious thread-safety issues by using **static global mutable state** (`crossedOut` and `result` - static fields)
 
@@ -221,7 +221,7 @@ private static boolean notCrossed(int i) {
 }
 ```
 
-Compare: <code class="language-java">if (notCrossed(i))</code> &nbsp; **vs** &nbsp; <code class="language-java">if (crossedOut[i] == false)</code>. Is the former option really more readable? 
+Compare: <code class="language-java">if (notCrossed(i))</code> &nbsp; **vs** &nbsp; <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable? 
 If anything, now he have polluted the domain with semi-similar words: 
 * not crossed 
 * crossed out 
@@ -229,28 +229,10 @@ If anything, now he have polluted the domain with semi-similar words:
 
 Is "notCrossed" same thing as "not crossedOut"? Is it same thing as "uncrossed"? 
 By excessive method extraction Martin introduced inconsistencies and confusion in terminlogy, which at the end would only increase cognitive load.
-You have to look into implementation of all those small methods to understand if there is a difference or not. 
+One would have to look into implementation of all those small methods to understand if there is a difference or not. 
 
 This is the problem with introducing too many entities: working memory can hold 4–7 objects at a time. Flood it with small pebbles, and you’ll hit saturation, 
 leading to inconsistencies and discrepancies.
-
-<todo: RANT about this being common occasion>
-
-
-<todo: better review>
-
-```java
-private static int determineIterationLimit() {
-    // Every multiple in the array has a prime factor that
-    // is less than or equal to the root of the array size,
-    // so we don't have to cross out multiples of numbers
-    // larger than that root.
-    double iterationLimit = Math.sqrt(crossedOut.length);
-    return (int) iterationLimit;
-}
-```
-
-How many times do you need to repeat "iteration limit" in 3 lines of code to not forget that `determineIterationLimit` indeed returns `iterationLimit`?
 
 Lets remove obfuscation from the original method:
 

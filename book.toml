@@ -5,6 +5,7 @@ multilingual = false
 src = "src"
 title = "Clean Code - Critical Analysis"
 chapter-number = false
+description = "A modern critique of Robert C. Martin's 'Clean Code,' evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code's rigid rules."
 
 [output.html] 
 additional-js = ["theme/book2.js"]
@@ -16,6 +17,7 @@ playground_copyable = false
 default-theme = "navy"
 preferred-dark-theme = "navy" 
 external-links.target = "_blank"  # all external links will open in a new tab
+git-repository-url = "https://github.com/buhzmanov/cleancode-critique"   
 
 [output.html.copy-button]
 enable = false

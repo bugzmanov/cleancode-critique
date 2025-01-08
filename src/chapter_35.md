@@ -28,7 +28,7 @@ When you are reading the story told by the module, <code>includeSetupPage()</cod
 </div>
 
 This doesn't eliminate complexity. It just moves it to another place. 
-But worse: moving parameters to fields increases size and the scope of the mutable state of the application. This sacrifices global complexity to reduce local complexity.
+But worse: moving parameters to fields increases size and the scope of the mutable state of the application. This sacrifices global complexity to reduce local one.
 Honestly, tracking shared mutable state in multi-threaded environments - is far harder than understanding function arguments. 
 
 <div class="book-quote">
@@ -36,7 +36,6 @@ Arguments are even harder from a testing point of view. Imagine the difficulty o
 </div>
 
 Calling the methods became easier, but setting up the instance class and tracking the state becomes harder. This is not a winning move. 
-It just moves complexity.
 
 The discipline of functional programming exists precisely to limit mutable state, recognizing its significant cognitive overhead.
 And while functional programming predates Clean Code, it's clear that by the time of Martin writing the book he wasn't really a fan.

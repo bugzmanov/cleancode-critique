@@ -81,13 +81,13 @@ gameBoard.filter(cell => cell(STATUS_VALUE) == FLAGGED)
 
 That's it. This code can be inlined and used as is.
 
-Second, while `getFlaggedCells` looks like an improvement over obfuscated `getThem`, it's not really a name, it's a description of what the method does. 
+While `getFlaggedCells` looks like an improvement over obfuscated `getThem`, it's not really a name, it's a description of what the method does. 
 If the description is as long as the code, it's often redundant.
 
 Martin writes about it in passing: "if you can extract another function from it with **a name that is not merely a restatement of its implementation**".<br/>
 But he violates this principle quite often.
 
-Third, if for readability alone, I'd argue that the second version is as clear as the third. If readability is the only reason for introducing Cell abstraction, this is an overkill.
+If for readability alone, I'd argue that the second version is as clear as the third and introducing Cell abstraction is an overkill.
 
 <div class="collapsible-rant">
     <div class="collapsible-header">
@@ -173,7 +173,7 @@ If anything, in most examples he proposed to replace short (albeit cryptic) name
         <br/>
         The assumption was wrong.
         <br/><br/>
-        <div style="text-align:center"><img src="./images/names.png" width="70%"/></div>
+        <div style="text-align:center"><img src="./images/names.png" width="70%" style="filter: brightness(85%)"/></div>
     </div>
 </div>
 
@@ -264,7 +264,7 @@ I believe this was my first big WTF moment in the book:
 </div>
 
 
-In no way the second option is better than the first one. The original has only one problem: side-effect. Instead of printing to the console it should have just return String. 
+In no way the second option is better than the first one. The original has only one problem: side-effects. Instead of printing to the console it should have just return String. 
  
 And that is it: 
 * 1 method, 20 lines of code, can be read top to bottom, 
@@ -305,8 +305,8 @@ private void thereIsOneLetter() {
 I hope you agree that methods like this is not a typical Java. If anything, this looks closer to typical ruby.
 </div>
 
-At the end, OOP and DSL are the wrong tool for the task of creating string. 
-In a powerful-enough language, keeping this code procedural gives you result that is short and easy to understand:
+But ultimately, object-oriented programming and domain-specific languages are unnessary for the simple task.
+In a powerful-enough language, keeping this code procedural gives the result that is short and easy to understand:
 
 ```scala
 def formatGuessStatistics(candidate: Char, count: Int): String = {   

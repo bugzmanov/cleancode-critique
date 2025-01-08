@@ -68,13 +68,13 @@ Listing 6-4 Abstract Vehicle
 In both of the above cases the second option is preferable. We do not want to expose the details of our data. Rather we want to express our data in abstract terms.
 </div>
 
-This is not about "details of our data", this is hiding our data! 
+This is not hiding "details of our data", this is data hiding! 
 Depending on the context, this might be good or bad. For example, with the second option, it becomes impossible to calculate the cost of filling the tank. 
 Are we designing for scammy car rentals? If so, then sure, hide the data. 
 
 The assumption that hiding data is always a good thing is just wrong. 
 
-*Ineffective abstraction* occurs when essential knowledge is removed, or when non-essential knowledge is unnecessarily exposed - or both.
+**Ineffective abstraction** occurs when essential knowledge is removed, or when non-essential knowledge is unnecessarily exposed - or both.
 
 # Data/Object Anti-Symmetry
 

@@ -5,89 +5,90 @@ What this team did not realize was that having dirty tests is equivalent to, if 
 </div>
 
 This statement lacks nuance: if the dirty tests are actually testing software, then having them is better than not having them. <br/>
-Again this is the example of when that is true: [Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests](https://news.ycombinator.com/item?id=18442941) <br/>
+
+To repeat the example of when that is true: [Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests](https://news.ycombinator.com/item?id=18442941) <br/>
 Oracle Database is a very reliable software (as of 2024), it comes at the cost of thousands of people suffering through the setup, but as a customer I enjoy its robustness.
 
 Having tests that actually test software is good, even if they are dirty. However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks.
 
-This chapter unintentionally shows the value of finding a balance. 
+This chapter unintentionally highlights the importance of balance.
 
-First, it provides an example of a refactoring that I almost agree with:
+First, it presents an example of a refactoring that I mostly agree with:
 
 <div class="code-comparison" >
-    <div class="code-column" style="flex:0">
-        <div class="code-column-title">Original Code: </div>
-        <pre class="ignore"><code class="language-java" style="font-size: 13px !important">public void testGetPageHieratchyAsXml() throws Exception {
-  crawler.addPage(root, PathParser.parse("PageOne"));
-  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
-  crawler.addPage(root, PathParser.parse("PageTwo"));
-&nbsp;
-  request.setResource("root");
-  request.addInput("type", "pages");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("<name>PageOne</name>", xml);
-  assertSubString("<name>PageTwo</name>", xml);
-  assertSubString("<name>ChildOne</name>", xml);
+<div class="code-column" style="flex:0">
+<div class="code-column-title">Original Code: </div>
+<pre class="ignore"><code class="language-java" style="font-size: 13px !important">public void testGetPageHieratchyAsXml() throws Exception {
+    crawler.addPage(root, PathParser.parse("PageOne"));
+    crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+    crawler.addPage(root, PathParser.parse("PageTwo"));
+    &nbsp;
+    request.setResource("root");
+    request.addInput("type", "pages");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("<name>PageOne</name>", xml);
+    assertSubString("<name>PageTwo</name>", xml);
+    assertSubString("<name>ChildOne</name>", xml);
 }
 &nbsp;
 public void testGetPage_cLinks() throws Exception {
-  WikiPage pageOne = 
+    WikiPage pageOne = 
     crawler.addPage(root, PathParser.parse("PageOne"));
-  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
-  crawler.addPage(root, PathParser.parse("PageTwo"));
-&nbsp;
-  PageData data = pageOne.getData();
-  WikiPageProperties properties = data.getProperties();
-  WikiPageProperty symLinks = 
-    properties.set(SymbolicPage.PROPERTY_NAME);
-  symLinks.set("SymPage", "PageTwo");
-  pageOne.commit(data);
-&nbsp;
-  request.setResource("root");
-  request.addInput("type", "pages");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("<name>PageOne</name>", xml);
-  assertSubString("<name>PageTwo</name>", xml);
-  assertSubString("<name>ChildOne</name>", xml);
-  assertNotSubString("SymPage", xml);
+    crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+    crawler.addPage(root, PathParser.parse("PageTwo"));
+    &nbsp;
+    PageData data = pageOne.getData();
+    WikiPageProperties properties = data.getProperties();
+    WikiPageProperty symLinks = 
+        properties.set(SymbolicPage.PROPERTY_NAME);
+    symLinks.set("SymPage", "PageTwo");
+    pageOne.commit(data);
+    &nbsp;
+    request.setResource("root");
+    request.addInput("type", "pages");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("<name>PageOne</name>", xml);
+    assertSubString("<name>PageTwo</name>", xml);
+    assertSubString("<name>ChildOne</name>", xml);
+    assertNotSubString("SymPage", xml);
 }
 &nbsp;
 public void testGetDataAsHtml() throws Exception {
-  crawler.addPage(root, 
+    crawler.addPage(root, 
     PathParser.parse("TestPageOne"), "test page");
-&nbsp;
-  request.setResource("TestPageOne"); 
-  request.addInput("type", "data");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("test page", xml);
-  assertSubString("&gt;Test", xml);
+    &nbsp;
+    request.setResource("TestPageOne"); 
+    request.addInput("type", "data");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("test page", xml);
+    assertSubString("&gt;Test", xml);
 }</code></pre>
-    </div>
-    <div class="code-column">
-        <div class="code-column-title">Proposed rewrite:</div>
-        <pre><code class="language-java" style="font-size: 13px !important">public void testGetPageHierarchyAsXml() throws Exception {
+</div>
+<div class="code-column">
+<div class="code-column-title">Proposed rewrite:</div>
+<pre><code class="language-java" style="font-size: 13px !important">public void testGetPageHierarchyAsXml() throws Exception {
     makePages("PageOne", "PageOne.ChildOne", "PageTwo");
-&nbsp;
+    &nbsp;
     submitRequest("root", "type:pages");
-&nbsp;
+    &nbsp;
     assertResponseIsXML();
     assertResponseContains(
         "<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>"
@@ -105,11 +106,11 @@ public void testGetDataAsHtml() throws Exception {
 public void testGetPage_cLinks() throws Exception {
     WikiPage page = makePage("PageOne");
     makePages("PageOne.ChildOne", "PageTwo");
-&nbsp;
+    &nbsp;
     addLinkTo(page, "PageTwo", "SymPage");
-&nbsp;
+    &nbsp;
     submitRequest("root", "type:pages");
-&nbsp;
+    &nbsp;
     assertResponseIsXML();
     assertResponseContains(
         "<name>PageOne</name>", "<name>PageTwo</name>",
@@ -138,21 +139,23 @@ public void testGetDataAsXml() throws Exception {
     assertResponseIsXML();
     assertResponseContains("test page", "&gt;Test");
 }</code></pre>
-    </div>
+</div>
 </div>
 
 
-What makes it good:
-- the introduced abstractions are useful and reusable
+The <span style="color: lightgreen">good</span>:
 
-What is bad: 
-- Martin introduces **global mutable state** (global in terms of the test suite)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - the introduced abstractions are useful and reusable
+
+The <span style="color: red">bad</span>: 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Martin introduces **global mutable state** (global in terms of the test suite)
 
 Big drawback of this global mutable state - now tests can not be run in parallel. Hence the execution of these 3 tests will take 3x more time. 
 
-Clear case of ["'Clean' Code, Horrible Performance"](https://www.computerenhance.com/p/clean-code-horrible-performance)
+Another case of ["'Clean' Code, Horrible Performance"](https://www.computerenhance.com/p/clean-code-horrible-performance) ? 
 
-Again this is self-inflicted pain from a painful idea that no parameters is always better than 1+.
+This is self-inflicted harm from a painful idea that no parameters is always better than 1+.
 
 By fixing it: 
 
@@ -167,13 +170,13 @@ public void testGetDataAsXml() throws Exception {
 }
 ```
 
-You get advocated `BUILD`-`OPERATE`-`CHECK` shape, without need to have implicit mutable state somewhere hidden.
+We get advocated `BUILD`-`OPERATE`-`CHECK` shape, without need to have implicit mutable state somewhere hidden.
 All tests are isolated and can run in parallel.
 
 ----
 
-And while first example in this chapter is a good illustration how tidying your API with domain specific details can improve code readability, 
-the next one is an illustration that this approach can be taken too far:
+The first example in this chapter shows how adding domain-specific details can improve readability.
+The second one is an illustration that this approach can be taken too far:
 
 ```java
 @Test
@@ -201,15 +204,14 @@ public void turnOnLoTempAlarmAtThreshold() throws Exception {
 // {heater, blower, cooler, hi-temp-alarm, lo-temp-alarm}
 ```
 
-Domain Specific Language is a programming language still and readability of that is important. 
-"HBchL" is not very readable, as it requires noticeable mental effort to translate. This defeats the purpose of making code more readable.
+The mini-DSL makes things harder to read, not easier.
+The "HBchL" encoding requires extra mental effort to decode, which defeats the purpose of making the test more readable.
 
-What prevents him from creating format like: ```"heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on"```?
+Why not "heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on" ? 
 
 `wayTooCold();` - is also very weird grammar. Is it a verb or verb phrase? Why do we need to hide call to `controller.tic()`? 
 
 In the `BUILD`-`OPERATE`-`CHECK` template: `Controller.tic()` is the `OPERATE`!
-
 
 ```java
 wayTooCold();
@@ -218,7 +220,7 @@ assertEquals("HBchL", hw.getState());
 
 This is not `BUILD`-`OPERATE`-`CHECK`. Thi is `WHY`-`WTF`
 
-From good readability perspective I would change it to:
+A more natural approach:
 
 ```java
 @Test
@@ -234,7 +236,7 @@ public void turnOnLoTempAlarmAtThreashold() throws Exception {
 }
 ```
 
-Again in modern language there is no need to create DSL as the language is powerful enough to make code concise and readable:
+Again in modern languages, like Scala
 
 ```scala
 @Test
@@ -245,16 +247,20 @@ def turnOnLoTempAlarmAtThreashold() {
 
     assertEquals(
         Status(heaterOn = true, blowerOn = false, coolerOn = false, 
-               hiTempAlarm = false, loTempAlarm = true)
+            hiTempAlarm = false, loTempAlarm = true
+        ),
         hw.getState()
     )
 }
 ```
 
+No need for cryptic mini-DSLs, the language itself is expressive enough to keep things clean and clear.
 
-Final nit-pick:
+### Final nitpick: Test Performance Matters 
 
 <div class="book-quote">
+The getState function is shown in Listing 9-6. Notice that this is not very efficient code. To make it efficient, I probably should have used a StringBuffer.
+
 <pre><code class="language-java">public String getState() {
     String state = "";
     state += heater ? "H" : "h";
@@ -268,11 +274,25 @@ Final nit-pick:
 StringBuffers are a bit ugly.
 </div>
 
-Again the book age shows: StringBuffers are not only ugly they are also slow. StringBuffer are synchronized for multi-threaded access, even without contention it has runtime cost. Good news are his original code will be compiled by javac to use StringBuilders.
+Not only are StringBuffers ugly, but they’re also slow (the book shows it age). StringBuffer is synchronized for multi-threaded access, adding unnecessary overhead. 
+Fortunately, modern javac compiler can optimize the `getState` method to use StringBuilder instead.
+
+```java
+public String getState() {
+    return (heater ? "H" : "h") + 
+            (blower ? "B" : "b") +
+            (cooler ? "C" : "c") +
+            (hiTempAlarm ? "H" : "h") +
+            (loTempAlarm ? "L" : "l");
+}
+```
+
 
 <div class="book-quote">
 There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
 </div>
 
-Test performance matters at scale - slow tests can significantly impact development velocity. The most important thing for tests to do is to actually test the software. 
-But giving up tests performance in large code base means increase of validation cycle in CI/CD pipelines.  
+No. Test performance absolutely matters — especially at scale.
+
+Slow tests can and will kill development speed. Ignoring performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀
+
