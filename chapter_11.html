@@ -7,8 +7,37 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Basic SEO Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Clean Code - A Critical Analysis">
+        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
+        <meta name="author" content="bugzmanov">
+        <meta name="robots" content="index, follow">
+        
+        <!-- Open Graph (OG) Meta Tags for Social Media -->
+        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
+        <meta property="og:type" content="book">
+        <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
+        <meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
+        <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        <meta name="twitter:site" content="@bugzmanov">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
 
-        <meta name="description" content="">
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -127,6 +156,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -154,29 +186,31 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="chapter-11-systems"><a class="header" href="#chapter-11-systems">Chapter 11: Systems</a></h1>
-<p>This is a mixed bag of relatively OK-ish approaches, relatively outdated advice, and critique of the APIs that's lost its relevance a decade ago.</p>
-<p>It's somewhat focusing on organizing cross-cutting concerns in an application: it talks about aspect oriented programming and mentions the way to implement it:</p>
+<p>This is a mixed bag of relatively OK-ish approaches, relatively outdated advice, and critique of the APIs that lost its relevance a decade ago.</p>
+<p>It's somewhat focusing on organizing cross-cutting concerns in an application using aspect oriented programming.</p>
+<p>The book mentions following implementation stategies:</p>
 <ul>
-<li>ejb</li>
-<li>proxies: jdk based or asm-based</li>
-<li>aspectj</li>
+<li><a href="https://en.wikipedia.org/wiki/Jakarta_Enterprise_Beans">Enterprise JavaBeans - ejb</a> <em>(outdated)</em></li>
+<li>proxies: <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html">jdk based</a> or <a href="https://asm.ow2.io/">asm</a>-based <em>(relevant, in 2025 <a href="https://bytebuddy.net/">byte-buddy</a> is a more popular choice)</em></li>
+<li><a href="https://projects.eclipse.org/projects/tools.aspectj">aspectj</a> <em>(outdated)</em></li>
 <li>plain code</li>
 </ul>
-<p>At the end it is advocating for plain java as it allows better modularity and easier way to separate concerns. The book advocates to cope the disadvantage of this approach (i.e. slow development speed and verbose nature of java language) with implementation of a proper DSL.</p>
-<p>The core message is valid but poorly structured and hard to follow.</p>
-<p>Majority of tech mentioned in this chapter is outdated to irrelevancy, newcomers will not be able to understand what is being advocated.</p>
-<p>The argument for DSL lacks concrete examples and relies on irrelevant references.
+<p>At the end the book advocates for plain java: better modularity and easier way to separate concerns.
+To cope the disadvantage of this approach (i.e. slow development speed and verbose nature of java language) the book recommends to use DSLs.</p>
+<p>The core message is valid but poorly structured and hard to follow. Majority of tech mentioned in this chapter is outdated to irrelevancy, newcomers will not be able to understand what is being advocated.</p>
+<p>The argument for DSL is interesting, bu lacks concrete examples and relies on irrelevant references.
 The reader is expected to checkout books of Christopher Alexander (WTF? why?!) and jmock is presented as example of good DSL.</p>
-<p>What makes it somewhat amusing is that Mockito (mocking framework overtook 1st place in java ecosystem) has been adopting opposite design principle from the get-go:</p>
+<p>What makes it somewhat amusing is that <a href="https://site.mockito.org/">Mockito</a> (mocking framework overtook 1st place in java ecosystem) has been adopting opposite design principle from the get-go:</p>
 <blockquote>
-<p>The less DSL the better. Interactions are just method calls. Method calls are simple, DSL is complex.</p>
+<p>"The less DSL the better. Interactions are just method calls. Method calls are simple, DSL is complex."</p>
+<p>from <a href="https://szczepiq.wordpress.com/2008/01/14/mockito/">Mockito announcement</a></p>
 </blockquote>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="chapter_9.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="chapter_10.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -190,7 +224,7 @@ The reader is expected to checkout books of Christopher Alexander (WTF? why?!) a
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="chapter_9.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="chapter_10.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 

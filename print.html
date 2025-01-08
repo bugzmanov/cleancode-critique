@@ -8,8 +8,37 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Basic SEO Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Clean Code - A Critical Analysis">
+        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
+        <meta name="author" content="bugzmanov">
+        <meta name="robots" content="index, follow">
+        
+        <!-- Open Graph (OG) Meta Tags for Social Media -->
+        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
+        <meta property="og:type" content="book">
+        <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
+        <meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
+        <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        <meta name="twitter:site" content="@bugzmanov">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
 
-        <meta name="description" content="">
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -128,6 +157,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -176,7 +208,9 @@ This is not stated explicitly as a goal, but the book is full of contra-argument
 This might be the best book to unlearn "Clean Code" style of development.</p>
 </li>
 <li>
-<p><a href="https://www.amazon.com/Balancing-Coupling-Software-Design-Addison-wesley/dp/0137353480">The Art of Software Design: Balancing Flexibility and Coupling</a></p>
+<p><a href="https://www.amazon.com/Balancing-Coupling-Software-Design-Addison-wesley/dp/0137353480">The Art of Software Design: Balancing Flexibility and Coupling</a>
+A thought-provoking book that explores software complexity through the lenses of abstraction, coupling, and modularity.
+It is as an excellent and in-depth complement to "A Philosophy of Software Design"</p>
 </li>
 </ul>
 <p>Also Robert Martin is working on the second edition of <em>Clean Code</em>. It will be fun to see how much of this critique will become irrelevant 😃</p>
@@ -263,7 +297,7 @@ The most elegant OCaml code will be unreadable and weird in the eyes of average 
 <div class="big-emphasis">Do not "fix" stuff that is not broken</div>
 <center style="font-style:italic">(this needs a catchy name)</center>
 <p>To Sum Up:</p>
-<p>Focusing obsessively on clean code often misses the bigger picture. The real game lies in managing complexity effectively while balancing the resources and the constraints.</p>
+<p>Focusing obsessively on clean code often misses the bigger picture. The real game lies in managing complexity while balancing the resources and the constraints.</p>
 <p><br/><br/></p>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2-meaningful-names"><a class="header" href="#chapter-2-meaningful-names">Chapter 2: Meaningful names</a></h1>
@@ -329,11 +363,11 @@ public List&lt;Cell&gt; getFlaggedCells() {
 <pre><code class="language-scala">gameBoard.filter(cell =&gt; cell(STATUS_VALUE) == FLAGGED)
 </code></pre>
 <p>That's it. This code can be inlined and used as is.</p>
-<p>Second, while <code>getFlaggedCells</code> looks like an improvement over obfuscated <code>getThem</code>, it's not really a name, it's a description of what the method does.
+<p>While <code>getFlaggedCells</code> looks like an improvement over obfuscated <code>getThem</code>, it's not really a name, it's a description of what the method does.
 If the description is as long as the code, it's often redundant.</p>
 <p>Martin writes about it in passing: "if you can extract another function from it with <strong>a name that is not merely a restatement of its implementation</strong>".<br/>
 But he violates this principle quite often.</p>
-<p>Third, if for readability alone, I'd argue that the second version is as clear as the third. If readability is the only reason for introducing Cell abstraction, this is an overkill.</p>
+<p>If for readability alone, I'd argue that the second version is as clear as the third and introducing Cell abstraction is an overkill.</p>
 <div class="collapsible-rant">
     <div class="collapsible-header">
         <span class="collapsible-title">To be fair there are good reasons to introduce Cell abstraction, but also there are reasons not to</span>
@@ -406,7 +440,7 @@ Shorter names are generally better than longer ones, so long as they are clear.
         <br/>
         The assumption was wrong.
         <br/><br/>
-        <div style="text-align:center"><img src="./images/names.png" width="70%"/></div>
+        <div style="text-align:center"><img src="./images/names.png" width="70%" style="filter: brightness(85%)"/></div>
     </div>
 </div>
 <!--Pascal and Camel case in Java was proposed in Sun's Java Style as way to enforce "names should be short yet meaningful". <br/>-->
@@ -490,7 +524,7 @@ Shorter names are generally better than longer ones, so long as they are clear.
 }</code></pre>
     </div>
 </div>
-<p>In no way the second option is better than the first one. The original has only one problem: side-effect. Instead of printing to the console it should have just return String.</p>
+<p>In no way the second option is better than the first one. The original has only one problem: side-effects. Instead of printing to the console it should have just return String.</p>
 <p>And that is it:</p>
 <ul>
 <li>1 method, 20 lines of code, can be read top to bottom,</li>
@@ -524,8 +558,8 @@ private void thereIsOneLetter() {
 </code></pre>
 <p>I hope you agree that methods like this is not a typical Java. If anything, this looks closer to typical ruby.</p>
 </div>
-<p>At the end, OOP and DSL are the wrong tool for the task of creating string.
-In a powerful-enough language, keeping this code procedural gives you result that is short and easy to understand:</p>
+<p>But ultimately, object-oriented programming and domain-specific languages are unnessary for the simple task.
+In a powerful-enough language, keeping this code procedural gives the result that is short and easy to understand:</p>
 <pre><code class="language-scala">def formatGuessStatistics(candidate: Char, count: Int): String = {   
    count match {
        case i if i &lt; 0 =&gt; throw new IllegalArgumentException(s"count=$count: negative counts are not supported")
@@ -674,7 +708,7 @@ This lack of clarity around the method’s scope and purpose is the real “weir
 <div style="break-before: page; page-break-before: always;"></div><h2 id="small"><a class="header" href="#small">Small!</a></h2>
 <p><span style="font-size:80px; color: red;"> NO! </span>
 I genuinely think this book is outdated, and a lot of its advice is more harmful than helpful.
-But there are two parts that stand out as the worst ideas in the whole book. This is one of them (the second one is <a href="./chapter_4.html">"Comments are a failures"</a>).<br/>
+But there are two parts that are the worst. This is one of them (the second one is <a href="./chapter_4.html">"Comments are a failures"</a>).<br/>
 Bazzilion small functions to achieve trivial functionality is a hallmark of "clean-coders". And this is the most damaging concept in this book.</p>
 <p>Splitting a system into pieces is an extremely useful technique for:</p>
 <ul>
@@ -682,25 +716,25 @@ Bazzilion small functions to achieve trivial functionality is a hallmark of "cle
 <li>Keeping unrelated concerns separate</li>
 <li>Reducing cognitive load required to reason about components independently</li>
 </ul>
-<p>However clean code advocates for splitting in order just to keep functions short. By itself this is a useless metric.</p>
-<p>When you make a component too small - it fails to encapsulate a required functionality. It can not be analyzed independently as it ends up tightly coupled with other parts of the system, which defeats the purpose of breaking things up:</p>
+<p>However clean code advocates for splitting in order to just keep functions short. By itself this is a useless metric.</p>
+<p>When you make a component too small - it fails to encapsulate a required functionality. It can not be analyzed independently as it ends up tightly coupled with other parts of the system.</p>
+<p>This defeats the purpose of breaking things up:</p>
 <ul>
 <li>Less reusable: Tight coupling makes it harder to use pieces of the system in different contexts.</li>
 <li>Harder to understand: You can’t analyze the pieces independently anymore—they all depend on each other.</li>
 </ul>
-<p>You can argue that shorter methods themselves are less complex now, but this addresses only <strong>local complexity</strong>.
-To really understand a system, you have to deal with global complexity - the sum of all the pieces <strong>and how they interact</strong>. A bad split can actually make global complexity worse.</p>
+<p>You can argue that shorter methods are less complex, but this addresses only <strong>local complexity</strong>.
+To understand a system, you have to deal with global complexity - the sum of all the pieces <strong>and how they interact</strong>. A bad split can make global complexity worse.</p>
 <p>Most of the time, splitting a function into a bunch of tiny pieces doesn’t improve much.
 It's like cutting a whole pizza pie into slices, and hoping that you consume fewer calories after eating every slice.</p>
-<p>My rule of thumb: splitting code should reduce global complexity or code size (or both). The split that increases both metrics is a bad idea.
-If breaking something into smaller pieces makes the overall system harder to understand and adds more lines of code, you’ve just made things worse.</p>
+<p>My rule of thumb: splitting code should reduce global complexity or code size or both.
+If breaking something into smaller pieces makes the overall system harder to understand and/or adds more lines of code, you’ve just made things worse.</p>
 <p>There’s also the problem of running out of good names when you create too many small functions.
 Once that happens, you’re stuck writing long, overly descriptive names that clutter the code and make it harder to read:</p>
-<pre><code class="language-java">public static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception {
-    if (isTestPage(pageData))
-        includeSetupAndTeardownPages(pageData, isSuite);
-    return pageData.getHtml();
-}
+<pre><code class="language-java">// an example, not from the book
+public static String render(PageData pageData, boolean isSuite) throws Exception 
+private static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception 
+private static String failSafeRenderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception 
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="one-level-of-abstraction-per-function"><a class="header" href="#one-level-of-abstraction-per-function">One Level of Abstraction per Function</a></h2>
 <p>This is a good rule, but as an author of the code you have always a choice: <strong>what is your abstraction</strong>.</p>
@@ -846,7 +880,7 @@ Don't be afraid to make a name long.
 <p>"During fixation, we get information from the perceptual span. The size of this area is relatively small, in the case of alphabetic orthographies (for example, in European languages) it starts from the beginning of the fixed word, but no more than 3-4 letter spaces to the left of the fixation point, and extends to about 14-15 letter spaces to the right of this point (in total 17-19 spaces)."</p>
 <center> 
   Figure 10. The typical pattern of eye movements while reading.
-  <img src="https://optimal-codestyle.github.io/Velichkovskiy_reading.png"/>
+  <img src="https://optimal-codestyle.github.io/Velichkovskiy_reading.png" style=" -webkit-filter: invert(1); filter: invert(1);"/>
 </center> 
 <p>From: <a href="https://optimal-codestyle.github.io/">Optimal Code Style</a></p>
 </blockquote>
@@ -886,14 +920,14 @@ Don't be afraid to make a name long.
 <hr />
 <p>12/29/2024 Update:</p>
 <p>I've recently read about <a href="https://buttondown.com/hillelwayne/archive/stroustrops-rule/">"Stroustrup's Rule"</a>.
-In short it sounds like: <strong>"Beginners need explicit syntax, experts want terse syntax."</strong></p>
+The short version sounds like: <strong>"Beginners need explicit syntax, experts want terse syntax."</strong></p>
 <blockquote>
 <p>I see this as a special case of mental model development: when a feature is new to you, you don't have an internal mental model so need all of the explicit information you can get. Once you're familiar with it, explicit syntax is visual clutter and hinders how quickly you can parse out information.</p>
 <p>(One example I like: which is more explicit, user_id or user_identifier? Which do experienced programmers prefer?)</p>
 <p>From  <a href="https://buttondown.com/hillelwayne/archive/stroustrops-rule/">"Stroustrup's Rule" by  Hillel Wayne</a></p>
 </blockquote>
-<p>That is a good insight. <br/> And yet I think when it comes to descriptive naming, it is more appropriate to put the information required for begginers into comments.
-This way "experts" (people who are familiar with the code) don't need to suffer from visual clutter and yet "begginers" still have a place to get everything they need.</p>
+<p>That is a good insight. <br/> And yet I think when it comes to (descriptive) naming, it is more appropriate to put the information required for "begginers" (those who are unfamiliar with a code base) into comments.
+This way "experts"  don't need to suffer from visual clutter.</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="function-arguments"><a class="header" href="#function-arguments">Function Arguments</a></h2>
 <div class="book-quote">
 The ideal number of arguments for a function is zero (niladic). <br/>
@@ -918,13 +952,12 @@ but then our readers would have had to interpret it each time they saw it.
 When you are reading the story told by the module, <code>includeSetupPage()</code> is easier to understand than <code>includeSetupPageInto(newPageContent)</code>
 </div>
 <p>This doesn't eliminate complexity. It just moves it to another place.
-But worse: moving parameters to fields increases size and the scope of the mutable state of the application. This sacrifices global complexity to reduce local complexity.
+But worse: moving parameters to fields increases size and the scope of the mutable state of the application. This sacrifices global complexity to reduce local one.
 Honestly, tracking shared mutable state in multi-threaded environments - is far harder than understanding function arguments.</p>
 <div class="book-quote">
 Arguments are even harder from a testing point of view. Imagine the difficulty of writing all the test cases to ensure that all the various combinations of arguments work properly. If there are no arguments, this is trivial.
 </div>
-<p>Calling the methods became easier, but setting up the instance class and tracking the state becomes harder. This is not a winning move.
-It just moves complexity.</p>
+<p>Calling the methods became easier, but setting up the instance class and tracking the state becomes harder. This is not a winning move.</p>
 <p>The discipline of functional programming exists precisely to limit mutable state, recognizing its significant cognitive overhead.
 And while functional programming predates Clean Code, it's clear that by the time of Martin writing the book he wasn't really a fan.</p>
 <div class="book-quote">
@@ -1063,6 +1096,83 @@ public class UserValidator {
 <li><code>UserGateway</code> is a singleton - i.e. it is a global implicit dependency.</li>
 </ol>
 <p>A more formal understanding of side effects helps spot issues more easily.</p>
+<p>This also makes it obvious that moving <a href="./chapter_35.html">input arguments</a> to object fields, especially when function has to mutate them to keep intermediate state, is incompatible
+with idea of side-effect free.</p>
+<p>In rewrite suggestion from <a href="./chapter_2.html">chapter 2</a>, all new methods have a side effect - they mutate fields - Modify "state outside the function's scope":</p>
+<div class="code-comparison">
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Original Code: </div>
+        <pre class="ignore"><code class="language-java">private void printGuessStatistics(char candidate, 
+                                  int count) {   
+    String number;
+    String verb;
+    String pluralModifier;
+    if (count == 0) {
+        number = "no";
+        verb = "are";
+        pluralModifier = "s";
+    } else if (count == 1) {
+        number = "1";
+        verb = "is";
+        pluralModifier = "";
+    } else {
+        number = Integer.toString(count);
+        verb = "are";
+        pluralModifier = "s";
+    }
+    String guessMessage = String.format(
+        "There %s %s %s%s", verb, number, 
+        candidate, pluralModifier
+    );
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">print(guessMessage);<span class="code-comment">Interracts with the outside world - prints to STD-IO</span></span>
+    &nbsp;
+    &nbsp;
+}</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Proposed rewrite:</div>
+        <pre class="ignore"><code class="language-java">public class GuessStatisticsMessage {
+    private String number;
+    private String verb;
+    private String pluralModifier;
+&nbsp; 
+    public String make(char candidate, int count) {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">createPluralDependentMessageParts(count);<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        return String.format(
+                "There %s %s %s%s", 
+                verb, number, candidate, pluralModifier );
+    }
+&nbsp; 
+    private void createPluralDependentMessageParts(int count) {
+        if (count == 0) {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereAreNoLetters();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        } else if (count == 1) {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereIsOneLetter();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        } else {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereAreManyLetters();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        }
+    }
+&nbsp; 
+    private void thereAreManyLetters(int count) {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = Integer.toString(count);<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "are";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "s";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+&nbsp; 
+    private void thereIsOneLetter() {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = "1";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "is";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+&nbsp; 
+    private void thereAreNoLetters() {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = "no";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "are";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "s";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+}</code></pre>
+    </div>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="prefer-exceptions-to-returning-error-codes"><a class="header" href="#prefer-exceptions-to-returning-error-codes">Prefer Exceptions to Returning Error Codes</a></h2>
 <p>To illustrate the guide-line he starts with an example:</p>
 <div class="book-quote">
@@ -1256,20 +1366,68 @@ The names are arbitrary, and there is duplicated code."
 <p>"So then I massage and refine that code, splitting out functions, changing names, eliminating duplication. I shrink the methods and reorder them. Sometimes I break out whole classes, all the while keeping the tests passing.
 In the end, I wind up with functions that follow the rules I've laid down in this chapter. I don't write them that way to start. I don't think anyone could."</p>
 </div>
-<p>What's Martin is advocating is bottom to top approach to software development: first make it work, then make it beautiful( = "clean", in Matrins worldview).</p>
-<p>Martin advocates for a bottom-to-top approach to software development:</p>
+<p>What's Martin is advocating is bottom-up approach to software development: first make it work, then make it beautiful( = "clean", in Matrins worldview).</p>
+<p>But this is not the only way to design software!
+In my experience, some of the most elegant solutions emerge from top-down thinking:</p>
 <ol>
-<li>First, to make it work</li>
-<li>Then, refine it to make it "beautiful" (or "clean" as Martin describes it).</li>
+<li>Start by imagining how you want the code to look like</li>
+<li>Draft pseudocode</li>
+<li>Gradually fill in the implementation details, making adjustments as needed while preserving the original design</li>
 </ol>
-<p>But this is not the only way to design software! In my experience my best designs often come from doing top-to-bottom thinking:</p>
-<ol>
-<li>Start by imagining how you want the code to look and behave.</li>
-<li>Sketch out non-compilable pseudocode that satisfies your constraints and communicates the desired design.</li>
-<li>Gradually implement the details, adjusting the code to make it functional and recognizable by the compiler.</li>
-</ol>
-<p>[todo: example of top to bottom]</p>
-<p>[todo: jigsaw puzzles vs lego bricks]</p>
+<h3 id="a-concrete-example"><a class="header" href="#a-concrete-example">A Concrete Example</a></h3>
+<p>One of my biggest pet peeves is that tables aren’t used often enough in programming.
+<a href="https://www.hillelwayne.com/post/decision-tables/">Decision Tables</a> have an amazing property: they make complex logic immediately obvious and provide a perfect overview of the problem.</p>
+<pre><code>PAYMENT METHOD    |   DISCOUNT CODE   |    TAX STATUS    |    PRICE
+--------------------------------------------------------------------
+PayPal            |    CLEANCODE      |     NONEXEMPT    |    8.99
+CreditCard        |      N/A          |     NONEXEMPT    |    9.99
+</code></pre>
+<p>If you implement this logic using a standard JUnit-style test, you’ll end up with something readable—but it won’t resemble the original table at all:</p>
+<pre><code class="language-java">assertEquals(
+    priceService.calcuate(new Criteria()
+        .paymentMethod(Payment.PayPal)
+        .discountCode("CLEANCODE")
+        .taxStatus(Tax.NonExempt)
+   ),
+    new BigDecimal("8.99")
+);
+
+
+assertEquals(
+    priceService.calcuate(new Criteria()
+        .paymentMethod(Payment.CreditCatd)
+        .discountCode("")
+        .taxStatus(Tax.NonExempt)
+    ),
+    new BigDecimal("9.99")
+);
+</code></pre>
+<p>No amount of refactoring will restore the original table-like structure.</p>
+<p>But if you start with a top-down approach, you can decide upfront that you want your test to look like a decision table. That might lead you to write code like this:</p>
+<pre><code class="language-java">executeTests(
+    "PAYMENT METHOD     |   DISCOUNT CODE   |    TAX STATUS    |    PRICE  \n" +
+    "----------------------------------------------------------------------\n" + 
+    " PayPal            |    CLEANCODE      |     NONEXEMPT    |    8.99   \n" + 
+    " CreditCard        |      N/A          |     NONEXEMPT    |    9.99   \n" 
+)
+
+</code></pre>
+<p>Now, the challenge becomes figuring out how to implement a parser and interpreter for executeTests.</p>
+<p>Or you might take an approach that doesn't require parsing and design a DSL that looks like this:</p>
+<pre><code class="language-java">testTable()
+    .header (
+    //------------------------------------------------------------------------------------
+           PAYMENT_METHOD     , DISCOUNT_CODE, TAX_STATUS     ,     PRICE              ) 
+    //------------------------------------------------------------------------------------
+    .row( Payment.PayPal      , "CLEANCODE"  , Tax.NonExempt  , new BigDecimal("8.99") ),
+    .row( Payment.CreditCard  , ""           , Tax.NonExempt  , new BigDecimal("9.99") )
+    //------------------------------------------------------------------------------------
+    .executeTests()
+</code></pre>
+<p>Of course, both approaches require significantly more effort than the standard JUnit style. But that’s not the point.</p>
+<p>The point is that with a top-down approach, you control how your code looks at every step, then implement the supporting code at lower levels to make it work.</p>
+<p>In contrast, starting with a messy, working solution and then refining it into something cleaner is more of a discovery process.
+You might end up with significantly less optimal results - especially if your refactoring toolkit is limited and primarily consists of extraction-based techniques.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-4-comments"><a class="header" href="#chapter-4-comments">Chapter 4: Comments</a></h1>
 <p>The chapter about comments is not inherently bad - it contains enough caveats and examples of bad vs good comments. However, Martin poisons the well right in the beginning of the chapter:</p>
 <div class="book-quote">
@@ -1277,15 +1435,15 @@ Comments are not like Schindler's List. They are not "pure good." Indeed, commen
 <p>The proper use of comments is to compensate for our failure to express ourself in code. Note that I used the word failure. I meant it. Comments are always failures. We must have them because we cannot always figure out how to express ourselves without them, but their use is not a cause for celebration.</p>
 <p>So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't some way to turn the tables and express yourself in code. Every time you express yourself in code, you should pat yourself on the back. Every time you write a comment, you should grimace and feel the failure of your ability of expression.</p>
 </div>
-<p>This is pretty damaging and I believe this is the main takeaway that developers would get out the chapter.
+<p>This is pretty damaging and I believe this is the main takeaway that developers get out the chapter.
 It's the second worst idea of this book: comments are failure to write good code.
-This hyperbolic stance had influenced many developers to avoid creating and using this useful tool of design, abstraction and documentation.
-This stance has contributed to a broader culture where comments are undervalued and often ignored (note how comments are grayed out in most modern IDEs).</p>
+This hyperbolic stance had influenced many developers to avoid creating and using the useful tool. The tool of design, abstraction and documentation.
+This view has contributed to a broader culture where comments are undervalued and often ignored (note how comments are grayed out in most modern IDEs).</p>
 <p>Martin is low key proposing idea of self-documenting code. This is a nice idea if it could work.</p>
-<p>But the code can never provide all the context, even if you try using "really-relly long essays" as a name.
+<p>But the code can never provide all the context, even if you try using "really-relly long essays" as names.
 Even if we assume that executable code can perfectly describe everything that's there,
 quite often things that are excluded are also important part of the design.</p>
-<p>The "comments are failures" principle is probably the main driver of "essay as a name" style of naming:</p>
+<p>The "comments are failures" principle is probably the main driver of this verbose overdescriptive style of naming:</p>
 <pre><code class="language-java">private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) { }
 </code></pre>
 <p>Is <code>smallestOddNthMultipleNotLessThanCandidate</code> really a name or just inlined comment ?</p>
@@ -1383,9 +1541,10 @@ so they can easily fall out of sync — just like comments.</p>
 </code></pre>
 <p>I can grant that this is pretty convoluted code, but honestly I'm not sure if it was written this way or it was intentionally obfuscated.</p>
 <p>The good parts: the messines of the code is contained in a single place and API is safe and clear.</p>
-<p>Comment about the library of Alexandria is cute, I would also add a link to Wikipedia page.</p>
-<p>The Martin refactoring:</p>
-<pre><code class="language-java">/**
+<p>Comment about the library of Alexandria is cute, I would also add a link to the Wikipedia page.</p>
+<p>The Martins refactoring:</p>
+<pre class="ignore"><code class="language-java">
+/**
  * This class Generates prime numbers up to a user specified
  * maximum.  The algorithm used is the Sieve of Eratosthenes.
  * Given an array of integers starting at 2:
@@ -1394,11 +1553,11 @@ so they can easily fall out of sync — just like comments.</p>
  * in the array.
  */
 public class PrimeGenerator {
-    private static boolean[] crossedOut;
-    private static int[] result;
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">private static boolean[] crossedOut;<span class="code-comment">GLOBAL <b>MUTABLE</b> STATE!<br/> This is intermediate state</span></span>
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">private static int[] result<span class="code-comment">GLOBAL <b>MUTABLE</b> STATE!<br/> This is final state of computation</span></span>
 
     public static int[] generatePrimes(int maxValue) {
-        if (maxValue &lt; 2)
+        if (maxValue < 2)
             return new int[0];
         else {
             uncrossIntegersUpTo(maxValue);
@@ -1410,13 +1569,13 @@ public class PrimeGenerator {
 
     private static void uncrossIntegersUpTo(int maxValue) {
         crossedOut = new boolean[maxValue + 1];
-        for (int i = 2; i &lt; crossedOut.length; i++)
+        for (int i = 2; i < crossedOut.length; i++)
             crossedOut[i] = false;
     }
 
     private static void crossOutMultiples() {
         int limit = determineIterationLimit();
-        for (int i = 2; i &lt;= limit; i++)
+        for (int i = 2; i <= limit; i++)
             if (notCrossed(i))
                 crossOutMultiplesOf(i);
     }
@@ -1426,13 +1585,13 @@ public class PrimeGenerator {
         // is less than or equal to the root of the array size,
         // so we don't have to cross out multiples of numbers
         // larger than that root.
-        double iterationLimit = Math.sqrt(crossedOut.length);
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">double iterationLimit = Math.sqrt(crossedOut.length);<span class="code-comment">Nitpick, but why is this extraction needed? </span></span>
         return (int) iterationLimit;
     }
 
     private static void crossOutMultiplesOf(int i) {
         for (int multiple = 2*i;
-             multiple &lt; crossedOut.length;
+             multiple < crossedOut.length;
              multiple += i)
             crossedOut[multiple] = true;
     }
@@ -1443,14 +1602,14 @@ public class PrimeGenerator {
 
     private static void putUncrossedIntegersIntoResult() {
         result = new int[numberOfUncrossedIntegers()];
-        for (int j = 0, i = 2; i &lt; crossedOut.length; i++)
+        for (int j = 0, i = 2; i < crossedOut.length; i++)
             if (notCrossed(i))
                 result[j++] = i;
     }
 
     private static int numberOfUncrossedIntegers() {
         int count = 0;
-        for (int i = 2; i &lt; crossedOut.length; i++)
+        for (int i = 2; i < crossedOut.length; i++)
             if (notCrossed(i))
                 count++;
 
@@ -1468,7 +1627,7 @@ You will <em>have to</em> remedy this by using <strong>global</strong> lock, so 
     return crossedOut[i] == false;
 }
 </code></pre>
-<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the former option really more readable?
+<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable?
 If anything, now he have polluted the domain with semi-similar words:</p>
 <ul>
 <li>not crossed</li>
@@ -1477,21 +1636,9 @@ If anything, now he have polluted the domain with semi-similar words:</p>
 </ul>
 <p>Is "notCrossed" same thing as "not crossedOut"? Is it same thing as "uncrossed"?
 By excessive method extraction Martin introduced inconsistencies and confusion in terminlogy, which at the end would only increase cognitive load.
-You have to look into implementation of all those small methods to understand if there is a difference or not.</p>
+One would have to look into implementation of all those small methods to understand if there is a difference or not.</p>
 <p>This is the problem with introducing too many entities: working memory can hold 4–7 objects at a time. Flood it with small pebbles, and you’ll hit saturation,
 leading to inconsistencies and discrepancies.</p>
-<p>&lt;todo: RANT about this being common occasion&gt;</p>
-<p>&lt;todo: better review&gt;</p>
-<pre><code class="language-java">private static int determineIterationLimit() {
-    // Every multiple in the array has a prime factor that
-    // is less than or equal to the root of the array size,
-    // so we don't have to cross out multiples of numbers
-    // larger than that root.
-    double iterationLimit = Math.sqrt(crossedOut.length);
-    return (int) iterationLimit;
-}
-</code></pre>
-<p>How many times do you need to repeat "iteration limit" in 3 lines of code to not forget that <code>determineIterationLimit</code> indeed returns <code>iterationLimit</code>?</p>
 <p>Lets remove obfuscation from the original method:</p>
 <pre><code class="language-java">public class GeneratePrimes {
     public static int[] generatePrimes(int maxValue) {
@@ -1575,11 +1722,11 @@ Consider Listing 6-3 and Listing 6-4. The first uses concrete terms to communica
 </code></pre>
 <p>In both of the above cases the second option is preferable. We do not want to expose the details of our data. Rather we want to express our data in abstract terms.</p>
 </div>
-<p>This is not about "details of our data", this is hiding our data!
+<p>This is not hiding "details of our data", this is data hiding!
 Depending on the context, this might be good or bad. For example, with the second option, it becomes impossible to calculate the cost of filling the tank.
 Are we designing for scammy car rentals? If so, then sure, hide the data.</p>
 <p>The assumption that hiding data is always a good thing is just wrong.</p>
-<p><em>Ineffective abstraction</em> occurs when essential knowledge is removed, or when non-essential knowledge is unnecessarily exposed - or both.</p>
+<p><strong>Ineffective abstraction</strong> occurs when essential knowledge is removed, or when non-essential knowledge is unnecessarily exposed - or both.</p>
 <h1 id="dataobject-anti-symmetry"><a class="header" href="#dataobject-anti-symmetry">Data/Object Anti-Symmetry</a></h1>
 <p>This chapter touches expression problem, without mentioning that this is the expression problem. It briefly mentions Visitor pattern as a solution for the problem.</p>
 <p>So far so good.
@@ -1780,86 +1927,86 @@ str ==&gt; null
 <div class="book-quote">
 What this team did not realize was that having dirty tests is equivalent to, if not worse than, having no tests.
 </div>
-<p>This statement lacks nuance: if the dirty tests are actually testing software, then having them is better than not having them. <br/>
-Again this is the example of when that is true: <a href="https://news.ycombinator.com/item?id=18442941">Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests</a> <br/>
+<p>This statement lacks nuance: if the dirty tests are actually testing software, then having them is better than not having them. <br/></p>
+<p>To repeat the example of when that is true: <a href="https://news.ycombinator.com/item?id=18442941">Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests</a> <br/>
 Oracle Database is a very reliable software (as of 2024), it comes at the cost of thousands of people suffering through the setup, but as a customer I enjoy its robustness.</p>
 <p>Having tests that actually test software is good, even if they are dirty. However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks.</p>
-<p>This chapter unintentionally shows the value of finding a balance.</p>
-<p>First, it provides an example of a refactoring that I almost agree with:</p>
+<p>This chapter unintentionally highlights the importance of balance.</p>
+<p>First, it presents an example of a refactoring that I mostly agree with:</p>
 <div class="code-comparison" >
-    <div class="code-column" style="flex:0">
-        <div class="code-column-title">Original Code: </div>
-        <pre class="ignore"><code class="language-java" style="font-size: 13px !important">public void testGetPageHieratchyAsXml() throws Exception {
-  crawler.addPage(root, PathParser.parse("PageOne"));
-  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
-  crawler.addPage(root, PathParser.parse("PageTwo"));
-&nbsp;
-  request.setResource("root");
-  request.addInput("type", "pages");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("<name>PageOne</name>", xml);
-  assertSubString("<name>PageTwo</name>", xml);
-  assertSubString("<name>ChildOne</name>", xml);
+<div class="code-column" style="flex:0">
+<div class="code-column-title">Original Code: </div>
+<pre class="ignore"><code class="language-java" style="font-size: 13px !important">public void testGetPageHieratchyAsXml() throws Exception {
+    crawler.addPage(root, PathParser.parse("PageOne"));
+    crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+    crawler.addPage(root, PathParser.parse("PageTwo"));
+    &nbsp;
+    request.setResource("root");
+    request.addInput("type", "pages");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("<name>PageOne</name>", xml);
+    assertSubString("<name>PageTwo</name>", xml);
+    assertSubString("<name>ChildOne</name>", xml);
 }
 &nbsp;
 public void testGetPage_cLinks() throws Exception {
-  WikiPage pageOne = 
+    WikiPage pageOne = 
     crawler.addPage(root, PathParser.parse("PageOne"));
-  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
-  crawler.addPage(root, PathParser.parse("PageTwo"));
-&nbsp;
-  PageData data = pageOne.getData();
-  WikiPageProperties properties = data.getProperties();
-  WikiPageProperty symLinks = 
-    properties.set(SymbolicPage.PROPERTY_NAME);
-  symLinks.set("SymPage", "PageTwo");
-  pageOne.commit(data);
-&nbsp;
-  request.setResource("root");
-  request.addInput("type", "pages");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("<name>PageOne</name>", xml);
-  assertSubString("<name>PageTwo</name>", xml);
-  assertSubString("<name>ChildOne</name>", xml);
-  assertNotSubString("SymPage", xml);
+    crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+    crawler.addPage(root, PathParser.parse("PageTwo"));
+    &nbsp;
+    PageData data = pageOne.getData();
+    WikiPageProperties properties = data.getProperties();
+    WikiPageProperty symLinks = 
+        properties.set(SymbolicPage.PROPERTY_NAME);
+    symLinks.set("SymPage", "PageTwo");
+    pageOne.commit(data);
+    &nbsp;
+    request.setResource("root");
+    request.addInput("type", "pages");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("<name>PageOne</name>", xml);
+    assertSubString("<name>PageTwo</name>", xml);
+    assertSubString("<name>ChildOne</name>", xml);
+    assertNotSubString("SymPage", xml);
 }
 &nbsp;
 public void testGetDataAsHtml() throws Exception {
-  crawler.addPage(root, 
+    crawler.addPage(root, 
     PathParser.parse("TestPageOne"), "test page");
-&nbsp;
-  request.setResource("TestPageOne"); 
-  request.addInput("type", "data");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("test page", xml);
-  assertSubString("&gt;Test", xml);
+    &nbsp;
+    request.setResource("TestPageOne"); 
+    request.addInput("type", "data");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("test page", xml);
+    assertSubString("&gt;Test", xml);
 }</code></pre>
-    </div>
-    <div class="code-column">
-        <div class="code-column-title">Proposed rewrite:</div>
-        <pre><code class="language-java" style="font-size: 13px !important">public void testGetPageHierarchyAsXml() throws Exception {
+</div>
+<div class="code-column">
+<div class="code-column-title">Proposed rewrite:</div>
+<pre><code class="language-java" style="font-size: 13px !important">public void testGetPageHierarchyAsXml() throws Exception {
     makePages("PageOne", "PageOne.ChildOne", "PageTwo");
-&nbsp;
+    &nbsp;
     submitRequest("root", "type:pages");
-&nbsp;
+    &nbsp;
     assertResponseIsXML();
     assertResponseContains(
         "<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>"
@@ -1877,11 +2024,11 @@ public void testGetDataAsHtml() throws Exception {
 public void testGetPage_cLinks() throws Exception {
     WikiPage page = makePage("PageOne");
     makePages("PageOne.ChildOne", "PageTwo");
-&nbsp;
+    &nbsp;
     addLinkTo(page, "PageTwo", "SymPage");
-&nbsp;
+    &nbsp;
     submitRequest("root", "type:pages");
-&nbsp;
+    &nbsp;
     assertResponseIsXML();
     assertResponseContains(
         "<name>PageOne</name>", "<name>PageTwo</name>",
@@ -1910,19 +2057,15 @@ public void testGetDataAsXml() throws Exception {
     assertResponseIsXML();
     assertResponseContains("test page", "&gt;Test");
 }</code></pre>
-    </div>
 </div>
-<p>What makes it good:</p>
-<ul>
-<li>the introduced abstractions are useful and reusable</li>
-</ul>
-<p>What is bad:</p>
-<ul>
-<li>Martin introduces <strong>global mutable state</strong> (global in terms of the test suite)</li>
-</ul>
+</div>
+<p>The <span style="color: lightgreen">good</span>:</p>
+<p>       - the introduced abstractions are useful and reusable</p>
+<p>The <span style="color: red">bad</span>:</p>
+<p>       - Martin introduces <strong>global mutable state</strong> (global in terms of the test suite)</p>
 <p>Big drawback of this global mutable state - now tests can not be run in parallel. Hence the execution of these 3 tests will take 3x more time.</p>
-<p>Clear case of <a href="https://www.computerenhance.com/p/clean-code-horrible-performance">"'Clean' Code, Horrible Performance"</a></p>
-<p>Again this is self-inflicted pain from a painful idea that no parameters is always better than 1+.</p>
+<p>Another case of <a href="https://www.computerenhance.com/p/clean-code-horrible-performance">"'Clean' Code, Horrible Performance"</a> ?</p>
+<p>This is self-inflicted harm from a painful idea that no parameters is always better than 1+.</p>
 <p>By fixing it:</p>
 <pre><code class="language-java">public void testGetDataAsXml() throws Exception {
     var page = makePageWithContent("TestPageOne", "test page");
@@ -1933,11 +2076,11 @@ public void testGetDataAsXml() throws Exception {
     assertContains(response, "test page", "&lt;Test");
 }
 </code></pre>
-<p>You get advocated <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> shape, without need to have implicit mutable state somewhere hidden.
+<p>We get advocated <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> shape, without need to have implicit mutable state somewhere hidden.
 All tests are isolated and can run in parallel.</p>
 <hr />
-<p>And while first example in this chapter is a good illustration how tidying your API with domain specific details can improve code readability,
-the next one is an illustration that this approach can be taken too far:</p>
+<p>The first example in this chapter shows how adding domain-specific details can improve readability.
+The second one is an illustration that this approach can be taken too far:</p>
 <pre><code class="language-java">@Test
 public void turnOnLoTempAlarmAtThreashold() throws Exception {
     hw.setTemp(WAY_TOO_COLD);
@@ -1959,16 +2102,16 @@ public void turnOnLoTempAlarmAtThreshold() throws Exception {
 // Upper case means "on," lower case means "off," and the letters are always in the following order: 
 // {heater, blower, cooler, hi-temp-alarm, lo-temp-alarm}
 </code></pre>
-<p>Domain Specific Language is a programming language still and readability of that is important.
-"HBchL" is not very readable, as it requires noticeable mental effort to translate. This defeats the purpose of making code more readable.</p>
-<p>What prevents him from creating format like: <code>"heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on"</code>?</p>
+<p>The mini-DSL makes things harder to read, not easier.
+The "HBchL" encoding requires extra mental effort to decode, which defeats the purpose of making the test more readable.</p>
+<p>Why not "heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on" ?</p>
 <p><code>wayTooCold();</code> - is also very weird grammar. Is it a verb or verb phrase? Why do we need to hide call to <code>controller.tic()</code>?</p>
 <p>In the <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> template: <code>Controller.tic()</code> is the <code>OPERATE</code>!</p>
 <pre><code class="language-java">wayTooCold();
 assertEquals("HBchL", hw.getState());
 </code></pre>
 <p>This is not <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code>. Thi is <code>WHY</code>-<code>WTF</code></p>
-<p>From good readability perspective I would change it to:</p>
+<p>A more natural approach:</p>
 <pre><code class="language-java">@Test
 public void turnOnLoTempAlarmAtThreashold() throws Exception {
     hw.setTempF(10); // too cold
@@ -1981,7 +2124,7 @@ public void turnOnLoTempAlarmAtThreashold() throws Exception {
     );
 }
 </code></pre>
-<p>Again in modern language there is no need to create DSL as the language is powerful enough to make code concise and readable:</p>
+<p>Again in modern languages, like Scala</p>
 <pre><code class="language-scala">@Test
 def turnOnLoTempAlarmAtThreashold() {
     hw.setTemp(10.F) // too cold
@@ -1990,13 +2133,16 @@ def turnOnLoTempAlarmAtThreashold() {
 
     assertEquals(
         Status(heaterOn = true, blowerOn = false, coolerOn = false, 
-               hiTempAlarm = false, loTempAlarm = true)
+            hiTempAlarm = false, loTempAlarm = true
+        ),
         hw.getState()
     )
 }
 </code></pre>
-<p>Final nit-pick:</p>
+<p>No need for cryptic mini-DSLs, the language itself is expressive enough to keep things clean and clear.</p>
+<h3 id="final-nitpick-test-performance-matters"><a class="header" href="#final-nitpick-test-performance-matters">Final nitpick: Test Performance Matters</a></h3>
 <div class="book-quote">
+The getState function is shown in Listing 9-6. Notice that this is not very efficient code. To make it efficient, I probably should have used a StringBuffer.
 <pre><code class="language-java">public String getState() {
     String state = "";
     state += heater ? "H" : "h";
@@ -2007,35 +2153,335 @@ def turnOnLoTempAlarmAtThreashold() {
     return state;
 }
 </code></pre>
-StringBuffers are a bit ugly.
+<p>StringBuffers are a bit ugly.</p>
 </div>
-<p>Again the book age shows: StringBuffers are not only ugly they are also slow. StringBuffer are synchronized for multi-threaded access, even without contention it has runtime cost. Good news are his original code will be compiled by javac to use StringBuilders.</p>
+<p>Not only are StringBuffers ugly, but they’re also slow (the book shows it age). StringBuffer is synchronized for multi-threaded access, adding unnecessary overhead.
+Fortunately, modern javac compiler can optimize the <code>getState</code> method to use StringBuilder instead.</p>
+<pre><code class="language-java">public String getState() {
+    return (heater ? "H" : "h") + 
+            (blower ? "B" : "b") +
+            (cooler ? "C" : "c") +
+            (hiTempAlarm ? "H" : "h") +
+            (loTempAlarm ? "L" : "l");
+}
+</code></pre>
 <div class="book-quote">
 There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
 </div>
-<p>Test performance matters at scale - slow tests can significantly impact development velocity. The most important thing for tests to do is to actually test the software.
-But giving up tests performance in large code base means increase of validation cycle in CI/CD pipelines.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-11-systems"><a class="header" href="#chapter-11-systems">Chapter 11: Systems</a></h1>
-<p>This is a mixed bag of relatively OK-ish approaches, relatively outdated advice, and critique of the APIs that's lost its relevance a decade ago.</p>
-<p>It's somewhat focusing on organizing cross-cutting concerns in an application: it talks about aspect oriented programming and mentions the way to implement it:</p>
+<p>No. Test performance absolutely matters — especially at scale.</p>
+<p>Slow tests can and will kill development speed. Ignoring performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-10-classes"><a class="header" href="#chapter-10-classes">Chapter 10: Classes</a></h1>
+<p>Written with Jeff Langr.</p>
+<p>They lay out following constraints:</p>
 <ul>
-<li>ejb</li>
-<li>proxies: jdk based or asm-based</li>
-<li>aspectj</li>
+<li>classes should have small amount of responsibilities: ideally single responsibility</li>
+<li>defines cohesion as small amount of instance variables</li>
+</ul>
+<p>He clearly understands that small amount of parameters for methods lead him to pass parameters via instance variables and in order to keep amount of instance variables small he has to increase amount of classes.</p>
+<p>Does he see a problem with this? No, he doesn't.</p>
+<div class="book-quote">
+So breaking a large function into many smaller functions often gives us the opportunity to split several smaller classes out as well. 
+This gives our program a much better organization and a more transparent structure.
+</div>
+<p>And then he does his favorite trick: shows obfuscated code (he confesses that it's a generated code, not actually a human written) and refactors it using all his favorite hits: classes with global mutable states, passing parameters via instance fields, tiny private methods that being used only once, names that looks like an essay.</p>
+<pre><code class="language-java">public class PrintPrimes {
+     public static void main(String[] args) {
+       final int M = 1000;
+       final int RR = 50;
+       final int CC = 4;
+       final int WW = 10;
+       final int ORDMAX = 30;
+       int P[] = new int[M + 1];
+       int PAGENUMBER;
+       int PAGEOFFSET;
+       int ROWOFFSET;
+       int C;
+
+       int J;
+       int K;
+       boolean JPRIME;
+       int ORD;
+       int SQUARE;
+       int N;
+       int MULT[] = new int[ORDMAX + 1];
+
+       J = 1;
+       K = 1;
+       P[1] = 2;
+       ORD = 2;
+       SQUARE = 9;
+
+       while (K &lt; M) {
+         do {
+           J = J + 2;
+           if (J == SQUARE) {
+             ORD = ORD + 1;
+             SQUARE = P[ORD] * P[ORD];
+             MULT[ORD - 1] = J;
+           }
+           N = 2;
+           JPRIME = true;
+           while (N &lt; ORD &amp;&amp; JPRIME) {
+             while (MULT[N] &lt; J)
+               MULT[N] = MULT[N] + P[N] + P[N];
+             if (MULT[N] == J)
+               JPRIME = false;
+             N = N + 1;
+          }
+        } while (!JPRIME);
+        K = K + 1;
+        P[K] = J;
+     }
+     {
+        PAGENUMBER = 1;
+        PAGEOFFSET = 1;
+        while (PAGEOFFSET &lt;= M) {
+          System.out.println("The First " + M +
+                                     " Prime Numbers --- Page " + PAGENUMBER);
+          System.out.println("");
+          for (ROWOFFSET = PAGEOFFSET; ROWOFFSET &lt; PAGEOFFSET + RR; ROWOFFSET++){
+             for (C = 0; C &lt; CC;C++)
+             if (ROWOFFSET + C * RR &lt;= M)
+               System.out.format("%10d", P[ROWOFFSET + C * RR]);
+             System.out.println("");
+          }
+          System.out.println("\f");
+          PAGENUMBER = PAGENUMBER + 1;
+          PAGEOFFSET = PAGEOFFSET + RR * CC;
+      }
+     }
+    }
+}
+</code></pre>
+<p>is refactored to:</p>
+<pre><code class="language-java">package literatePrimes;
+
+public class PrimePrinter {
+    public static void main(String[] args) {
+        final int NUMBER_OF_PRIMES = 1000;
+        int[] primes = PrimeGenerator.generate(NUMBER_OF_PRIMES);
+
+        final int ROWS_PER_PAGE = 50;
+        final int COLUMNS_PER_PAGE = 4;
+        RowColumnPagePrinter tablePrinter = 
+            new RowColumnPagePrinter(ROWS_PER_PAGE,
+                                    COLUMNS_PER_PAGE,
+                                    "The First " + NUMBER_OF_PRIMES +
+                                            " Prime Numbers");
+        tablePrinter.print(primes);
+    }
+}
+
+package literatePrimes;
+
+import java.io.PrintStream;
+
+public class RowColumnPagePrinter {
+    private int rowsPerPage;
+    private int columnsPerPage;
+    private int numbersPerPage;
+    private String pageHeader;
+    private PrintStream printStream;
+
+    public RowColumnPagePrinter(int rowsPerPage,
+                                int columnsPerPage,
+                                String pageHeader) {
+        this.rowsPerPage = rowsPerPage;
+        this.columnsPerPage = columnsPerPage;
+        this.pageHeader = pageHeader;
+        numbersPerPage = rowsPerPage * columnsPerPage;
+        printStream = System.out;
+    }
+
+    public void print(int data[]) {
+        int pageNumber = 1;
+        for (int firstIndexOnPage = 0;
+             firstIndexOnPage &lt; data.length;
+             firstIndexOnPage += numbersPerPage) {
+            int lastIndexOnPage =
+                Math.min(firstIndexOnPage + numbersPerPage - 1,
+                         data.length - 1);
+            printPageHeader(pageHeader, pageNumber);
+            printPage(firstIndexOnPage, lastIndexOnPage, data);
+            printStream.println("\f");
+            pageNumber++;
+        }
+    }
+
+    private void printPage(int firstIndexOnPage,
+                          int lastIndexOnPage,
+                          int[] data) {
+        int firstIndexOfLastRowOnPage =
+            firstIndexOnPage + rowsPerPage - 1;
+        for (int firstIndexInRow = firstIndexOnPage;
+             firstIndexInRow &lt;= firstIndexOfLastRowOnPage;
+             firstIndexInRow++) {
+            printRow(firstIndexInRow, lastIndexOnPage, data);
+            printStream.println("");
+        }
+    }
+
+    private void printRow(int firstIndexInRow,
+                          int lastIndexOnPage,
+                          int[] data) {
+        for (int column = 0; column &lt; columnsPerPage; column++) {
+            int index = firstIndexInRow + column * rowsPerPage;
+            if (index &lt;= lastIndexOnPage)
+                printStream.format("%10d", data[index]);
+        }
+    }
+
+    private void printPageHeader(String pageHeader,
+                                int pageNumber) {
+        printStream.println(pageHeader + " --- Page " + pageNumber);
+        printStream.println("");
+    }
+
+    public void setOutput(PrintStream printStream) {
+        this.printStream = printStream;
+    }
+}
+
+package literatePrimes;
+
+import java.util.ArrayList;
+
+public class PrimeGenerator {
+    private static int[] primes;
+    private static ArrayList&lt;Integer&gt; multiplesOfPrimeFactors;
+
+    protected static int[] generate(int n) {
+        primes = new int[n];
+        multiplesOfPrimeFactors = new ArrayList&lt;Integer&gt;();
+        set2AsFirstPrime();
+        checkOddNumbersForSubsequentPrimes();
+        return primes;
+    }
+
+    private static void set2AsFirstPrime() {
+        primes[0] = 2;
+        multiplesOfPrimeFactors.add(2);
+    }
+
+    private static void checkOddNumbersForSubsequentPrimes() {
+        int primeIndex = 1;
+        for (int candidate = 3;
+             primeIndex &lt; primes.length;
+             candidate += 2) {
+            if (isPrime(candidate))
+                primes[primeIndex++] = candidate;
+        }
+    }
+
+    private static boolean isPrime(int candidate) {
+        if (isLeastRelevantMultipleOfNextLargerPrimeFactor(candidate)) {
+            multiplesOfPrimeFactors.add(candidate);
+            return false;
+        }
+        return isNotMultipleOfAnyPreviousPrimeFactor(candidate);
+    }
+
+    private static boolean
+    isLeastRelevantMultipleOfNextLargerPrimeFactor(int candidate) {
+        int nextLargerPrimeFactor = primes[multiplesOfPrimeFactors.size()];
+        int leastRelevantMultiple = nextLargerPrimeFactor * nextLargerPrimeFactor;
+        return candidate == leastRelevantMultiple;
+    }
+
+    private static boolean
+    isNotMultipleOfAnyPreviousPrimeFactor(int candidate) {
+        for (int n = 1; n &lt; multiplesOfPrimeFactors.size(); n++) {
+            if (isMultipleOfNthPrimeFactor(candidate, n))
+                return false;
+        }
+        return true;
+    }
+
+    private static boolean
+    isMultipleOfNthPrimeFactor(int candidate, int n) {
+        return
+            candidate == smallestOddNthMultipleNotLessThanCandidate(candidate, n);
+    }
+
+    private static int
+    smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) {
+        int multiple = multiplesOfPrimeFactors.get(n);
+        while (multiple &lt; candidate)
+            multiple += 2 * primes[n];
+        multiplesOfPrimeFactors.set(n, multiple);
+        return multiple;
+    }
+}
+</code></pre>
+<div class="book-quote">
+The first thing you might notice is that the program got a lot longer. It went from a little over one page to nearly three pages in length. There are several reasons for this growth. 
+First, the refactored program uses longer, more descriptive variable names. 
+Second, the refactored program uses function and class declarations as a way to add commentary to the code. 
+Third, we used whitespace and formatting techniques to keep the program readable.
+</div>
+<p>The most contributing reason is number two of course: he introduced a lots of additional methods.</p>
+<div class="book-quote">
+"Notice how the program has been split into three main responsibilities."
+</div>
+<p>This is a good thing and I agree with this. But my god this should be just 3 methods: main, prime generator, formatter. It would be so much easier to read and understand.</p>
+<p>The original solution, as ugly as it was, was small and contained. Martin's solution is big and spread out.</p>
+<h1 id="organizing-for-change"><a class="header" href="#organizing-for-change">Organizing for Change</a></h1>
+<div class="book-quote">
+For most systems, change is continual. Every change subjects us to the risk that the remainder of the system no longer works as intended. In a clean system we organize our classes so as to reduce the risk of change.
+</div>
+<p>I think best antidote for the risk of change is tests. The code structure and design is somewhat ephemeral and can be gradually modified so that it will lose all safety measures without anyone noticing it. Tests on the other hand give immediate signal when some of the safety measures got violated.</p>
+<p>I agree with Martin that it's important for code structure to guide and accelerate future development, but it's not about risk.</p>
+<p>In this chapter Martin advocates for 3 components of his future SOLID framework:</p>
+<ul>
+<li>Single Responsibility</li>
+<li>Open/Closed</li>
+<li>Dependency Injection</li>
+</ul>
+<p>I don't mind SRP but "Responsibility" is an abstract concept.</p>
+<pre><code class="language-java">public class Sql { 
+    public Sql(String table, Column[] columns)
+    public String create()
+    public String insert(Object[] fields)
+    public String selectAll()
+    public String findByKey(String keyColumn, String keyValue)
+    public String select(Column column, String pattern)
+    public String select(Criteria criteria)
+    public String preparedInsert()
+    private String columnList(Column[] columns)
+    private String valuesList(Object[] fields, final Column[] columns)
+    private String selectWithCriteria(String criteria)
+    private String placeholderList(Column[] columns)
+}
+</code></pre>
+<p>I can argue that Responsibility of this class is to generate SQL statements. And thus it has single responsibility. Martin can select different level of abstraction and claim that class is responsible for generating 7 types of SQL queries and thus has 7 responsibilities.</p>
+<div class="book-quote">
+We can spot this SRP violation from a simple organizational standpoint. The method outline of Sql shows that there are private methods, such as selectWithCriteria, that appear to relate only to select statements. Private method behavior that applies only to a small subset of a class can be a useful heuristic for spotting potential areas for improvement.
+</div>
+<p>Ok. but aren't you the one who tend to introduce 100500 small private methods that's being used only once?</p>
+<p>Open/Closed principle is the most odd one. There is nothing wrong in modifying code that you own and maintain. Designing proper extension points always depends on the context, and I don't think there is universal rules to it. And as such this a time-consuming exercise, be mindful on how much time budget you should spent of this. In the worlds of java there is a tendency to have everything open (by default, classes can be extended and methods can be overridden), so you are getting "open for extension" part for free.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-11-systems"><a class="header" href="#chapter-11-systems">Chapter 11: Systems</a></h1>
+<p>This is a mixed bag of relatively OK-ish approaches, relatively outdated advice, and critique of the APIs that lost its relevance a decade ago.</p>
+<p>It's somewhat focusing on organizing cross-cutting concerns in an application using aspect oriented programming.</p>
+<p>The book mentions following implementation stategies:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Jakarta_Enterprise_Beans">Enterprise JavaBeans - ejb</a> <em>(outdated)</em></li>
+<li>proxies: <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html">jdk based</a> or <a href="https://asm.ow2.io/">asm</a>-based <em>(relevant, in 2025 <a href="https://bytebuddy.net/">byte-buddy</a> is a more popular choice)</em></li>
+<li><a href="https://projects.eclipse.org/projects/tools.aspectj">aspectj</a> <em>(outdated)</em></li>
 <li>plain code</li>
 </ul>
-<p>At the end it is advocating for plain java as it allows better modularity and easier way to separate concerns. The book advocates to cope the disadvantage of this approach (i.e. slow development speed and verbose nature of java language) with implementation of a proper DSL.</p>
-<p>The core message is valid but poorly structured and hard to follow.</p>
-<p>Majority of tech mentioned in this chapter is outdated to irrelevancy, newcomers will not be able to understand what is being advocated.</p>
-<p>The argument for DSL lacks concrete examples and relies on irrelevant references.
+<p>At the end the book advocates for plain java: better modularity and easier way to separate concerns.
+To cope the disadvantage of this approach (i.e. slow development speed and verbose nature of java language) the book recommends to use DSLs.</p>
+<p>The core message is valid but poorly structured and hard to follow. Majority of tech mentioned in this chapter is outdated to irrelevancy, newcomers will not be able to understand what is being advocated.</p>
+<p>The argument for DSL is interesting, bu lacks concrete examples and relies on irrelevant references.
 The reader is expected to checkout books of Christopher Alexander (WTF? why?!) and jmock is presented as example of good DSL.</p>
-<p>What makes it somewhat amusing is that Mockito (mocking framework overtook 1st place in java ecosystem) has been adopting opposite design principle from the get-go:</p>
+<p>What makes it somewhat amusing is that <a href="https://site.mockito.org/">Mockito</a> (mocking framework overtook 1st place in java ecosystem) has been adopting opposite design principle from the get-go:</p>
 <blockquote>
-<p>The less DSL the better. Interactions are just method calls. Method calls are simple, DSL is complex.</p>
+<p>"The less DSL the better. Interactions are just method calls. Method calls are simple, DSL is complex."</p>
+<p>from <a href="https://szczepiq.wordpress.com/2008/01/14/mockito/">Mockito announcement</a></p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-12-emergence"><a class="header" href="#chapter-12-emergence">Chapter 12: Emergence</a></h1>
 <p>Is written by Jeff Langr.</p>
-<p>It's pretty much about 4 principles of good design from Kent Beck:</p>
+<p>It's pretty much about 4 principles of <a href="https://www.amazon.com/gp/product/0201616416">good design from Kent Beck</a>:</p>
 <ul>
 <li>Runs all the tests</li>
 <li>Contains no duplication</li>
@@ -2073,6 +2519,700 @@ Lays out theoretical foundation for multi-threaded programming.</li>
 <li><a href="https://shipilev.net/blog/2014/jmm-pragmatics/">Java Memory Model Pragmatics</a></li>
 <li>"Memory Models" by Russ Cox: <a href="https://research.swtch.com/hwmm">part 1 - Hardware</a>, <a href="https://research.swtch.com/plmm">part 2 - Programming Languages</a></li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-14-successive-refinement"><a class="header" href="#chapter-14-successive-refinement">Chapter 14: Successive Refinement</a></h1>
+<p>This chapter is an example of how he arrives to "clean code" solution for a specific task.</p>
+<p>When I first read the book in 2009 I've loved it.
+It felt like the best programming book I'd ever seen.
+But even then, this chapter left me with an uneasy feeling about his solution. I spent a lot of time re-reading it, thinking I was too junior to understand why it was good.
+15 years later I still don't like his solution, but now I can explain why.</p>
+<p>He's creating a library to parse command-line arguments:</p>
+<div class="book-quote">
+<pre><code class="language-java">public static void main(String[] args) {
+    try {
+        Args arg = new Args("l,p#,d*", args);
+        boolean logging = arg.getBoolean('l');
+        int port = arg.getInt('p');
+        String directory = arg.getString('d');
+        executeApplication(logging, port, directory);
+    } catch (ArgsException e) {
+        System.out.printf("Argument error: %s\n", e.errorMessage());
+    }
+}
+</code></pre>
+</div>
+<p>This is the solution that Martin is proud of and insists that it needs to be carefully studied:</p>
+<div class="book-quote">
+<pre><code class="language-java">package com.objectmentor.utilities.args;
+&nbsp;
+import static com.objectmentor.utilities.args.ArgsException.ErrorCode.*;
+import java.util.*;
+&nbsp;
+public class Args {
+    private Map&lt;Character, ArgumentMarshaler&gt; marshalers;
+    private Set&lt;Character&gt; argsFound;
+    private ListIterator&lt;String&gt; currentArgument;
+&nbsp;
+    public Args(String schema, String[] args) throws ArgsException {
+        marshalers = new HashMap&lt;Character, ArgumentMarshaler&gt;();
+        argsFound = new HashSet&lt;Character&gt;();
+&nbsp;
+        parseSchema(schema);
+        parseArgumentStrings(Arrays.asList(args));
+    }
+&nbsp;
+    private void parseSchema(String schema) throws ArgsException {
+        for (String element : schema.split(“,”))
+            if (element.length() > 0)
+                parseSchemaElement(element.trim());
+    }
+&nbsp;
+    private void parseSchemaElement(String element) throws ArgsException {
+        char elementId = element.charAt(0);
+        String elementTail = element.substring(1);
+        validateSchemaElementId(elementId);
+        if (elementTail.length() == 0)
+            marshalers.put(elementId, new BooleanArgumentMarshaler());
+        else if (elementTail.equals(“*”))
+            marshalers.put(elementId, new StringArgumentMarshaler());
+        else if (elementTail.equals(“#”))
+            marshalers.put(elementId, new IntegerArgumentMarshaler());
+        else if (elementTail.equals(“##”))
+            marshalers.put(elementId, new DoubleArgumentMarshaler());
+        else if (elementTail.equals(“[*]”))
+            marshalers.put(elementId, new StringArrayArgumentMarshaler());
+        else
+            throw new ArgsException(INVALID_ARGUMENT_FORMAT, elementId, elementTail);
+    }
+&nbsp;
+    private void validateSchemaElementId(char elementId) throws ArgsException {
+        if (!Character.isLetter(elementId))
+            throw new ArgsException(INVALID_ARGUMENT_NAME, elementId, null);
+    }
+&nbsp;
+    private void parseArgumentStrings(List&lt;String&gt; argsList) throws ArgsException 
+    {
+        for (currentArgument = argsList.listIterator(); currentArgument.hasNext();) 
+        {
+            String argString = currentArgument.next();
+            if (argString.startsWith(“-”)) {
+                parseArgumentCharacters(argString.substring(1));
+            } else {
+                currentArgument.previous();
+                break;
+            }
+        }
+    }
+&nbsp;
+    private void parseArgumentCharacters(String argChars) throws ArgsException {
+        for (int i = 0; i < argChars.length(); i++)
+            parseArgumentCharacter(argChars.charAt(i));
+    }
+&nbsp;
+    private void parseArgumentCharacter(char argChar) throws ArgsException {
+        ArgumentMarshaler m = marshalers.get(argChar);
+        if (m == null) {
+            throw new ArgsException(UNEXPECTED_ARGUMENT, argChar, null);
+        } else {
+            argsFound.add(argChar);
+            try {
+                m.set(currentArgument);
+            } catch (ArgsException e) {
+                e.setErrorArgumentId(argChar);
+                throw e;
+            }
+        }
+    }
+&nbsp;
+    public boolean has(char arg) {
+        return argsFound.contains(arg);
+    }
+&nbsp;
+    public int nextArgument() {
+        return currentArgument.nextIndex();
+    }
+&nbsp;
+    public boolean getBoolean(char arg) {
+        return BooleanArgumentMarshaler.getValue(marshalers.get(arg));
+    }
+&nbsp;
+    public String getString(char arg) {
+        return StringArgumentMarshaler.getValue(marshalers.get(arg));
+    }
+&nbsp;
+    public int getInt(char arg) {
+        return IntegerArgumentMarshaler.getValue(marshalers.get(arg));
+    }
+&nbsp;
+    public double getDouble(char arg) {
+        return DoubleArgumentMarshaler.getValue(marshalers.get(arg));
+    }
+&nbsp;
+    public String[] getStringArray(char arg) {
+        return StringArrayArgumentMarshaler.getValue(marshalers.get(arg));
+    }
+}
+&nbsp;
+//....
+&nbsp;
+public class StringArgumentMarshaler implements ArgumentMarshaler {
+  private String stringValue = null;
+&nbsp;
+  public void set(Iterator<String> currentArgument) throws ArgsException {
+    try {
+      stringValue = currentArgument.next();
+    } catch (NoSuchElementException e) {
+      throw new ArgsException(MISSING_STRING);
+    }
+  }
+&nbsp;
+  public static String getValue(ArgumentMarshaler am) {
+    if (am != null && am instanceof StringArgumentMarshaler)
+      return ((StringArgumentMarshaler) am).stringValue;
+    else
+      return ””;
+  }
+}
+</code></pre>
+</div>
+<h2 id="the-problems"><a class="header" href="#the-problems">The Problems</a></h2>
+<h3 id="1-weird-interface-design"><a class="header" href="#1-weird-interface-design">1. Weird Interface Design</a></h3>
+<p>Look at StringArgumentMarshaler:</p>
+<div class="book-quote">
+<pre><code class="language-java">public class StringArgumentMarshaler implements ArgumentMarshaler {
+  private String stringValue = null;
+&nbsp;
+  public void set(Iterator&lt;String&gt; currentArgument) throws ArgsException {
+    try {
+      stringValue = currentArgument.next();
+    } catch (NoSuchElementException e) {
+      throw new ArgsException(MISSING_STRING);
+    }
+  }
+&nbsp;
+  public static String getValue(ArgumentMarshaler am) {
+    if (am != null && am instanceof StringArgumentMarshaler)
+      return ((StringArgumentMarshaler) am).stringValue;
+    else
+      return "";
+  }
+}</code></pre>
+</div>
+<p><code>set</code> is an instance method but <code>getValue</code> is static. Why not take a simpler approach?</p>
+<pre><code class="language-java">public interface ArgumentMarshaler&lt;T&gt; {
+    void set(Iterator&lt;String&gt; currentArgument) throws ArgsException;
+    Optional&lt;T&gt; get();
+}
+</code></pre>
+<h3 id="2-mixed-up-responsibilities"><a class="header" href="#2-mixed-up-responsibilities">2. Mixed Up Responsibilities</a></h3>
+<p>The StringArgumentMarshaler (and all other marshalers) tries to do two things:</p>
+<ul>
+<li>Parse the stream of tokens</li>
+<li>Store the parsed value and give access to it</li>
+</ul>
+<p>From an interface design perspective, this would make more sense:</p>
+<pre><code class="language-java">public interface ArgumentParser&lt;T&gt; {
+    T parse(Iterator&lt;String&gt; currentArgument) throws ArgsException;
+}
+</code></pre>
+<h3 id="3-messy-error-handling"><a class="header" href="#3-messy-error-handling">3. Messy Error Handling</a></h3>
+<p>The <code>set</code> method does some validation, but <code>get</code> just falls back to type-specific default values if something's wrong.
+Silent failures with default values can lead to subtle bugs.</p>
+<p>Check out how the IntegerArgumentMarshaler assumes 0 is a safe default:</p>
+<div class="book-quote">
+<pre><code class="language-java">public static int getValue(ArgumentMarshaler am) {
+    if (am != null && am instanceof IntegerArgumentMarshaler)
+        return ((IntegerArgumentMarshaler) am).intValue;
+    else
+        return 0;
+}
+</code></pre>
+</div>
+<p>Here's how this can bite you:</p>
+<pre><code class="language-java">Args arg = new Args("l,p#,p*", args); // p is marked as string here
+int port = arg.getInt('p');           // but trying to read as int
+</code></pre>
+<p>The library quietly gives you 0 as the port value, which is extra bad since <a href="https://www.lifewire.com/port-0-in-tcp-and-udp-818145">port 0 means something special in Unix</a>.</p>
+<p>The argument parsing library is expected to be generic - i.e. it's expected to be used in wide range of domains.<br/>
+int, String, boolean - are generic types, i.e. it's expected they can represent pretty much anything. <br/>
+In this context, it is not safe to assume default values based on type information alone.</p>
+<h3 id="4-state-management-gone-wrong"><a class="header" href="#4-state-management-gone-wrong">4. State Management Gone Wrong</a></h3>
+<p>The Args class mixes up final results and intermediate processing state in the same scope, while keeping the state it doesn't need:</p>
+<div class="book-quote">
+<pre><code class="language-java">public class Args {
+    private Map&lt;Character, ArgumentMarshaler&gt; marshalers;  // This has the final results
+    private Set&lt;Character&gt; argsFound;                      // Don't need this, can get from marshalers
+    private ListIterator&lt;String&gt; currentArgument;          // Only needed during parsing
+</code></pre>
+</div>
+<h3 id="5-overcomplicated-errors"><a class="header" href="#5-overcomplicated-errors">5. Overcomplicated Errors</a></h3>
+<p>Let's talk about that ArgsException class.</p>
+<div class="book-quote">
+<pre><code class="language-java">public class ArgsException extends Exception {
+  private char errorArgumentId = ’\0’;
+  private String errorParameter = null;
+  private ErrorCode errorCode = OK;
+&nbsp;
+  public ArgsException() {}
+&nbsp;
+  public ArgsException(String message) {super(message);}
+&nbsp;
+  public ArgsException(ErrorCode errorCode) {
+    this.errorCode = errorCode;
+  }
+&nbsp;
+  public ArgsException(ErrorCode errorCode, String errorParameter) {
+    this.errorCode = errorCode;
+    this.errorParameter = errorParameter;
+  }
+&nbsp;
+  public ArgsException(ErrorCode errorCode, 
+                       char errorArgumentId, String errorParameter) {
+    this.errorCode = errorCode;
+    this.errorParameter = errorParameter;
+    this.errorArgumentId = errorArgumentId;
+  }
+&nbsp;
+  public char getErrorArgumentId() {
+    return errorArgumentId;
+  }
+&nbsp;
+  public void setErrorArgumentId(char errorArgumentId) {
+    this.errorArgumentId = errorArgumentId;
+  }
+&nbsp;
+  public String getErrorParameter() {
+    return errorParameter;
+  }
+&nbsp;
+  public void setErrorParameter(String errorParameter) {
+    this.errorParameter = errorParameter;
+  }
+&nbsp;
+  public ErrorCode getErrorCode() {
+    return errorCode;
+  }
+&nbsp;
+  public void setErrorCode(ErrorCode errorCode) {
+    this.errorCode = errorCode;
+  }
+&nbsp;
+  public String errorMessage() {
+    switch (errorCode) {
+      case OK:
+        return “TILT: Should not get here.”;
+      case UNEXPECTED_ARGUMENT:
+        return String.format(“Argument -%c unexpected.”, errorArgumentId);
+      case MISSING_STRING:
+        return String.format(“Could not find string parameter for -%c.”, 
+                              errorArgumentId);
+      case INVALID_INTEGER:
+        return String.format(“Argument -%c expects an integer but was ’%s’.”, 
+                              errorArgumentId, errorParameter);
+      case MISSING_INTEGER:
+        return String.format(“Could not find integer parameter for -%c.”,
+                              errorArgumentId);
+      case INVALID_DOUBLE:
+        return String.format(“Argument -%c expects a double but was ’%s’.”, 
+                              errorArgumentId, errorParameter);
+      case MISSING_DOUBLE:
+        return String.format(“Could not find double parameter for -%c.”, 
+                              errorArgumentId);
+      case INVALID_ARGUMENT_NAME:
+        return String.format(“’%c” is not a valid argument name.”, 
+                              errorArgumentId);
+      case INVALID_ARGUMENT_FORMAT:
+        return String.format(“’%s” is not a valid argument format.”, 
+                              errorParameter);
+    }
+    return ””;
+  }
+&nbsp;
+  public enum ErrorCode {
+    OK, INVALID_ARGUMENT_FORMAT, UNEXPECTED_ARGUMENT, INVALID_ARGUMENT_NAME,
+    MISSING_STRING,
+    MISSING_INTEGER, INVALID_INTEGER,
+    MISSING_DOUBLE, INVALID_DOUBLE}
+}
+</code></pre>
+</div>
+<p>It's got issues:</p>
+<ul>
+<li>Introduction of error codes. <br/>
+This book mentions 2 times that it's preferrable to use exceptions instead of error codes. And yet in the example he is introducing error codes inside exceptions.
+Why? I can not come up with a good justification for error codes here.
+Imagine if there was a tool that would allow to document design decisions in code.. That would be so convinient. Unfortunately this tool doesn't exist. /s</li>
+<li>Has weirdly specific error types (why MISSING_DOUBLE and MISSING_INTEGER separately?)</li>
+<li>Has an ErrorCode.OK which makes no sense (<code>throw new ArgsException(ErrorCode.OK)</code>?)</li>
+<li>The exception is mutable. It lets you change error details after creating the exception (why?)</li>
+</ul>
+<h2 id="the-tdd-problem"><a class="header" href="#the-tdd-problem">The TDD Problem</a></h2>
+<p>The rest of the chapter shows how he got to this solution using TDD. If you've never seen TDD in action, it's pretty impressive to watch the process (you might have better luck watching people do it on YouTube though).</p>
+<p>But it shows two big problems with TDD:</p>
+<ol>
+<li>You can end up with a not-great solution because TDD forces you to focus on the next small step instead of the big picture</li>
+<li>Where you start from really matters, and bad starting code means a lot more work</li>
+</ol>
+<p>Martin started with this "working code" that was pretty rough:</p>
+<ul>
+<li>Lots of tiny methods</li>
+<li>Huge area of mutable state</li>
+<li>Everything crammed into one class</li>
+</ul>
+<div class="book-quote">
+<pre><code class="language-java">public class Args {
+  private String schema;
+  private String[] args;
+  private boolean valid = true;
+  private Set&lt;Character&gt; unexpectedArguments = new TreeSet&lt;Character&gt;();
+  private Map&lt;Character, Boolean&gt; booleanArgs = new HashMap&lt;Character, Boolean&gt;();
+  private Map&lt;Character, String&gt; stringArgs = new HashMap&lt;Character, String&gt;();
+  private Map&lt;Character, Integer&gt; intArgs = new HashMap&ltCharacter, Integer&gt;();
+  private Set&lt;Character&gt; argsFound = new HashSet&lt;Character&gt;();
+  private int currentArgument;
+  private char errorArgumentId = ’\0’;
+  private String errorParameter = “TILT”;
+  private ErrorCode errorCode = ErrorCode.OK;
+&nbsp;
+  private enum ErrorCode {
+    OK, MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, UNEXPECTED_ARGUMENT}
+&nbsp;
+  public Args(String schema, String[] args) throws ParseException {
+    this.schema = schema;
+    this.args = args;
+    valid = parse();
+  }
+&nbsp;
+  private boolean parse() throws ParseException {
+    if (schema.length() == 0 && args.length == 0)
+      return true;
+    parseSchema();
+    try {
+      parseArguments();
+    } catch (ArgsException e) {
+    }
+    return valid;
+  }
+&nbsp;
+  private boolean parseSchema() throws ParseException {
+    for (String element : schema.split(“,”)) {
+      if (element.length() > 0) {
+        String trimmedElement = element.trim();
+        parseSchemaElement(trimmedElement);
+      }
+    }
+    return true;
+  }
+&nbsp;
+  private void parseSchemaElement(String element) throws ParseException {
+    char elementId = element.charAt(0);
+    String elementTail = element.substring(1);
+    validateSchemaElementId(elementId);
+    if (isBooleanSchemaElement(elementTail))
+      parseBooleanSchemaElement(elementId);
+    else if (isStringSchemaElement(elementTail))
+      parseStringSchemaElement(elementId);
+    else if (isIntegerSchemaElement(elementTail)) {
+      parseIntegerSchemaElement(elementId);
+    } else {
+      throw new ParseException(
+        String.format(“Argument: %c has invalid format: %s.”, 
+                     elementId, elementTail), 0);
+    }
+  }
+&nbsp;
+  private void validateSchemaElementId(char elementId) throws ParseException {
+    if (!Character.isLetter(elementId)) {
+      throw new ParseException(
+        “Bad character:” + elementId + “in Args format: ” + schema, 0);
+    }
+  }
+&nbsp;
+  private void parseBooleanSchemaElement(char elementId) {
+    booleanArgs.put(elementId, false);
+  }
+&nbsp;
+  private void parseIntegerSchemaElement(char elementId) {
+    intArgs.put(elementId, 0);
+  }
+&nbsp;
+  private void parseStringSchemaElement(char elementId) {
+    stringArgs.put(elementId, ””);
+  }
+&nbsp;
+  private boolean isStringSchemaElement(String elementTail) {
+    return elementTail.equals(”*”);
+  }
+&nbsp;
+  private boolean isBooleanSchemaElement(String elementTail) {
+    return elementTail.length() == 0;
+  }
+&nbsp;
+  private boolean isIntegerSchemaElement(String elementTail) {
+    return elementTail.equals(”#”);
+  }
+&nbsp;
+  private boolean parseArguments() throws ArgsException {
+    for (currentArgument = 0; currentArgument < args.length; currentArgument++) {
+      String arg = args[currentArgument];
+      parseArgument(arg);
+    }
+    return true;
+  }
+&nbsp;
+  private void parseArgument(String arg) throws ArgsException {
+    if (arg.startsWith(”-”))
+      parseElements(arg);
+  }
+&nbsp;
+  private void parseElements(String arg) throws ArgsException {
+    for (int i = 1; i < arg.length(); i++)
+      parseElement(arg.charAt(i));
+  }
+&nbsp;
+  private void parseElement(char argChar) throws ArgsException {
+    if (setArgument(argChar))
+      argsFound.add(argChar);
+    else {
+      unexpectedArguments.add(argChar);
+      errorCode = ErrorCode.UNEXPECTED_ARGUMENT;
+      valid = false;
+    }
+  }
+&nbsp;
+  private boolean setArgument(char argChar) throws ArgsException {
+    if (isBooleanArg(argChar))
+      setBooleanArg(argChar, true);
+    else if (isStringArg(argChar))
+      setStringArg(argChar);
+    else if (isIntArg(argChar))
+      setIntArg(argChar);
+    else
+      return false;
+&nbsp;
+    return true;
+  }
+&nbsp;
+  private boolean isIntArg(char argChar) {return intArgs.containsKey(argChar);}
+&nbsp;
+  private void setIntArg(char argChar) throws ArgsException {
+    currentArgument++;
+    String parameter = null;
+    try {
+      parameter = args[currentArgument];
+      intArgs.put(argChar, new Integer(parameter));
+    } catch (ArrayIndexOutOfBoundsException e) {
+      valid = false;
+      errorArgumentId = argChar;
+      errorCode = ErrorCode.MISSING_INTEGER;
+&nbsp;
+      throw new ArgsException();
+    } catch (NumberFormatException e) {
+      valid = false;
+      errorArgumentId = argChar;
+      errorParameter = parameter;
+      errorCode = ErrorCode.INVALID_INTEGER;
+      throw new ArgsException();
+    }
+  }
+&nbsp;
+  private void setStringArg(char argChar) throws ArgsException {
+    currentArgument++;
+    try {
+      stringArgs.put(argChar, args[currentArgument]);
+    } catch (ArrayIndexOutOfBoundsException e) {
+      valid = false;
+      errorArgumentId = argChar;
+      errorCode = ErrorCode.MISSING_STRING;
+      throw new ArgsException();
+    }
+  }
+&nbsp;
+  private boolean isStringArg(char argChar) {
+    return stringArgs.containsKey(argChar);
+  }
+&nbsp;
+  private void setBooleanArg(char argChar, boolean value) {
+    booleanArgs.put(argChar, value);
+  }
+&nbsp;
+  private boolean isBooleanArg(char argChar) {
+    return booleanArgs.containsKey(argChar);
+  }
+&nbsp;
+  public int cardinality() {
+    return argsFound.size();
+  }
+&nbsp;
+  public String usage() {
+    if (schema.length() > 0)
+      return “-[” + schema + “]”;
+    else
+      return ””;
+  }
+&nbsp;
+  public String errorMessage() throws Exception {
+    switch (errorCode) {
+      case OK:
+        throw new Exception(“TILT: Should not get here.”);
+      case UNEXPECTED_ARGUMENT:
+        return unexpectedArgumentMessage();
+      case MISSING_STRING:
+        return String.format(“Could not find string parameter for -%c.”,
+                            errorArgumentId);
+&nbsp;
+      case INVALID_INTEGER:
+        return String.format(“Argument -%c expects an integer but was ’%s’.”, 
+                            errorArgumentId, errorParameter);
+      case MISSING_INTEGER:
+        return String.format(“Could not find integer parameter for -%c.”, 
+                            errorArgumentId);
+    }
+    return ””;
+  }
+&nbsp;
+  private String unexpectedArgumentMessage() {
+    StringBuffer message = new StringBuffer(“Argument(s) -”);
+    for (char c : unexpectedArguments) {
+      message.append(c);
+    }
+    message.append(“ unexpected.”);
+&nbsp;
+    return message.toString();
+  }
+&nbsp;
+  private boolean falseIfNull(Boolean b) {
+    return b != null && b;
+  }
+&nbsp;
+  private int zeroIfNull(Integer i) {
+    return i == null ? 0 : i;
+  }
+&nbsp;
+  private String blankIfNull(String s) {
+    return s == null ? ”” : s;
+  }
+&nbsp;
+  public String getString(char arg) {
+    return blankIfNull(stringArgs.get(arg));
+  }
+&nbsp;
+  public int getInt(char arg) {
+    return zeroIfNull(intArgs.get(arg));
+  }
+&nbsp;
+  public boolean getBoolean(char arg) {
+    return falseIfNull(booleanArgs.get(arg));
+  }
+&nbsp;
+  public boolean has(char arg) {
+    return argsFound.contains(arg);
+  }
+&nbsp;
+  public boolean isValid() {
+    return valid;
+  }
+&nbsp;
+  private class ArgsException extends Exception {
+  }
+}
+</code></pre>
+</div>
+<p>:shrug emoji: No wonder it would require him a lot of steps to end up on something more reasonable.</p>
+<p>If you ask claude sonnet 3.5:</p>
+<pre><code>Create a mini library to parse command line arguments. It should support following API:
+
+Args arg = new Args(“l,p#,d*”, args);
+boolean logging = arg.getBoolean(’l’);
+int port = arg.getInt(’p’);
+String directory = arg.getString(’d’);
+</code></pre>
+<p>It would come up with pretty reasonable draft:</p>
+<pre><code class="language-java">public class Args {
+    private Map&lt;Character, String&gt; schema = new HashMap&lt;&gt;();
+    private Map&lt;Character, String&gt; parsedArguments = new HashMap&lt;&gt;();
+
+    public Args(String schema, String[] args) throws IllegalArgumentException {
+        parseSchema(schema);
+        parseArgs(args);
+    }
+
+    private void parseSchema(String schema) throws IllegalArgumentException {
+        String[] schemaParts = schema.split(",");
+        for (String part : schemaParts) {
+            if (part.length() &lt; 1) {
+                throw new IllegalArgumentException("Invalid schema format");
+            }
+            char flag = part.charAt(0);
+            String type = part.length() &gt; 1 ? part.substring(1) : "";
+            
+            if (!type.matches("^[#*]?$")) {
+                throw new IllegalArgumentException("Invalid type specifier for flag: " + flag);
+            }
+            
+            schema.put(flag, type);
+        }
+    }
+
+    private void parseArgs(String[] args) throws IllegalArgumentException {
+        for (int i = 0; i &lt; args.length; i++) {
+            String arg = args[i];
+            if (!arg.startsWith("-") || arg.length() != 2) {
+                throw new IllegalArgumentException("Invalid argument format: " + arg);
+            }
+
+            char flag = arg.charAt(1);
+            if (!schema.containsKey(flag)) {
+                throw new IllegalArgumentException("Unknown flag: " + flag);
+            }
+
+            String type = schema.get(flag);
+            if (type.isEmpty()) {  // boolean flag
+                parsedArguments.put(flag, "true");
+            } else {  // string or integer flag
+                if (i + 1 &gt;= args.length) {
+                    throw new IllegalArgumentException("No value provided for flag: " + flag);
+                }
+                parsedArguments.put(flag, args[++i]);
+            }
+        }
+    }
+
+    public boolean getBoolean(char flag) throws IllegalArgumentException {
+        validateFlag(flag, "");
+        return parsedArguments.containsKey(flag);
+    }
+
+    public int getInt(char flag) throws IllegalArgumentException {
+        validateFlag(flag, "#");
+        try {
+            return Integer.parseInt(parsedArguments.getOrDefault(flag, "0"));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid integer value for flag: " + flag);
+        }
+    }
+
+    public String getString(char flag) throws IllegalArgumentException {
+        validateFlag(flag, "*");
+        return parsedArguments.getOrDefault(flag, "");
+    }
+
+    private void validateFlag(char flag, String expectedType) throws IllegalArgumentException {
+        if (!schema.containsKey(flag)) {
+            throw new IllegalArgumentException("Unknown flag: " + flag);
+        }
+        if (!schema.get(flag).equals(expectedType)) {
+            throw new IllegalArgumentException("Invalid type for flag: " + flag);
+        }
+    }
+}
+</code></pre>
+<p>Is it perfect? No. But now you can start having useful conversations about making it better:</p>
+<ul>
+<li>How to make it easier to add new types</li>
+<li>How to improve the schema format</li>
+<li>How to make errors more specific</li>
+</ul>
+<p>It's hard to tell why was the Martin's initial draft so far off.</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="snippets-for-visual-components"><a class="header" href="#snippets-for-visual-components">Snippets for visual components</a></h2>
 <hr />
 <div class="code-block-wrapper">

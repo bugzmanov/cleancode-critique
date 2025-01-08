@@ -7,8 +7,37 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Basic SEO Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Clean Code - A Critical Analysis">
+        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
+        <meta name="author" content="bugzmanov">
+        <meta name="robots" content="index, follow">
+        
+        <!-- Open Graph (OG) Meta Tags for Social Media -->
+        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
+        <meta property="og:type" content="book">
+        <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
+        <meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
+        <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        <meta name="twitter:site" content="@bugzmanov">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
 
-        <meta name="description" content="">
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -127,6 +156,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -160,15 +192,15 @@ Comments are not like Schindler's List. They are not "pure good." Indeed, commen
 <p>The proper use of comments is to compensate for our failure to express ourself in code. Note that I used the word failure. I meant it. Comments are always failures. We must have them because we cannot always figure out how to express ourselves without them, but their use is not a cause for celebration.</p>
 <p>So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't some way to turn the tables and express yourself in code. Every time you express yourself in code, you should pat yourself on the back. Every time you write a comment, you should grimace and feel the failure of your ability of expression.</p>
 </div>
-<p>This is pretty damaging and I believe this is the main takeaway that developers would get out the chapter.
+<p>This is pretty damaging and I believe this is the main takeaway that developers get out the chapter.
 It's the second worst idea of this book: comments are failure to write good code.
-This hyperbolic stance had influenced many developers to avoid creating and using this useful tool of design, abstraction and documentation.
-This stance has contributed to a broader culture where comments are undervalued and often ignored (note how comments are grayed out in most modern IDEs).</p>
+This hyperbolic stance had influenced many developers to avoid creating and using the useful tool. The tool of design, abstraction and documentation.
+This view has contributed to a broader culture where comments are undervalued and often ignored (note how comments are grayed out in most modern IDEs).</p>
 <p>Martin is low key proposing idea of self-documenting code. This is a nice idea if it could work.</p>
-<p>But the code can never provide all the context, even if you try using "really-relly long essays" as a name.
+<p>But the code can never provide all the context, even if you try using "really-relly long essays" as names.
 Even if we assume that executable code can perfectly describe everything that's there,
 quite often things that are excluded are also important part of the design.</p>
-<p>The "comments are failures" principle is probably the main driver of "essay as a name" style of naming:</p>
+<p>The "comments are failures" principle is probably the main driver of this verbose overdescriptive style of naming:</p>
 <pre><code class="language-java">private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) { }
 </code></pre>
 <p>Is <code>smallestOddNthMultipleNotLessThanCandidate</code> really a name or just inlined comment ?</p>
@@ -266,9 +298,10 @@ so they can easily fall out of sync — just like comments.</p>
 </code></pre>
 <p>I can grant that this is pretty convoluted code, but honestly I'm not sure if it was written this way or it was intentionally obfuscated.</p>
 <p>The good parts: the messines of the code is contained in a single place and API is safe and clear.</p>
-<p>Comment about the library of Alexandria is cute, I would also add a link to Wikipedia page.</p>
-<p>The Martin refactoring:</p>
-<pre><code class="language-java">/**
+<p>Comment about the library of Alexandria is cute, I would also add a link to the Wikipedia page.</p>
+<p>The Martins refactoring:</p>
+<pre class="ignore"><code class="language-java">
+/**
  * This class Generates prime numbers up to a user specified
  * maximum.  The algorithm used is the Sieve of Eratosthenes.
  * Given an array of integers starting at 2:
@@ -277,11 +310,11 @@ so they can easily fall out of sync — just like comments.</p>
  * in the array.
  */
 public class PrimeGenerator {
-    private static boolean[] crossedOut;
-    private static int[] result;
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">private static boolean[] crossedOut;<span class="code-comment">GLOBAL <b>MUTABLE</b> STATE!<br/> This is intermediate state</span></span>
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">private static int[] result<span class="code-comment">GLOBAL <b>MUTABLE</b> STATE!<br/> This is final state of computation</span></span>
 
     public static int[] generatePrimes(int maxValue) {
-        if (maxValue &lt; 2)
+        if (maxValue < 2)
             return new int[0];
         else {
             uncrossIntegersUpTo(maxValue);
@@ -293,13 +326,13 @@ public class PrimeGenerator {
 
     private static void uncrossIntegersUpTo(int maxValue) {
         crossedOut = new boolean[maxValue + 1];
-        for (int i = 2; i &lt; crossedOut.length; i++)
+        for (int i = 2; i < crossedOut.length; i++)
             crossedOut[i] = false;
     }
 
     private static void crossOutMultiples() {
         int limit = determineIterationLimit();
-        for (int i = 2; i &lt;= limit; i++)
+        for (int i = 2; i <= limit; i++)
             if (notCrossed(i))
                 crossOutMultiplesOf(i);
     }
@@ -309,13 +342,13 @@ public class PrimeGenerator {
         // is less than or equal to the root of the array size,
         // so we don't have to cross out multiples of numbers
         // larger than that root.
-        double iterationLimit = Math.sqrt(crossedOut.length);
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">double iterationLimit = Math.sqrt(crossedOut.length);<span class="code-comment">Nitpick, but why is this extraction needed? </span></span>
         return (int) iterationLimit;
     }
 
     private static void crossOutMultiplesOf(int i) {
         for (int multiple = 2*i;
-             multiple &lt; crossedOut.length;
+             multiple < crossedOut.length;
              multiple += i)
             crossedOut[multiple] = true;
     }
@@ -326,14 +359,14 @@ public class PrimeGenerator {
 
     private static void putUncrossedIntegersIntoResult() {
         result = new int[numberOfUncrossedIntegers()];
-        for (int j = 0, i = 2; i &lt; crossedOut.length; i++)
+        for (int j = 0, i = 2; i < crossedOut.length; i++)
             if (notCrossed(i))
                 result[j++] = i;
     }
 
     private static int numberOfUncrossedIntegers() {
         int count = 0;
-        for (int i = 2; i &lt; crossedOut.length; i++)
+        for (int i = 2; i < crossedOut.length; i++)
             if (notCrossed(i))
                 count++;
 
@@ -351,7 +384,7 @@ You will <em>have to</em> remedy this by using <strong>global</strong> lock, so 
     return crossedOut[i] == false;
 }
 </code></pre>
-<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the former option really more readable?
+<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable?
 If anything, now he have polluted the domain with semi-similar words:</p>
 <ul>
 <li>not crossed</li>
@@ -360,21 +393,9 @@ If anything, now he have polluted the domain with semi-similar words:</p>
 </ul>
 <p>Is "notCrossed" same thing as "not crossedOut"? Is it same thing as "uncrossed"?
 By excessive method extraction Martin introduced inconsistencies and confusion in terminlogy, which at the end would only increase cognitive load.
-You have to look into implementation of all those small methods to understand if there is a difference or not.</p>
+One would have to look into implementation of all those small methods to understand if there is a difference or not.</p>
 <p>This is the problem with introducing too many entities: working memory can hold 4–7 objects at a time. Flood it with small pebbles, and you’ll hit saturation,
 leading to inconsistencies and discrepancies.</p>
-<p>&lt;todo: RANT about this being common occasion&gt;</p>
-<p>&lt;todo: better review&gt;</p>
-<pre><code class="language-java">private static int determineIterationLimit() {
-    // Every multiple in the array has a prime factor that
-    // is less than or equal to the root of the array size,
-    // so we don't have to cross out multiples of numbers
-    // larger than that root.
-    double iterationLimit = Math.sqrt(crossedOut.length);
-    return (int) iterationLimit;
-}
-</code></pre>
-<p>How many times do you need to repeat "iteration limit" in 3 lines of code to not forget that <code>determineIterationLimit</code> indeed returns <code>iterationLimit</code>?</p>
 <p>Lets remove obfuscation from the original method:</p>
 <pre><code class="language-java">public class GeneratePrimes {
     public static int[] generatePrimes(int maxValue) {

@@ -7,8 +7,37 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Basic SEO Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Clean Code - A Critical Analysis">
+        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
+        <meta name="author" content="bugzmanov">
+        <meta name="robots" content="index, follow">
+        
+        <!-- Open Graph (OG) Meta Tags for Social Media -->
+        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
+        <meta property="og:type" content="book">
+        <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
+        <meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
+        <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        <meta name="twitter:site" content="@bugzmanov">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
 
-        <meta name="description" content="">
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -127,6 +156,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -216,11 +248,11 @@ public List&lt;Cell&gt; getFlaggedCells() {
 <pre><code class="language-scala">gameBoard.filter(cell =&gt; cell(STATUS_VALUE) == FLAGGED)
 </code></pre>
 <p>That's it. This code can be inlined and used as is.</p>
-<p>Second, while <code>getFlaggedCells</code> looks like an improvement over obfuscated <code>getThem</code>, it's not really a name, it's a description of what the method does.
+<p>While <code>getFlaggedCells</code> looks like an improvement over obfuscated <code>getThem</code>, it's not really a name, it's a description of what the method does.
 If the description is as long as the code, it's often redundant.</p>
 <p>Martin writes about it in passing: "if you can extract another function from it with <strong>a name that is not merely a restatement of its implementation</strong>".<br/>
 But he violates this principle quite often.</p>
-<p>Third, if for readability alone, I'd argue that the second version is as clear as the third. If readability is the only reason for introducing Cell abstraction, this is an overkill.</p>
+<p>If for readability alone, I'd argue that the second version is as clear as the third and introducing Cell abstraction is an overkill.</p>
 <div class="collapsible-rant">
     <div class="collapsible-header">
         <span class="collapsible-title">To be fair there are good reasons to introduce Cell abstraction, but also there are reasons not to</span>
@@ -293,7 +325,7 @@ Shorter names are generally better than longer ones, so long as they are clear.
         <br/>
         The assumption was wrong.
         <br/><br/>
-        <div style="text-align:center"><img src="./images/names.png" width="70%"/></div>
+        <div style="text-align:center"><img src="./images/names.png" width="70%" style="filter: brightness(85%)"/></div>
     </div>
 </div>
 <!--Pascal and Camel case in Java was proposed in Sun's Java Style as way to enforce "names should be short yet meaningful". <br/>-->
@@ -377,7 +409,7 @@ Shorter names are generally better than longer ones, so long as they are clear.
 }</code></pre>
     </div>
 </div>
-<p>In no way the second option is better than the first one. The original has only one problem: side-effect. Instead of printing to the console it should have just return String.</p>
+<p>In no way the second option is better than the first one. The original has only one problem: side-effects. Instead of printing to the console it should have just return String.</p>
 <p>And that is it:</p>
 <ul>
 <li>1 method, 20 lines of code, can be read top to bottom,</li>
@@ -411,8 +443,8 @@ private void thereIsOneLetter() {
 </code></pre>
 <p>I hope you agree that methods like this is not a typical Java. If anything, this looks closer to typical ruby.</p>
 </div>
-<p>At the end, OOP and DSL are the wrong tool for the task of creating string.
-In a powerful-enough language, keeping this code procedural gives you result that is short and easy to understand:</p>
+<p>But ultimately, object-oriented programming and domain-specific languages are unnessary for the simple task.
+In a powerful-enough language, keeping this code procedural gives the result that is short and easy to understand:</p>
 <pre><code class="language-scala">def formatGuessStatistics(candidate: Char, count: Int): String = {   
    count match {
        case i if i &lt; 0 =&gt; throw new IllegalArgumentException(s"count=$count: negative counts are not supported")

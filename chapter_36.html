@@ -7,8 +7,37 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Basic SEO Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Clean Code - A Critical Analysis">
+        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
+        <meta name="author" content="bugzmanov">
+        <meta name="robots" content="index, follow">
+        
+        <!-- Open Graph (OG) Meta Tags for Social Media -->
+        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
+        <meta property="og:type" content="book">
+        <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
+        <meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
+        <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        <meta name="twitter:site" content="@bugzmanov">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
 
-        <meta name="description" content="">
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -127,6 +156,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -200,6 +232,83 @@ public class UserValidator {
 <li><code>UserGateway</code> is a singleton - i.e. it is a global implicit dependency.</li>
 </ol>
 <p>A more formal understanding of side effects helps spot issues more easily.</p>
+<p>This also makes it obvious that moving <a href="./chapter_35.html">input arguments</a> to object fields, especially when function has to mutate them to keep intermediate state, is incompatible
+with idea of side-effect free.</p>
+<p>In rewrite suggestion from <a href="./chapter_2.html">chapter 2</a>, all new methods have a side effect - they mutate fields - Modify "state outside the function's scope":</p>
+<div class="code-comparison">
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Original Code: </div>
+        <pre class="ignore"><code class="language-java">private void printGuessStatistics(char candidate, 
+                                  int count) {   
+    String number;
+    String verb;
+    String pluralModifier;
+    if (count == 0) {
+        number = "no";
+        verb = "are";
+        pluralModifier = "s";
+    } else if (count == 1) {
+        number = "1";
+        verb = "is";
+        pluralModifier = "";
+    } else {
+        number = Integer.toString(count);
+        verb = "are";
+        pluralModifier = "s";
+    }
+    String guessMessage = String.format(
+        "There %s %s %s%s", verb, number, 
+        candidate, pluralModifier
+    );
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">print(guessMessage);<span class="code-comment">Interracts with the outside world - prints to STD-IO</span></span>
+    &nbsp;
+    &nbsp;
+}</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Proposed rewrite:</div>
+        <pre class="ignore"><code class="language-java">public class GuessStatisticsMessage {
+    private String number;
+    private String verb;
+    private String pluralModifier;
+&nbsp; 
+    public String make(char candidate, int count) {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">createPluralDependentMessageParts(count);<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        return String.format(
+                "There %s %s %s%s", 
+                verb, number, candidate, pluralModifier );
+    }
+&nbsp; 
+    private void createPluralDependentMessageParts(int count) {
+        if (count == 0) {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereAreNoLetters();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        } else if (count == 1) {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereIsOneLetter();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        } else {
+            <span class="code-comment-trigger">►</span><span class="reviewable-line">thereAreManyLetters();<span class="code-comment">Calling a function with side effects spreads those effects to the caller</span></span>
+        }
+    }
+&nbsp; 
+    private void thereAreManyLetters(int count) {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = Integer.toString(count);<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "are";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "s";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+&nbsp; 
+    private void thereIsOneLetter() {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = "1";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "is";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+&nbsp; 
+    private void thereAreNoLetters() {
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">number = "no";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">verb = "are";<span class="code-comment">Modifies state outside function scope</span></span>
+        <span class="code-comment-trigger">►</span><span class="reviewable-line">pluralModifier = "s";<span class="code-comment">Modifies state outside function scope</span></span>
+    }
+}</code></pre>
+    </div>
+</div>
 
                     </main>
 

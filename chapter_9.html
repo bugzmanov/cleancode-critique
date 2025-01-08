@@ -7,8 +7,37 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Basic SEO Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Clean Code - A Critical Analysis">
+        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
+        <meta name="author" content="bugzmanov">
+        <meta name="robots" content="index, follow">
+        
+        <!-- Open Graph (OG) Meta Tags for Social Media -->
+        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
+        <meta property="og:type" content="book">
+        <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
+        <meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
+        <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        <meta name="twitter:site" content="@bugzmanov">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
 
-        <meta name="description" content="">
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -127,6 +156,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -157,86 +189,86 @@
 <div class="book-quote">
 What this team did not realize was that having dirty tests is equivalent to, if not worse than, having no tests.
 </div>
-<p>This statement lacks nuance: if the dirty tests are actually testing software, then having them is better than not having them. <br/>
-Again this is the example of when that is true: <a href="https://news.ycombinator.com/item?id=18442941">Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests</a> <br/>
+<p>This statement lacks nuance: if the dirty tests are actually testing software, then having them is better than not having them. <br/></p>
+<p>To repeat the example of when that is true: <a href="https://news.ycombinator.com/item?id=18442941">Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests</a> <br/>
 Oracle Database is a very reliable software (as of 2024), it comes at the cost of thousands of people suffering through the setup, but as a customer I enjoy its robustness.</p>
 <p>Having tests that actually test software is good, even if they are dirty. However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks.</p>
-<p>This chapter unintentionally shows the value of finding a balance.</p>
-<p>First, it provides an example of a refactoring that I almost agree with:</p>
+<p>This chapter unintentionally highlights the importance of balance.</p>
+<p>First, it presents an example of a refactoring that I mostly agree with:</p>
 <div class="code-comparison" >
-    <div class="code-column" style="flex:0">
-        <div class="code-column-title">Original Code: </div>
-        <pre class="ignore"><code class="language-java" style="font-size: 13px !important">public void testGetPageHieratchyAsXml() throws Exception {
-  crawler.addPage(root, PathParser.parse("PageOne"));
-  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
-  crawler.addPage(root, PathParser.parse("PageTwo"));
-&nbsp;
-  request.setResource("root");
-  request.addInput("type", "pages");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("<name>PageOne</name>", xml);
-  assertSubString("<name>PageTwo</name>", xml);
-  assertSubString("<name>ChildOne</name>", xml);
+<div class="code-column" style="flex:0">
+<div class="code-column-title">Original Code: </div>
+<pre class="ignore"><code class="language-java" style="font-size: 13px !important">public void testGetPageHieratchyAsXml() throws Exception {
+    crawler.addPage(root, PathParser.parse("PageOne"));
+    crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+    crawler.addPage(root, PathParser.parse("PageTwo"));
+    &nbsp;
+    request.setResource("root");
+    request.addInput("type", "pages");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("<name>PageOne</name>", xml);
+    assertSubString("<name>PageTwo</name>", xml);
+    assertSubString("<name>ChildOne</name>", xml);
 }
 &nbsp;
 public void testGetPage_cLinks() throws Exception {
-  WikiPage pageOne = 
+    WikiPage pageOne = 
     crawler.addPage(root, PathParser.parse("PageOne"));
-  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
-  crawler.addPage(root, PathParser.parse("PageTwo"));
-&nbsp;
-  PageData data = pageOne.getData();
-  WikiPageProperties properties = data.getProperties();
-  WikiPageProperty symLinks = 
-    properties.set(SymbolicPage.PROPERTY_NAME);
-  symLinks.set("SymPage", "PageTwo");
-  pageOne.commit(data);
-&nbsp;
-  request.setResource("root");
-  request.addInput("type", "pages");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("<name>PageOne</name>", xml);
-  assertSubString("<name>PageTwo</name>", xml);
-  assertSubString("<name>ChildOne</name>", xml);
-  assertNotSubString("SymPage", xml);
+    crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+    crawler.addPage(root, PathParser.parse("PageTwo"));
+    &nbsp;
+    PageData data = pageOne.getData();
+    WikiPageProperties properties = data.getProperties();
+    WikiPageProperty symLinks = 
+        properties.set(SymbolicPage.PROPERTY_NAME);
+    symLinks.set("SymPage", "PageTwo");
+    pageOne.commit(data);
+    &nbsp;
+    request.setResource("root");
+    request.addInput("type", "pages");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("<name>PageOne</name>", xml);
+    assertSubString("<name>PageTwo</name>", xml);
+    assertSubString("<name>ChildOne</name>", xml);
+    assertNotSubString("SymPage", xml);
 }
 &nbsp;
 public void testGetDataAsHtml() throws Exception {
-  crawler.addPage(root, 
+    crawler.addPage(root, 
     PathParser.parse("TestPageOne"), "test page");
-&nbsp;
-  request.setResource("TestPageOne"); 
-  request.addInput("type", "data");
-  Responder responder = new SerializedPageResponder();
-  SimpleResponse response =
-      (SimpleResponse) responder.makeResponse(
-          new FitNesseContext(root), request);
-  String xml = response.getContent();
-&nbsp;
-  assertEquals("text/xml", response.getContentType());
-  assertSubString("test page", xml);
-  assertSubString("&gt;Test", xml);
+    &nbsp;
+    request.setResource("TestPageOne"); 
+    request.addInput("type", "data");
+    Responder responder = new SerializedPageResponder();
+    SimpleResponse response =
+        (SimpleResponse) responder.makeResponse(
+            new FitNesseContext(root), request);
+    String xml = response.getContent();
+    &nbsp;
+    assertEquals("text/xml", response.getContentType());
+    assertSubString("test page", xml);
+    assertSubString("&gt;Test", xml);
 }</code></pre>
-    </div>
-    <div class="code-column">
-        <div class="code-column-title">Proposed rewrite:</div>
-        <pre><code class="language-java" style="font-size: 13px !important">public void testGetPageHierarchyAsXml() throws Exception {
+</div>
+<div class="code-column">
+<div class="code-column-title">Proposed rewrite:</div>
+<pre><code class="language-java" style="font-size: 13px !important">public void testGetPageHierarchyAsXml() throws Exception {
     makePages("PageOne", "PageOne.ChildOne", "PageTwo");
-&nbsp;
+    &nbsp;
     submitRequest("root", "type:pages");
-&nbsp;
+    &nbsp;
     assertResponseIsXML();
     assertResponseContains(
         "<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>"
@@ -254,11 +286,11 @@ public void testGetDataAsHtml() throws Exception {
 public void testGetPage_cLinks() throws Exception {
     WikiPage page = makePage("PageOne");
     makePages("PageOne.ChildOne", "PageTwo");
-&nbsp;
+    &nbsp;
     addLinkTo(page, "PageTwo", "SymPage");
-&nbsp;
+    &nbsp;
     submitRequest("root", "type:pages");
-&nbsp;
+    &nbsp;
     assertResponseIsXML();
     assertResponseContains(
         "<name>PageOne</name>", "<name>PageTwo</name>",
@@ -287,19 +319,15 @@ public void testGetDataAsXml() throws Exception {
     assertResponseIsXML();
     assertResponseContains("test page", "&gt;Test");
 }</code></pre>
-    </div>
 </div>
-<p>What makes it good:</p>
-<ul>
-<li>the introduced abstractions are useful and reusable</li>
-</ul>
-<p>What is bad:</p>
-<ul>
-<li>Martin introduces <strong>global mutable state</strong> (global in terms of the test suite)</li>
-</ul>
+</div>
+<p>The <span style="color: lightgreen">good</span>:</p>
+<p>       - the introduced abstractions are useful and reusable</p>
+<p>The <span style="color: red">bad</span>:</p>
+<p>       - Martin introduces <strong>global mutable state</strong> (global in terms of the test suite)</p>
 <p>Big drawback of this global mutable state - now tests can not be run in parallel. Hence the execution of these 3 tests will take 3x more time.</p>
-<p>Clear case of <a href="https://www.computerenhance.com/p/clean-code-horrible-performance">"'Clean' Code, Horrible Performance"</a></p>
-<p>Again this is self-inflicted pain from a painful idea that no parameters is always better than 1+.</p>
+<p>Another case of <a href="https://www.computerenhance.com/p/clean-code-horrible-performance">"'Clean' Code, Horrible Performance"</a> ?</p>
+<p>This is self-inflicted harm from a painful idea that no parameters is always better than 1+.</p>
 <p>By fixing it:</p>
 <pre><code class="language-java">public void testGetDataAsXml() throws Exception {
     var page = makePageWithContent("TestPageOne", "test page");
@@ -310,11 +338,11 @@ public void testGetDataAsXml() throws Exception {
     assertContains(response, "test page", "&lt;Test");
 }
 </code></pre>
-<p>You get advocated <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> shape, without need to have implicit mutable state somewhere hidden.
+<p>We get advocated <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> shape, without need to have implicit mutable state somewhere hidden.
 All tests are isolated and can run in parallel.</p>
 <hr />
-<p>And while first example in this chapter is a good illustration how tidying your API with domain specific details can improve code readability,
-the next one is an illustration that this approach can be taken too far:</p>
+<p>The first example in this chapter shows how adding domain-specific details can improve readability.
+The second one is an illustration that this approach can be taken too far:</p>
 <pre><code class="language-java">@Test
 public void turnOnLoTempAlarmAtThreashold() throws Exception {
     hw.setTemp(WAY_TOO_COLD);
@@ -336,16 +364,16 @@ public void turnOnLoTempAlarmAtThreshold() throws Exception {
 // Upper case means "on," lower case means "off," and the letters are always in the following order: 
 // {heater, blower, cooler, hi-temp-alarm, lo-temp-alarm}
 </code></pre>
-<p>Domain Specific Language is a programming language still and readability of that is important.
-"HBchL" is not very readable, as it requires noticeable mental effort to translate. This defeats the purpose of making code more readable.</p>
-<p>What prevents him from creating format like: <code>"heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on"</code>?</p>
+<p>The mini-DSL makes things harder to read, not easier.
+The "HBchL" encoding requires extra mental effort to decode, which defeats the purpose of making the test more readable.</p>
+<p>Why not "heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on" ?</p>
 <p><code>wayTooCold();</code> - is also very weird grammar. Is it a verb or verb phrase? Why do we need to hide call to <code>controller.tic()</code>?</p>
 <p>In the <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> template: <code>Controller.tic()</code> is the <code>OPERATE</code>!</p>
 <pre><code class="language-java">wayTooCold();
 assertEquals("HBchL", hw.getState());
 </code></pre>
 <p>This is not <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code>. Thi is <code>WHY</code>-<code>WTF</code></p>
-<p>From good readability perspective I would change it to:</p>
+<p>A more natural approach:</p>
 <pre><code class="language-java">@Test
 public void turnOnLoTempAlarmAtThreashold() throws Exception {
     hw.setTempF(10); // too cold
@@ -358,7 +386,7 @@ public void turnOnLoTempAlarmAtThreashold() throws Exception {
     );
 }
 </code></pre>
-<p>Again in modern language there is no need to create DSL as the language is powerful enough to make code concise and readable:</p>
+<p>Again in modern languages, like Scala</p>
 <pre><code class="language-scala">@Test
 def turnOnLoTempAlarmAtThreashold() {
     hw.setTemp(10.F) // too cold
@@ -367,13 +395,16 @@ def turnOnLoTempAlarmAtThreashold() {
 
     assertEquals(
         Status(heaterOn = true, blowerOn = false, coolerOn = false, 
-               hiTempAlarm = false, loTempAlarm = true)
+            hiTempAlarm = false, loTempAlarm = true
+        ),
         hw.getState()
     )
 }
 </code></pre>
-<p>Final nit-pick:</p>
+<p>No need for cryptic mini-DSLs, the language itself is expressive enough to keep things clean and clear.</p>
+<h3 id="final-nitpick-test-performance-matters"><a class="header" href="#final-nitpick-test-performance-matters">Final nitpick: Test Performance Matters</a></h3>
 <div class="book-quote">
+The getState function is shown in Listing 9-6. Notice that this is not very efficient code. To make it efficient, I probably should have used a StringBuffer.
 <pre><code class="language-java">public String getState() {
     String state = "";
     state += heater ? "H" : "h";
@@ -384,14 +415,23 @@ def turnOnLoTempAlarmAtThreashold() {
     return state;
 }
 </code></pre>
-StringBuffers are a bit ugly.
+<p>StringBuffers are a bit ugly.</p>
 </div>
-<p>Again the book age shows: StringBuffers are not only ugly they are also slow. StringBuffer are synchronized for multi-threaded access, even without contention it has runtime cost. Good news are his original code will be compiled by javac to use StringBuilders.</p>
+<p>Not only are StringBuffers ugly, but they’re also slow (the book shows it age). StringBuffer is synchronized for multi-threaded access, adding unnecessary overhead.
+Fortunately, modern javac compiler can optimize the <code>getState</code> method to use StringBuilder instead.</p>
+<pre><code class="language-java">public String getState() {
+    return (heater ? "H" : "h") + 
+            (blower ? "B" : "b") +
+            (cooler ? "C" : "c") +
+            (hiTempAlarm ? "H" : "h") +
+            (loTempAlarm ? "L" : "l");
+}
+</code></pre>
 <div class="book-quote">
 There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
 </div>
-<p>Test performance matters at scale - slow tests can significantly impact development velocity. The most important thing for tests to do is to actually test the software.
-But giving up tests performance in large code base means increase of validation cycle in CI/CD pipelines.</p>
+<p>No. Test performance absolutely matters — especially at scale.</p>
+<p>Slow tests can and will kill development speed. Ignoring performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀</p>
 
                     </main>
 
@@ -401,7 +441,7 @@ But giving up tests performance in large code base means increase of validation 
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="chapter_11.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="chapter_10.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -415,7 +455,7 @@ But giving up tests performance in large code base means increase of validation 
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="chapter_11.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="chapter_10.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

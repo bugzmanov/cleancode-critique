@@ -7,8 +7,37 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Basic SEO Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Clean Code - A Critical Analysis">
+        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
+        <meta name="author" content="bugzmanov">
+        <meta name="robots" content="index, follow">
+        
+        <!-- Open Graph (OG) Meta Tags for Social Media -->
+        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
+        <meta property="og:type" content="book">
+        <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
+        <meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
+        <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        <meta name="twitter:site" content="@bugzmanov">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
 
-        <meta name="description" content="">
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -127,6 +156,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -156,7 +188,7 @@
                         <h2 id="small"><a class="header" href="#small">Small!</a></h2>
 <p><span style="font-size:80px; color: red;"> NO! </span>
 I genuinely think this book is outdated, and a lot of its advice is more harmful than helpful.
-But there are two parts that stand out as the worst ideas in the whole book. This is one of them (the second one is <a href="./chapter_4.html">"Comments are a failures"</a>).<br/>
+But there are two parts that are the worst. This is one of them (the second one is <a href="./chapter_4.html">"Comments are a failures"</a>).<br/>
 Bazzilion small functions to achieve trivial functionality is a hallmark of "clean-coders". And this is the most damaging concept in this book.</p>
 <p>Splitting a system into pieces is an extremely useful technique for:</p>
 <ul>
@@ -164,25 +196,25 @@ Bazzilion small functions to achieve trivial functionality is a hallmark of "cle
 <li>Keeping unrelated concerns separate</li>
 <li>Reducing cognitive load required to reason about components independently</li>
 </ul>
-<p>However clean code advocates for splitting in order just to keep functions short. By itself this is a useless metric.</p>
-<p>When you make a component too small - it fails to encapsulate a required functionality. It can not be analyzed independently as it ends up tightly coupled with other parts of the system, which defeats the purpose of breaking things up:</p>
+<p>However clean code advocates for splitting in order to just keep functions short. By itself this is a useless metric.</p>
+<p>When you make a component too small - it fails to encapsulate a required functionality. It can not be analyzed independently as it ends up tightly coupled with other parts of the system.</p>
+<p>This defeats the purpose of breaking things up:</p>
 <ul>
 <li>Less reusable: Tight coupling makes it harder to use pieces of the system in different contexts.</li>
 <li>Harder to understand: You can’t analyze the pieces independently anymore—they all depend on each other.</li>
 </ul>
-<p>You can argue that shorter methods themselves are less complex now, but this addresses only <strong>local complexity</strong>.
-To really understand a system, you have to deal with global complexity - the sum of all the pieces <strong>and how they interact</strong>. A bad split can actually make global complexity worse.</p>
+<p>You can argue that shorter methods are less complex, but this addresses only <strong>local complexity</strong>.
+To understand a system, you have to deal with global complexity - the sum of all the pieces <strong>and how they interact</strong>. A bad split can make global complexity worse.</p>
 <p>Most of the time, splitting a function into a bunch of tiny pieces doesn’t improve much.
 It's like cutting a whole pizza pie into slices, and hoping that you consume fewer calories after eating every slice.</p>
-<p>My rule of thumb: splitting code should reduce global complexity or code size (or both). The split that increases both metrics is a bad idea.
-If breaking something into smaller pieces makes the overall system harder to understand and adds more lines of code, you’ve just made things worse.</p>
+<p>My rule of thumb: splitting code should reduce global complexity or code size or both.
+If breaking something into smaller pieces makes the overall system harder to understand and/or adds more lines of code, you’ve just made things worse.</p>
 <p>There’s also the problem of running out of good names when you create too many small functions.
 Once that happens, you’re stuck writing long, overly descriptive names that clutter the code and make it harder to read:</p>
-<pre><code class="language-java">public static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception {
-    if (isTestPage(pageData))
-        includeSetupAndTeardownPages(pageData, isSuite);
-    return pageData.getHtml();
-}
+<pre><code class="language-java">// an example, not from the book
+public static String render(PageData pageData, boolean isSuite) throws Exception 
+private static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception 
+private static String failSafeRenderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception 
 </code></pre>
 
                     </main>

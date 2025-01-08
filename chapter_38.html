@@ -7,8 +7,37 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Basic SEO Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Clean Code - A Critical Analysis">
+        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
+        <meta name="author" content="bugzmanov">
+        <meta name="robots" content="index, follow">
+        
+        <!-- Open Graph (OG) Meta Tags for Social Media -->
+        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
+        <meta property="og:type" content="book">
+        <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
+        <meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
+        <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+        <meta name="twitter:site" content="@bugzmanov">
+        
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
 
-        <meta name="description" content="">
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -127,6 +156,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -160,20 +192,68 @@ The names are arbitrary, and there is duplicated code."
 <p>"So then I massage and refine that code, splitting out functions, changing names, eliminating duplication. I shrink the methods and reorder them. Sometimes I break out whole classes, all the while keeping the tests passing.
 In the end, I wind up with functions that follow the rules I've laid down in this chapter. I don't write them that way to start. I don't think anyone could."</p>
 </div>
-<p>What's Martin is advocating is bottom to top approach to software development: first make it work, then make it beautiful( = "clean", in Matrins worldview).</p>
-<p>Martin advocates for a bottom-to-top approach to software development:</p>
+<p>What's Martin is advocating is bottom-up approach to software development: first make it work, then make it beautiful( = "clean", in Matrins worldview).</p>
+<p>But this is not the only way to design software!
+In my experience, some of the most elegant solutions emerge from top-down thinking:</p>
 <ol>
-<li>First, to make it work</li>
-<li>Then, refine it to make it "beautiful" (or "clean" as Martin describes it).</li>
+<li>Start by imagining how you want the code to look like</li>
+<li>Draft pseudocode</li>
+<li>Gradually fill in the implementation details, making adjustments as needed while preserving the original design</li>
 </ol>
-<p>But this is not the only way to design software! In my experience my best designs often come from doing top-to-bottom thinking:</p>
-<ol>
-<li>Start by imagining how you want the code to look and behave.</li>
-<li>Sketch out non-compilable pseudocode that satisfies your constraints and communicates the desired design.</li>
-<li>Gradually implement the details, adjusting the code to make it functional and recognizable by the compiler.</li>
-</ol>
-<p>[todo: example of top to bottom]</p>
-<p>[todo: jigsaw puzzles vs lego bricks]</p>
+<h3 id="a-concrete-example"><a class="header" href="#a-concrete-example">A Concrete Example</a></h3>
+<p>One of my biggest pet peeves is that tables aren’t used often enough in programming.
+<a href="https://www.hillelwayne.com/post/decision-tables/">Decision Tables</a> have an amazing property: they make complex logic immediately obvious and provide a perfect overview of the problem.</p>
+<pre><code>PAYMENT METHOD    |   DISCOUNT CODE   |    TAX STATUS    |    PRICE
+--------------------------------------------------------------------
+PayPal            |    CLEANCODE      |     NONEXEMPT    |    8.99
+CreditCard        |      N/A          |     NONEXEMPT    |    9.99
+</code></pre>
+<p>If you implement this logic using a standard JUnit-style test, you’ll end up with something readable—but it won’t resemble the original table at all:</p>
+<pre><code class="language-java">assertEquals(
+    priceService.calcuate(new Criteria()
+        .paymentMethod(Payment.PayPal)
+        .discountCode("CLEANCODE")
+        .taxStatus(Tax.NonExempt)
+   ),
+    new BigDecimal("8.99")
+);
+
+
+assertEquals(
+    priceService.calcuate(new Criteria()
+        .paymentMethod(Payment.CreditCatd)
+        .discountCode("")
+        .taxStatus(Tax.NonExempt)
+    ),
+    new BigDecimal("9.99")
+);
+</code></pre>
+<p>No amount of refactoring will restore the original table-like structure.</p>
+<p>But if you start with a top-down approach, you can decide upfront that you want your test to look like a decision table. That might lead you to write code like this:</p>
+<pre><code class="language-java">executeTests(
+    "PAYMENT METHOD     |   DISCOUNT CODE   |    TAX STATUS    |    PRICE  \n" +
+    "----------------------------------------------------------------------\n" + 
+    " PayPal            |    CLEANCODE      |     NONEXEMPT    |    8.99   \n" + 
+    " CreditCard        |      N/A          |     NONEXEMPT    |    9.99   \n" 
+)
+
+</code></pre>
+<p>Now, the challenge becomes figuring out how to implement a parser and interpreter for executeTests.</p>
+<p>Or you might take an approach that doesn't require parsing and design a DSL that looks like this:</p>
+<pre><code class="language-java">testTable()
+    .header (
+    //------------------------------------------------------------------------------------
+           PAYMENT_METHOD     , DISCOUNT_CODE, TAX_STATUS     ,     PRICE              ) 
+    //------------------------------------------------------------------------------------
+    .row( Payment.PayPal      , "CLEANCODE"  , Tax.NonExempt  , new BigDecimal("8.99") ),
+    .row( Payment.CreditCard  , ""           , Tax.NonExempt  , new BigDecimal("9.99") )
+    //------------------------------------------------------------------------------------
+    .executeTests()
+</code></pre>
+<p>Of course, both approaches require significantly more effort than the standard JUnit style. But that’s not the point.</p>
+<p>The point is that with a top-down approach, you control how your code looks at every step, then implement the supporting code at lower levels to make it work.</p>
+<p>In contrast, starting with a messy, working solution and then refining it into something cleaner is more of a discovery process.
+You might end up with significantly less optimal results - especially if your refactoring toolkit is limited and primarily consists of extraction-based techniques.</p>
 
                     </main>
 
