@@ -1768,12 +1768,16 @@ this makes law of Demeter significantly less relevant.</p>
 (For example, an <a href="https://www.data-structures-in-practice.com/intrusive-linked-lists/">intrusive linked list</a> deliberately exposes internal pointers to optimize performance)</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-7-error-handling"><a class="header" href="#chapter-7-error-handling">Chapter 7: Error Handling</a></h1>
-<p>The chapter is written by Michael Feathers.</p>
+<p>The chapter is written by <a href="https://www.amazon.com/dp/0131177052">Michael Feathers</a>.</p>
 <p>I wish chapter has way more emphasis on how important error handling is.
 A significant portion of software bugs and catastrophic failures caused by improper error handling.
-As highlighted in a study by Ding Yuan et al. (2014 USENIX OSDI), most critical failures in distributed systems are triggered by errors in error handling code.</p>
+As highlighted in a study by <a href="https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-yuan.pdf">Ding Yuan et al. (2014 USENIX OSDI)</a>:</p>
+<blockquote>
+<p>We found the majority of catastrophic failures could easily have been prevented by performing simple testing on error handling code – the last line of defense – even without an understanding of the software design</p>
+<p>from <a href="https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-yuan.pdf">Simple Testing Can Prevent Most Critical Failures</a></p>
+</blockquote>
 <h1 id="use-exceptions-rather-than-return-codes"><a class="header" href="#use-exceptions-rather-than-return-codes">Use Exceptions Rather Than Return Codes</a></h1>
-<p>This repeats advice from "Prefer Exceptions to Returning Error Codes", but provides an improved example with better logging practices:</p>
+<p>This reiterates advice from <a href="./chapter_37.html">"Prefer Exceptions to Returning Error Codes"</a>, but provides an improved example with better logging practices:</p>
 <pre><code class="language-java">public class DeviceController {
     public void sendShutDown() {
         DeviceHandle handle = getHandle(DEV1);
@@ -1795,72 +1799,85 @@ As highlighted in a study by Ding Yuan et al. (2014 USENIX OSDI), most critical 
     }
 }
 
-public void sendShutDown() {
-    try {
-        tryToShutDown();
-    } catch (DeviceShutDownError e) {
-        logger.log(e);
+// proposed to be rewritten to:
+
+public class DeviceController {
+//...
+    public void sendShutDown() {
+        try {
+            tryToShutDown();
+        } catch (DeviceShutDownError e) {
+            logger.log(e);
+        }
     }
+
+    private void tryToShutDown() throws DeviceShutDownError {
+        DeviceHandle handle = getHandle(DEV1);
+        DeviceRecord record = retrieveDeviceRecord(handle);
+
+        pauseDevice(handle);
+        clearDeviceWorkQueue(handle);
+        closeDevice(handle);
+    }
+
+    private DeviceHandle getHandle(DeviceID id) {
+        //...
+        throw new DeviceShutDownError("Invalid handle for: " + id.toString());
+        //...
+    }
+//...
 }
 </code></pre>
 <p>Why Logging Matters:</p>
-<p>Proper logging is a cornerstone of effective error handling. It's not a minor point—it’s what distinguishes maintainable software from unmanageable systems. Always include:</p>
+<p>Proper logging is a cornerstone of effective error handling. It's not a minor point — it's what distinguishes maintainable software from unmanageable one.</p>
+<p>The book lists down-sides of error codes:</p>
 <ul>
-<li>The context of the failure: What operation was attempted? What were the inputs?</li>
-<li>The full stack trace, not just the exception message.</li>
-</ul>
-<p>The mentioned down-sides of error codes:</p>
-<ul>
-<li>they clutter the call side:
-<ul>
-<li>the client code needs to check for errors immediately after the call</li>
-</ul>
-</li>
+<li>they clutter the call side, the client code needs to check for errors immediately</li>
 <li>it's easy to forget to handle error values</li>
 <li>logic is obscured by error handling</li>
 </ul>
-<p>The "easy to forget" part is the one that actually affects correctness of the code.</p>
-<p>In languages like Go the first point ("need to check immediately") is considered to be a benefit - the error handling is somewhat enforced and is always expected to visible in code.</p>
-<p>At the end, I believe the choice heavily depends on the application domain:</p>
-<ul>
-<li>For user-facing applications, exceptions often simplify error management.</li>
-<li>For safety-critical systems, using errors values and explicit error handling might be preferred for its visibility and enforced handling.</li>
-</ul>
+<p>All of this is true for typical java business app. But for critical systems, error handling should be built right into the main flow.</p>
+<p>In languages like Go,  the "need to check immediately" point is considered to be a benefit - the error handling is somewhat enforced and is always expected to visible in code.</p>
 <h2 id="use-unchecked-exceptions"><a class="header" href="#use-unchecked-exceptions">Use Unchecked Exceptions</a></h2>
-<p>This is the industry standard now. Over the years situation with checked exceptions became only worse in Java, with introduction of lambdas checked exceptions became even more annoying source of clutter.</p>
+<p>Unchecked exceptions had won.
+In Java, checked exceptions have only gotten worse, especially since lambdas make them even more unpleasant source of clutter.</p>
 <pre><code class="language-java">userIds.stream().map(dao::findById).collect(Collectors.toList())
 </code></pre>
 <p>vs</p>
 <pre><code class="language-java">userIds.stream().map(id -&gt; {
     try {
         return dao.findById(id);
-    } catch(Exception e) {
+    } catch(SQLException e) {
         throw new RuntimeException(e);
     }
 }).collect(Collectors.toList())
 </code></pre>
-<p>The former version was already verbose, but with checked exceptions it becomes truly eye-sore. (compare with scala version: <code>userIds.map(dao.findById)</code>)</p>
-<p>However combination of "do not use errors as return values + use unchecked exceptions" essentially means that error handling is pushed out typesystem control. Errors and error handling will become not type safe and the compiler would not help you to check this aspect of your code.</p>
-<p>Ideally we want to be able to tell functions method that can fail from those that can't:</p>
+<p>The former version was already verbose, but checked exceptions makes it truly eye-sore. (compare with scala version: <code>userIds.map(dao.findById)</code>)</p>
+<p>However combination of</p>
+<p><code>"do not use errors as return values" + "use unchecked exceptions"</code></p>
+<p>means that error handling is pushed out compiler and typesystem control.
+Errors and error handling <em>won't be</em> type safe and the compiler <em>would not</em> help checking this aspect of the code.</p>
+<p>I don't agree with blank statement to always use unchecked exception.</p>
+<p>Ideally we want to be able to tell if a function can fail or not:</p>
 <pre><code class="language-java">public Long sum(List&lt;Long&gt; list);
 
-public BigDecimal sumSalaries(List&lt;EmployeeId&gt; list) throws SQLException;
+public BigDecimal sumSalaries(List&lt;Long&gt; employeeIds) throws SQLException;
 </code></pre>
-<p>The problem with checked exceptions that they leak implementation details:</p>
+<p>The big problem with checked exceptions is that they leak implementation details:</p>
 <pre><code class="language-java">interface UserDAO {
     Optional&lt;User&gt; findById(String username) throws SQLException;
 }
 </code></pre>
-<p>UserDAO is an abstraction that suppose to hide how persistence is achieved and should allow changing storage engines transparently to the code that uses it. Also DAO code can make a decision based on SQLException level, upper layers of the app most likely not have enough context.</p>
-<p>Enterprise grade solution to this problem is to have dedicated exception types for each layer:</p>
+<p>UserDAO is an abstraction that should hide persistance details. And switching storage engines should be transparent for the upper layers.
+Plus, only DAO layer can make a decision based on SQLException level, upper layers most likely don't have enough context.</p>
+<p>Enterprise grade solution is to have layered exceptions:</p>
 <pre><code class="language-java">class DAOException extends Exception
 
 interface UserDAO {
     Optional&lt;User&gt; findById(String username) throws DAOException;
 }
-</code></pre>
-<p>This introduces a lot of ceremony and boilerplate:</p>
-<pre><code class="language-java">class ServiceException extends Exception
+
+class ServiceException extends Exception
 
 class UserManager {
     private UserDAO userDAO;
@@ -1879,8 +1896,9 @@ class UserManager {
     }
 }
 </code></pre>
+<p>This is logically consistent approach, but requires <strong>a lot</strong> of boilerplate and ceremony. Depending on the application type this might be justified or not.</p>
 <h1 id="dont-pass-null--dont-return-null"><a class="header" href="#dont-pass-null--dont-return-null">Don't pass null / Don't return null</a></h1>
-<p>This advice that is hard to disagree with. When it comes to magic values, "null" is the king of magic.</p>
+<p>This advice that is hard to disagree with. "null" is one true magic value:</p>
 <pre><code class="language-java">jshell&gt; null instanceof String
 $1 ==&gt; false
 
@@ -1890,9 +1908,12 @@ $2 ==&gt; null
 jshell&gt; String str = null;
 str ==&gt; null
 </code></pre>
-<p>Despite null not being subtype of String, it can be casted to String without errors and even assigned without a cast. Magic!</p>
-<p>null and unchecked exceptions are pretty much ignored by type system. That's what makes them easy to use and hard to handle. They can be introduced in any code without change of signatures:</p>
-<pre><code class="language-java">public Long sum(List&lt;Long&gt; list) {
+<p>Despite null not being subtype of String, it can be casted to String without errors and even assigned without a cast. <strong>Magic!</strong></p>
+<p>null and unchecked exceptions are almost ignored by type system. That's what makes them easy to use and hard to handle.</p>
+<p>You pretty much always can introduce unsafe  (and logically backward incompartible) changes, without type system making a peep about it:</p>
+<div class="code-comparison">
+    <div class="code-column" >
+        <pre class="ignore"><code class="language-java">public Long sum(List<Long> list) {
    long sum = 0;
    for(Long i: list) {
        sum += i;
@@ -1900,9 +1921,10 @@ str ==&gt; null
    return sum; 
 }
 </code></pre>
-<p>to</p>
-<pre><code class="language-java">public Long sum(List&lt;Long&gt; list) {
-   if(random() &lt; 0.5) {
+    </div>
+    <div class="code-column">
+        <pre class="ignore"><code class="language-java">public Long sum(List<Long> list) {
+   if(random() < 0.5) {
        return null; // lol
    } else {
        throw new RuntimeException("OMEGA LOL");
@@ -1912,17 +1934,9 @@ str ==&gt; null
        sum += i;
    }
    return sum; 
-}
-</code></pre>
-<p>Since they can appear anywhere, some people fallback for some sort of defensive programming:</p>
-<pre><code class="language-java">public Long sum(List&lt;Long&gt; list) {
-    if (list == null) {
-        throw new IllegalArgumentException("list can not be null");
-    }
-    ...
-}
-</code></pre>
-<p>Replacing runtime NullPointerException with runtime IllegalArgumentException doesn't help with anything in majority of cases. Applying this consistently is also very tedious. So in big codebases with many people working on it you would result in only 1/3 of parameters being validated like this and the other part would do regular NPE.</p>
+}</code></pre>
+    </div>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-9-unit-tests"><a class="header" href="#chapter-9-unit-tests">Chapter 9: Unit Tests</a></h1>
 <div class="book-quote">
 What this team did not realize was that having dirty tests is equivalent to, if not worse than, having no tests.
