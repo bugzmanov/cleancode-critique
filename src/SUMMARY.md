@@ -15,7 +15,7 @@
 - [Chapter 4: Comments](chapter_4.md)
 - [Chapter 5: Formatting](chapter_5.md)
 - [Chapter 6: Objects and Data Structures](chapter_6.md)
-- [[DRAFT] Chapter 7: Error Handling](chapter_7.md)
+- [Chapter 7: Error Handling](chapter_7.md)
 - [Chapter 8: Boundaries]()
 - [Chapter 9: Unit Tests](chapter_9.md)
 - [[DRAFT] Chapter 10: Classes](chapter_10.md)

@@ -1,14 +1,18 @@
 # Chapter 7: Error Handling
 
-The chapter is written by Michael Feathers. 
+The chapter is written by [Michael Feathers](https://www.amazon.com/dp/0131177052).
 
 I wish chapter has way more emphasis on how important error handling is. 
 A significant portion of software bugs and catastrophic failures caused by improper error handling. 
-As highlighted in a study by Ding Yuan et al. (2014 USENIX OSDI), most critical failures in distributed systems are triggered by errors in error handling code.
+As highlighted in a study by [Ding Yuan et al. (2014 USENIX OSDI)](https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-yuan.pdf):
+
+> We found the majority of catastrophic failures could easily have been prevented by performing simple testing on error handling code – the last line of defense – even without an understanding of the software design
+>
+> from [Simple Testing Can Prevent Most Critical Failures](https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-yuan.pdf)
 
 # Use Exceptions Rather Than Return Codes
 
-This repeats advice from "Prefer Exceptions to Returning Error Codes", but provides an improved example with better logging practices: 
+This reiterates advice from ["Prefer Exceptions to Returning Error Codes"](./chapter_37.html), but provides an improved example with better logging practices: 
 
 ```java
 public class DeviceController {
@@ -32,39 +36,53 @@ public class DeviceController {
     }
 }
 
-public void sendShutDown() {
-    try {
-        tryToShutDown();
-    } catch (DeviceShutDownError e) {
-        logger.log(e);
+// proposed to be rewritten to:
+
+public class DeviceController {
+//...
+    public void sendShutDown() {
+        try {
+            tryToShutDown();
+        } catch (DeviceShutDownError e) {
+            logger.log(e);
+        }
     }
+
+    private void tryToShutDown() throws DeviceShutDownError {
+        DeviceHandle handle = getHandle(DEV1);
+        DeviceRecord record = retrieveDeviceRecord(handle);
+
+        pauseDevice(handle);
+        clearDeviceWorkQueue(handle);
+        closeDevice(handle);
+    }
+
+    private DeviceHandle getHandle(DeviceID id) {
+        //...
+        throw new DeviceShutDownError("Invalid handle for: " + id.toString());
+        //...
+    }
+//...
 }
 ```
 
 Why Logging Matters:
 
-Proper logging is a cornerstone of effective error handling. It's not a minor point—it’s what distinguishes maintainable software from unmanageable systems. Always include:
+Proper logging is a cornerstone of effective error handling. It's not a minor point — it's what distinguishes maintainable software from unmanageable one. 
 
-* The context of the failure: What operation was attempted? What were the inputs?
-* The full stack trace, not just the exception message.
-
-The mentioned down-sides of error codes:
-- they clutter the call side: 
-    - the client code needs to check for errors immediately after the call
+The book lists down-sides of error codes:
+- they clutter the call side, the client code needs to check for errors immediately
 - it's easy to forget to handle error values
 - logic is obscured by error handling
 
-The "easy to forget" part is the one that actually affects correctness of the code. 
+All of this is true for typical java business app. But for critical systems, error handling should be built right into the main flow.
 
-In languages like Go the first point ("need to check immediately") is considered to be a benefit - the error handling is somewhat enforced and is always expected to visible in code.
-
-At the end, I believe the choice heavily depends on the application domain:
-* For user-facing applications, exceptions often simplify error management.
-* For safety-critical systems, using errors values and explicit error handling might be preferred for its visibility and enforced handling.
+In languages like Go,  the "need to check immediately" point is considered to be a benefit - the error handling is somewhat enforced and is always expected to visible in code.
 
 ## Use Unchecked Exceptions
 
-This is the industry standard now. Over the years situation with checked exceptions became only worse in Java, with introduction of lambdas checked exceptions became even more annoying source of clutter.
+Unchecked exceptions had won. 
+In Java, checked exceptions have only gotten worse, especially since lambdas make them even more unpleasant source of clutter.
 
 ```java
 userIds.stream().map(dao::findById).collect(Collectors.toList())
@@ -76,25 +94,32 @@ vs
 userIds.stream().map(id -> {
     try {
         return dao.findById(id);
-    } catch(Exception e) {
+    } catch(SQLException e) {
         throw new RuntimeException(e);
     }
 }).collect(Collectors.toList())
 ```
 
-The former version was already verbose, but with checked exceptions it becomes truly eye-sore. (compare with scala version: `userIds.map(dao.findById)`)
+The former version was already verbose, but checked exceptions makes it truly eye-sore. (compare with scala version: `userIds.map(dao.findById)`)
 
-However combination of "do not use errors as return values + use unchecked exceptions" essentially means that error handling is pushed out typesystem control. Errors and error handling will become not type safe and the compiler would not help you to check this aspect of your code.
+However combination of
 
-Ideally we want to be able to tell functions method that can fail from those that can't:
+```"do not use errors as return values" + "use unchecked exceptions"```
+
+means that error handling is pushed out compiler and typesystem control. 
+Errors and error handling *won't be* type safe and the compiler *would not* help checking this aspect of the code.
+
+I don't agree with blank statement to always use unchecked exception. 
+
+Ideally we want to be able to tell if a function can fail or not:
 
 ```java
 public Long sum(List<Long> list);
 
-public BigDecimal sumSalaries(List<EmployeeId> list) throws SQLException;
+public BigDecimal sumSalaries(List<Long> employeeIds) throws SQLException;
 ```
 
-The problem with checked exceptions that they leak implementation details:
+The big problem with checked exceptions is that they leak implementation details:
 
 ```java
 interface UserDAO {
@@ -102,9 +127,10 @@ interface UserDAO {
 }
 ```
 
-UserDAO is an abstraction that suppose to hide how persistence is achieved and should allow changing storage engines transparently to the code that uses it. Also DAO code can make a decision based on SQLException level, upper layers of the app most likely not have enough context.
+UserDAO is an abstraction that should hide persistance details. And switching storage engines should be transparent for the upper layers. 
+Plus, only DAO layer can make a decision based on SQLException level, upper layers most likely don't have enough context.
 
-Enterprise grade solution to this problem is to have dedicated exception types for each layer:
+Enterprise grade solution is to have layered exceptions: 
 
 ```java
 class DAOException extends Exception
@@ -112,11 +138,7 @@ class DAOException extends Exception
 interface UserDAO {
     Optional<User> findById(String username) throws DAOException;
 }
-```
 
-This introduces a lot of ceremony and boilerplate:
-
-```java
 class ServiceException extends Exception
 
 class UserManager {
@@ -137,9 +159,12 @@ class UserManager {
 }
 ```
 
+This is logically consistent approach, but requires **a lot** of boilerplate and ceremony. Depending on the application type this might be justified or not.
+
+
 # Don't pass null / Don't return null
 
-This advice that is hard to disagree with. When it comes to magic values, "null" is the king of magic.
+This advice that is hard to disagree with. "null" is one true magic value:
 
 ```java
 jshell> null instanceof String
@@ -152,24 +177,25 @@ jshell> String str = null;
 str ==> null
 ```
 
-Despite null not being subtype of String, it can be casted to String without errors and even assigned without a cast. Magic!
+Despite null not being subtype of String, it can be casted to String without errors and even assigned without a cast. **Magic!**
 
-null and unchecked exceptions are pretty much ignored by type system. That's what makes them easy to use and hard to handle. They can be introduced in any code without change of signatures:
+null and unchecked exceptions are almost ignored by type system. That's what makes them easy to use and hard to handle. 
 
-```java
-public Long sum(List<Long> list) {
+You pretty much always can introduce unsafe  (and logically backward incompartible) changes, without type system making a peep about it:
+
+<div class="code-comparison">
+    <div class="code-column" >
+        <pre class="ignore"><code class="language-java">public Long sum(List<Long> list) {
    long sum = 0;
    for(Long i: list) {
        sum += i;
    }
    return sum; 
 }
-```
-
-to
-
-```java
-public Long sum(List<Long> list) {
+</code></pre>
+    </div>
+    <div class="code-column">
+        <pre class="ignore"><code class="language-java">public Long sum(List<Long> list) {
    if(random() < 0.5) {
        return null; // lol
    } else {
@@ -180,18 +206,7 @@ public Long sum(List<Long> list) {
        sum += i;
    }
    return sum; 
-}
-```
+}</code></pre>
+    </div>
+</div>
 
-Since they can appear anywhere, some people fallback for some sort of defensive programming:
-
-```java
-public Long sum(List<Long> list) {
-    if (list == null) {
-        throw new IllegalArgumentException("list can not be null");
-    }
-    ...
-}
-```
-
-Replacing runtime NullPointerException with runtime IllegalArgumentException doesn't help with anything in majority of cases. Applying this consistently is also very tedious. So in big codebases with many people working on it you would result in only 1/3 of parameters being validated like this and the other part would do regular NPE.
