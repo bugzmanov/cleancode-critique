@@ -736,6 +736,12 @@ public static String render(PageData pageData, boolean isSuite) throws Exception
 private static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception 
 private static String failSafeRenderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception 
 </code></pre>
+<p><strong>PS</strong> This is one of the beliefs that Martin still holds, unfortunately:</p>
+<center>
+    <blockquote class="twitter-tweet" data-media-max-width="560"><p lang="en" dir="ltr">How Small Should a Function be? By Uncle Bob <a href="https://t.co/hhk61RpXSp">pic.twitter.com/hhk61RpXSp</a></p>&mdash; Mohit Mishra (@chessMan786) <a href="https://twitter.com/chessMan786/status/1867877505933471823?ref_src=twsrc%5Etfw">December 14, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</center>
+<br/>
+<br/>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="one-level-of-abstraction-per-function"><a class="header" href="#one-level-of-abstraction-per-function">One Level of Abstraction per Function</a></h2>
 <p>This is a good rule, but as an author of the code you have always a choice: <strong>what is your abstraction</strong>.</p>
 <pre><code class="language-java">public static String testableHtml(PageData pageData, boolean includeSuiteSetup) {
@@ -3227,45 +3233,6 @@ String directory = arg.getString(’d’);
 <li>How to make errors more specific</li>
 </ul>
 <p>It's hard to tell why was the Martin's initial draft so far off.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="snippets-for-visual-components"><a class="header" href="#snippets-for-visual-components">Snippets for visual components</a></h2>
-<hr />
-<div class="code-block-wrapper">
-<pre><code class="language-java"> 
-public class GuessStatisticsMessage {
-    <span class="code-comment-trigger">►</span><span class="reviewable-line">private String number;<span class="code-comment">These fields introduce mutable state that could be local variables. This makes the class not thread-safe and harder to reason about.</span></span>
-    private String verb;
-    private String pluralModifier;
-&nbsp;
-    public String make(char candidate, int count) {
-        createPluralDependentMessageParts(count);
-        return String.format(
-                "There %s %s %s%s", 
-                verb, number, candidate, pluralModifier );
-    }
-}
-</code></pre>
-</div>
---------
-<h2 id="text-to-be-killed"><a class="header" href="#text-to-be-killed">Text to be killed</a></h2>
-<p>The idea of DSL hasn't been introduced in the book yet. It will come only in chapter 10 ("Systems Need Domain-Specific Languages") and it's a bit of a mess.</p>
-<p>"Clean code" is not the best book to learn about DSLs. You might get better understanding by reading:</p>
-<ul>
-<li><a href="https://martinfowler.com/books/dsl.html">Domain Specific Languages by by Martin Fowler, with Rebecca Parsons</a> - comprehensive intro to the topic in a Martin Fowler style</li>
-<li><a href="https://www.manning.com/books/dsls-in-action">DSL in Action by Debasish Ghosh</a> - more practical and focused on internal DSLs in different host languages</li>
-</ul>
-<p>DSLs are powerful. And it is important to know when to use them and when to stay away.</p>
-<blockquote>
-<p>The rule of least power is a design principle that "suggests choosing the least powerful language suitable for a given purpose"</p>
-<p><a href="https://en.wikipedia.org/wiki/Rule_of_least_power">Rules of least power</a></p>
-</blockquote>
-<p>Introduction of any DSL has a noticeable cost:</p>
-<ul>
-<li>higher learning curve</li>
-<li>higher maintenance cost: more code, more entities, more corner cases to support the langugae</li>
-<li>potentially worse performance</li>
-</ul>
-<p>And in this example, introduced DSL brings zero value. It has a very limited scope, it's not composable and not extendable. It solves a trivial problem.
-I can understand the desire to show off, but in a large code base isolated DSLs like this one would grow like warts.</p>
 
                     </main>
 
