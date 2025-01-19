@@ -38,3 +38,12 @@ private static String failSafeRenderPageWithSetupsAndTeardowns(PageData pageData
 ```
 
 
+**PS** This is one of the beliefs that Martin still holds, unfortunately:
+
+<center>
+    <blockquote class="twitter-tweet" data-media-max-width="560"><p lang="en" dir="ltr">How Small Should a Function be? By Uncle Bob <a href="https://t.co/hhk61RpXSp">pic.twitter.com/hhk61RpXSp</a></p>&mdash; Mohit Mishra (@chessMan786) <a href="https://twitter.com/chessMan786/status/1867877505933471823?ref_src=twsrc%5Etfw">December 14, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</center>
+
+<br/>
+<br/>
+

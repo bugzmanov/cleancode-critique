@@ -25,6 +25,4 @@
 - [[DRAFT] Chapter 14: Successive Refinement](chapter_14.md)
 - [Chapter 15: JUnit Internals]()
 - [Chapter 16: Refactoring SerialDate]()
--------
-- [Drafts](drafts.md)
 
