@@ -153,7 +153,7 @@ The <span style="color: red">bad</span>:
 
 Big drawback of this global mutable state - now tests can not be run in parallel. Hence the execution of these 3 tests will take 3x more time. 
 
-Another case of ["'Clean' Code, Horrible Performance"](https://www.computerenhance.com/p/clean-code-horrible-performance) ? 
+Another case of ["'Clean' Code, Horrible Performance"](https://www.computerenhance.com/p/clean-code-horrible-performance).
 
 This is self-inflicted harm from a painful idea that no parameters is always better than 1+.
 
@@ -275,18 +275,61 @@ StringBuffers are a bit ugly.
 </div>
 
 Not only are StringBuffers ugly, but they’re also slow (the book shows it age). StringBuffer is synchronized for multi-threaded access, adding unnecessary overhead. 
-Fortunately, modern javac compiler can optimize the `getState` method to use StringBuilder instead.
+Fortunately, modern javac compiler can optimize sligtly modified version of `getState` method to use [the most optimal stategy](https://www.baeldung.com/java-string-concatenation-invoke-dynamic):
 
-```java
-public String getState() {
-    return (heater ? "H" : "h") + 
-            (blower ? "B" : "b") +
-            (cooler ? "C" : "c") +
-            (hiTempAlarm ? "H" : "h") +
-            (loTempAlarm ? "L" : "l");
-}
-```
-
+<div class="code-comparison">
+    <div class="code-column" style="flex:0">
+        <div class="code-column-title">Java Code: </div>
+        <pre class="ignore"><code class="language-java">public String getState() {
+  return (heater ? "H" : "h") + 
+          (blower ? "B" : "b") +
+          (cooler ? "C" : "c") +
+          (hiTempAlarm ? "H" : "h") +
+          (loTempAlarm ? "L" : "l");
+ }</code></pre>
+    </div>
+    <div class="code-column">
+        <div class="code-column-title">Decompiled with javap (jdk 21):</div>
+        <pre class="ignore"><code class="language-java"> public java.lang.String getState();
+  descriptor: ()Ljava/lang/String;
+  flags: (0x0001) ACC_PUBLIC
+  Code:
+    stack=5, locals=1, args_size=1
+       0: aload_0
+       1: getfield      #7                  // Field heater:Z
+       4: ifeq          12
+       7: ldc           #13                 // String H
+       9: goto          14
+      12: ldc           #15                 // String h
+      14: aload_0
+      15: getfield      #17                 // Field blower:Z
+      18: ifeq          26
+      21: ldc           #20                 // String B
+      23: goto          28
+      26: ldc           #22                 // String b
+      28: aload_0
+      29: getfield      #24                 // Field cooler:Z
+      32: ifeq          40
+      35: ldc           #27                 // String C
+      37: goto          42
+      40: ldc           #29                 // String c
+      42: aload_0
+      43: getfield      #31                 // Field hiTempAlarm:Z
+      46: ifeq          54
+      49: ldc           #13                 // String H
+      51: goto          56
+      54: ldc           #15                 // String h
+      56: aload_0
+      57: getfield      #34                 // Field loTempAlarm:Z
+      60: ifeq          68
+      63: ldc           #37                 // String L
+      65: goto          70
+      68: ldc           #39                 // String l
+      <span class="code-comment-trigger">►</span><span class="reviewable-line">70: invokedynamic #41,  0 <span class="code-comment">Details on <a href="https://www.baeldung.com/java-string-concatenation-invoke-dynamic">how it works</a></span></span>            // InvokeDynamic #0:makeConcatWithConstants: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+      75: areturn
+        </code></pre>
+    </div>
+</div>
 
 <div class="book-quote">
 There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
@@ -294,5 +337,5 @@ There are things that you might never do in a production environment that are pe
 
 No. Test performance absolutely matters — especially at scale.
 
-Slow tests can and will kill development speed. Ignoring performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀
+Slow tests can and **will** kill development speed. Ignoring tests performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀
 
