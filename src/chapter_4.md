@@ -10,11 +10,11 @@ The proper use of comments is to compensate for our failure to express ourself i
 So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't some way to turn the tables and express yourself in code. Every time you express yourself in code, you should pat yourself on the back. Every time you write a comment, you should grimace and feel the failure of your ability of expression.
 </div>
 
-This might be the book's most damaging idea: comments are failure to write good code. 
+This is the books second worst idea: comments are failure to write good code. 
 
 I believe this is the main takeaway that developers get out the chapter and the book.
 Declaring "comments are failure" has led developers to avoid a crucial tool for design, abstraction, and documentation. 
-It's contributed to a culture where comments are undervalued and often ignored (notice how IDEs gray them out by default).
+It's contributed to a culture where comments are undervalued and often ignored (notice how IDEs gray them out by default, even when they contain crucial design information or provide essential context).
 
 Martin implicitly promotes "self-documenting code." But code alone can never provide all context. 
 Even perfect code can only show what's there - not what's deliberately excluded or what was considered and rejected.
@@ -219,7 +219,7 @@ private static boolean notCrossed(int i) {
 }
 ```
 
-Compare: <code class="language-java">if (notCrossed(i))</code> &nbsp; **vs** &nbsp; <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable? 
+Compare: <code class="language-java">if (notCrossed(i))</code> &nbsp; **vs** &nbsp; <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable? <br/>
 If anything, now he have polluted the domain with semi-similar words: 
 * not crossed 
 * crossed out 

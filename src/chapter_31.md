@@ -1,9 +1,9 @@
 ## Small!
 
 <span style="font-size:80px; color: red;"> NO! </span> 
-This is one of the two most harmful ideas in Clean Code (the second one is ["Comments are a failures"](./chapter_4.html)). 
-Bazzilion small functions has become a trademark of "clean-coders" and it fundamentally misunderstands why we break down code.
-This is the most damaging idea in this book. 
+This is one of the two most harmful ideas in Clean Code. 
+Bazzilion small functions has become a trademark of "clean-coders" and it fundamental misunderstanding why we break down code.<br/>
+(the second worst idea of the book is that ["Comments are a failures"](./chapter_4.html)). 
 
 Breaking a system into pieces is an extremely useful technique for:
 - Building reusable components
@@ -27,11 +27,11 @@ To understand a system, you have to deal with global complexity - the sum of all
 Most of the time, splitting a function into tiny pieces doesn’t improve much. 
 This is like cutting a pizza into smaller slices and claiming you've reduced the calories.
 
-My rule of thumb: splitting code should reduce global complexity or code size or both. 
+My rule of thumb: splitting code should reduce global complexity or code size (preferrably both). 
 If breaking something into smaller pieces makes the overall system harder to understand and/or adds more lines of code, you’ve just made things worse.
 
 There’s also the problem of running out of good names when you create too many small functions. 
-This leads to long, descriptive names that actually make code harder to read:
+This leads to long, over-descriptive names that actually make code harder to read (more on this later):
 
 ```java
 // an example, not from the book

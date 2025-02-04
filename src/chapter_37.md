@@ -45,7 +45,7 @@ Never write logging like this. Even as a joke. Good log messages must include:
 * Outcome or reason for failure
 
 Also error handling must be cosistent! 
-The provided code returns E_ERROR only in case if first failurer, errors to `deleteReference` and `deleteKey` are essentialy ignored.
+The provided code returns E_ERROR only in case of first failure, errors to `deleteReference` and `deleteKey` are essentialy ignored.
 
 Martin's "improved" version:
 
@@ -79,7 +79,7 @@ logger.log("Got an error while deleting page: " + page, e);
 
 This includes operation context, parameters, and stack traces <span style="font-size:2rem"> 😍 </span>
 
-But notice: the refactored version silently swallows ALL errors. 
+But notice: the refactored version silently swallows ALL errors now. 
 
 ```java
 public void delete(Page page) {
@@ -168,7 +168,7 @@ public void delete(Page page) {
 }
 ```
 
-Ok, maybe error silencing is stil noteceable. 
+Ok, maybe error silencing is stil noteceable. But you can not know for sure without checking `logError` implementation.
 
 `deletePageAndAllReferences` clearly is not doing 1 thing only, is it?<br/>
 I think the name is not descriptive enough, it should be `deletePageAndAllReferencesAndPageKey`. ***/s***

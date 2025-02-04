@@ -11,7 +11,7 @@ This lacks crucial nuance: messy tests that actually test software are better th
 To repeat the example of when that is true: [Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests](https://news.ycombinator.com/item?id=18442941) <br/>
 Oracle Database is a very reliable software (as of 2024), it comes at the cost of thousands of people suffering through the setup, but as a customer I enjoy its robustness.
 
-However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks. Those are indeed often messy is useless.
+However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks. Those are indeed often messy and often useless.
 
 The chapter highlights two competing approaches through refactoring examples.
 
@@ -336,7 +336,7 @@ Fortunately, modern javac compiler can optimize sligtly modified version of `get
 There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
 </div>
 
-Wrong. Test performance is crucial at scale. Slow tests mean:
+No. Test performance matters. Especcially at scale.
 
 Slow tests can and **will** kill development speed. Ignoring tests performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀
 

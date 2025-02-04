@@ -2,8 +2,8 @@
 
 This chapter is an example of how he arrives to "clean code" solution for a specific task.
 
-When I first read the book in 2009 I've loved it. 
-It felt like the best programming book I'd ever seen.
+When I first read the book in 2009 I loved it. 
+It felt like the best programming book.
 But even then, this chapter left me with an uneasy feeling about his solution. I spent a lot of time re-reading it, thinking I was too junior to understand why it was good. 
 15 years later I still don't like his solution, but now I can explain why.
 
@@ -355,7 +355,7 @@ It got issues:
   Why? 
   Imagine if there was a tool that would allow to document such design decisions in code.. That would be so convinient. Unfortunately this tool doesn't exist. /s
 - Has weirdly specific error types (why MISSING_DOUBLE and MISSING_INTEGER are separate?)
-- Has an ErrorCode.OK which makes no sense (what does this mean `throw new ArgsException(ErrorCode.OK)`?)
+- Has an ErrorCode.OK which makes no sense (what does this mean to `throw new ArgsException(ErrorCode.OK)`?)
 - The exception is mutable. It lets you change error details after creating the exception (why?)
 
 ## The TDD Problem
