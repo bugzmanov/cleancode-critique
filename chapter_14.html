@@ -187,8 +187,8 @@
                     <main>
                         <h1 id="chapter-14-successive-refinement"><a class="header" href="#chapter-14-successive-refinement">Chapter 14: Successive Refinement</a></h1>
 <p>This chapter is an example of how he arrives to "clean code" solution for a specific task.</p>
-<p>When I first read the book in 2009 I've loved it.
-It felt like the best programming book I'd ever seen.
+<p>When I first read the book in 2009 I loved it.
+It felt like the best programming book.
 But even then, this chapter left me with an uneasy feeling about his solution. I spent a lot of time re-reading it, thinking I was too junior to understand why it was good.
 15 years later I still don't like his solution, but now I can explain why.</p>
 <p>The task: create a command-line argument parser with this interface:</p>
@@ -507,7 +507,7 @@ This book mentions 2 times that it's preferrable to use exceptions instead of er
 Why?
 Imagine if there was a tool that would allow to document such design decisions in code.. That would be so convinient. Unfortunately this tool doesn't exist. /s</li>
 <li>Has weirdly specific error types (why MISSING_DOUBLE and MISSING_INTEGER are separate?)</li>
-<li>Has an ErrorCode.OK which makes no sense (what does this mean <code>throw new ArgsException(ErrorCode.OK)</code>?)</li>
+<li>Has an ErrorCode.OK which makes no sense (what does this mean to <code>throw new ArgsException(ErrorCode.OK)</code>?)</li>
 <li>The exception is mutable. It lets you change error details after creating the exception (why?)</li>
 </ul>
 <h2 id="the-tdd-problem"><a class="header" href="#the-tdd-problem">The TDD Problem</a></h2>

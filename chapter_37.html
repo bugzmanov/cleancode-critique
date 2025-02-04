@@ -223,7 +223,7 @@ if (deletePage(page) == E_OK) {
 <li>Outcome or reason for failure</li>
 </ul>
 <p>Also error handling must be cosistent!
-The provided code returns E_ERROR only in case if first failurer, errors to <code>deleteReference</code> and <code>deleteKey</code> are essentialy ignored.</p>
+The provided code returns E_ERROR only in case of first failure, errors to <code>deleteReference</code> and <code>deleteKey</code> are essentialy ignored.</p>
 <p>Martin's "improved" version:</p>
 <div class="book-quote">
 <pre><code class="language-java">
@@ -248,7 +248,7 @@ try {
 <pre><code class="language-java">logger.log("Got an error while deleting page: " + page, e);
 </code></pre>
 <p>This includes operation context, parameters, and stack traces <span style="font-size:2rem"> 😍 </span></p>
-<p>But notice: the refactored version silently swallows ALL errors.</p>
+<p>But notice: the refactored version silently swallows ALL errors now.</p>
 <pre><code class="language-java">public void delete(Page page) {
     try {
         deletePage(page);
@@ -324,7 +324,7 @@ This is just a code bloat.</p>
   }
 }
 </code></pre>
-<p>Ok, maybe error silencing is stil noteceable.</p>
+<p>Ok, maybe error silencing is stil noteceable. But you can not know for sure without checking <code>logError</code> implementation.</p>
 <p><code>deletePageAndAllReferences</code> clearly is not doing 1 thing only, is it?<br/>
 I think the name is not descriptive enough, it should be <code>deletePageAndAllReferencesAndPageKey</code>. <em><strong>/s</strong></em></p>
 <p>Clumsy names is one of the smells indicating that something is wrong with the model or with an abstraction.<br/>

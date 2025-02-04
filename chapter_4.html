@@ -192,10 +192,10 @@ Comments are not like Schindler's List. They are not "pure good." Indeed, commen
 <p>The proper use of comments is to compensate for our failure to express ourself in code. Note that I used the word failure. I meant it. Comments are always failures. We must have them because we cannot always figure out how to express ourselves without them, but their use is not a cause for celebration.</p>
 <p>So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't some way to turn the tables and express yourself in code. Every time you express yourself in code, you should pat yourself on the back. Every time you write a comment, you should grimace and feel the failure of your ability of expression.</p>
 </div>
-<p>This might be the book's most damaging idea: comments are failure to write good code.</p>
+<p>This is the books second worst idea: comments are failure to write good code.</p>
 <p>I believe this is the main takeaway that developers get out the chapter and the book.
 Declaring "comments are failure" has led developers to avoid a crucial tool for design, abstraction, and documentation.
-It's contributed to a culture where comments are undervalued and often ignored (notice how IDEs gray them out by default).</p>
+It's contributed to a culture where comments are undervalued and often ignored (notice how IDEs gray them out by default, even when they contain crucial design information or provide essential context).</p>
 <p>Martin implicitly promotes "self-documenting code." But code alone can never provide all context.
 Even perfect code can only show what's there - not what's deliberately excluded or what was considered and rejected.</p>
 <p>This anti-comment position drives verbose, over-descriptive naming:</p>
@@ -382,7 +382,7 @@ You will <em>have to</em> remedy this by using <strong>global</strong> lock, so 
     return crossedOut[i] == false;
 }
 </code></pre>
-<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable?
+<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable? <br/>
 If anything, now he have polluted the domain with semi-similar words:</p>
 <ul>
 <li>not crossed</li>

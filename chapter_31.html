@@ -187,9 +187,9 @@
                     <main>
                         <h2 id="small"><a class="header" href="#small">Small!</a></h2>
 <p><span style="font-size:80px; color: red;"> NO! </span>
-This is one of the two most harmful ideas in Clean Code (the second one is <a href="./chapter_4.html">"Comments are a failures"</a>).
-Bazzilion small functions has become a trademark of "clean-coders" and it fundamentally misunderstands why we break down code.
-This is the most damaging idea in this book.</p>
+This is one of the two most harmful ideas in Clean Code.
+Bazzilion small functions has become a trademark of "clean-coders" and it fundamental misunderstanding why we break down code.<br/>
+(the second worst idea of the book is that <a href="./chapter_4.html">"Comments are a failures"</a>).</p>
 <p>Breaking a system into pieces is an extremely useful technique for:</p>
 <ul>
 <li>Building reusable components</li>
@@ -212,10 +212,10 @@ This is the most damaging idea in this book.</p>
 To understand a system, you have to deal with global complexity - the sum of all the pieces <strong>and how they interact</strong>. A bad split can make global complexity worse.</p>
 <p>Most of the time, splitting a function into tiny pieces doesn’t improve much.
 This is like cutting a pizza into smaller slices and claiming you've reduced the calories.</p>
-<p>My rule of thumb: splitting code should reduce global complexity or code size or both.
+<p>My rule of thumb: splitting code should reduce global complexity or code size (preferrably both).
 If breaking something into smaller pieces makes the overall system harder to understand and/or adds more lines of code, you’ve just made things worse.</p>
 <p>There’s also the problem of running out of good names when you create too many small functions.
-This leads to long, descriptive names that actually make code harder to read:</p>
+This leads to long, over-descriptive names that actually make code harder to read (more on this later):</p>
 <pre><code class="language-java">// an example, not from the book
 public static String render(PageData pageData, boolean isSuite) throws Exception 
 private static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception 

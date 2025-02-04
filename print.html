@@ -706,9 +706,9 @@ Both <code>testableHtml</code> and <code>renderPageWithSetupsAndTeardowns</code>
 This hidden behavior, not the code structure, is the real problem.</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="small"><a class="header" href="#small">Small!</a></h2>
 <p><span style="font-size:80px; color: red;"> NO! </span>
-This is one of the two most harmful ideas in Clean Code (the second one is <a href="./chapter_4.html">"Comments are a failures"</a>).
-Bazzilion small functions has become a trademark of "clean-coders" and it fundamentally misunderstands why we break down code.
-This is the most damaging idea in this book.</p>
+This is one of the two most harmful ideas in Clean Code.
+Bazzilion small functions has become a trademark of "clean-coders" and it fundamental misunderstanding why we break down code.<br/>
+(the second worst idea of the book is that <a href="./chapter_4.html">"Comments are a failures"</a>).</p>
 <p>Breaking a system into pieces is an extremely useful technique for:</p>
 <ul>
 <li>Building reusable components</li>
@@ -731,10 +731,10 @@ This is the most damaging idea in this book.</p>
 To understand a system, you have to deal with global complexity - the sum of all the pieces <strong>and how they interact</strong>. A bad split can make global complexity worse.</p>
 <p>Most of the time, splitting a function into tiny pieces doesn’t improve much.
 This is like cutting a pizza into smaller slices and claiming you've reduced the calories.</p>
-<p>My rule of thumb: splitting code should reduce global complexity or code size or both.
+<p>My rule of thumb: splitting code should reduce global complexity or code size (preferrably both).
 If breaking something into smaller pieces makes the overall system harder to understand and/or adds more lines of code, you’ve just made things worse.</p>
 <p>There’s also the problem of running out of good names when you create too many small functions.
-This leads to long, descriptive names that actually make code harder to read:</p>
+This leads to long, over-descriptive names that actually make code harder to read (more on this later):</p>
 <pre><code class="language-java">// an example, not from the book
 public static String render(PageData pageData, boolean isSuite) throws Exception 
 private static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception 
@@ -1225,7 +1225,7 @@ if (deletePage(page) == E_OK) {
 <li>Outcome or reason for failure</li>
 </ul>
 <p>Also error handling must be cosistent!
-The provided code returns E_ERROR only in case if first failurer, errors to <code>deleteReference</code> and <code>deleteKey</code> are essentialy ignored.</p>
+The provided code returns E_ERROR only in case of first failure, errors to <code>deleteReference</code> and <code>deleteKey</code> are essentialy ignored.</p>
 <p>Martin's "improved" version:</p>
 <div class="book-quote">
 <pre><code class="language-java">
@@ -1250,7 +1250,7 @@ try {
 <pre><code class="language-java">logger.log("Got an error while deleting page: " + page, e);
 </code></pre>
 <p>This includes operation context, parameters, and stack traces <span style="font-size:2rem"> 😍 </span></p>
-<p>But notice: the refactored version silently swallows ALL errors.</p>
+<p>But notice: the refactored version silently swallows ALL errors now.</p>
 <pre><code class="language-java">public void delete(Page page) {
     try {
         deletePage(page);
@@ -1326,7 +1326,7 @@ This is just a code bloat.</p>
   }
 }
 </code></pre>
-<p>Ok, maybe error silencing is stil noteceable.</p>
+<p>Ok, maybe error silencing is stil noteceable. But you can not know for sure without checking <code>logError</code> implementation.</p>
 <p><code>deletePageAndAllReferences</code> clearly is not doing 1 thing only, is it?<br/>
 I think the name is not descriptive enough, it should be <code>deletePageAndAllReferencesAndPageKey</code>. <em><strong>/s</strong></em></p>
 <p>Clumsy names is one of the smells indicating that something is wrong with the model or with an abstraction.<br/>
@@ -1448,10 +1448,10 @@ Comments are not like Schindler's List. They are not "pure good." Indeed, commen
 <p>The proper use of comments is to compensate for our failure to express ourself in code. Note that I used the word failure. I meant it. Comments are always failures. We must have them because we cannot always figure out how to express ourselves without them, but their use is not a cause for celebration.</p>
 <p>So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't some way to turn the tables and express yourself in code. Every time you express yourself in code, you should pat yourself on the back. Every time you write a comment, you should grimace and feel the failure of your ability of expression.</p>
 </div>
-<p>This might be the book's most damaging idea: comments are failure to write good code.</p>
+<p>This is the books second worst idea: comments are failure to write good code.</p>
 <p>I believe this is the main takeaway that developers get out the chapter and the book.
 Declaring "comments are failure" has led developers to avoid a crucial tool for design, abstraction, and documentation.
-It's contributed to a culture where comments are undervalued and often ignored (notice how IDEs gray them out by default).</p>
+It's contributed to a culture where comments are undervalued and often ignored (notice how IDEs gray them out by default, even when they contain crucial design information or provide essential context).</p>
 <p>Martin implicitly promotes "self-documenting code." But code alone can never provide all context.
 Even perfect code can only show what's there - not what's deliberately excluded or what was considered and rejected.</p>
 <p>This anti-comment position drives verbose, over-descriptive naming:</p>
@@ -1638,7 +1638,7 @@ You will <em>have to</em> remedy this by using <strong>global</strong> lock, so 
     return crossedOut[i] == false;
 }
 </code></pre>
-<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable?
+<p>Compare: <code class="language-java">if (notCrossed(i))</code>   <strong>vs</strong>   <code class="language-java">if (crossedOut[i] == false)</code>. Is the first option really more readable? <br/>
 If anything, now he have polluted the domain with semi-similar words:</p>
 <ul>
 <li>not crossed</li>
@@ -1954,7 +1954,7 @@ What this team did not realize was that having dirty tests is equivalent to, if 
 <p>This lacks crucial nuance: messy tests that actually test software are better than no tests. <br/></p>
 <p>To repeat the example of when that is true: <a href="https://news.ycombinator.com/item?id=18442941">Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests</a> <br/>
 Oracle Database is a very reliable software (as of 2024), it comes at the cost of thousands of people suffering through the setup, but as a customer I enjoy its robustness.</p>
-<p>However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks. Those are indeed often messy is useless.</p>
+<p>However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks. Those are indeed often messy and often useless.</p>
 <p>The chapter highlights two competing approaches through refactoring examples.</p>
 <p>First, it presents an example of a refactoring that I mostly agree with:</p>
 <div class="code-comparison" >
@@ -2236,7 +2236,7 @@ Fortunately, modern javac compiler can optimize sligtly modified version of <cod
 <div class="book-quote">
 There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
 </div>
-<p>Wrong. Test performance is crucial at scale. Slow tests mean:</p>
+<p>No. Test performance matters. Especcially at scale.</p>
 <p>Slow tests can and <strong>will</strong> kill development speed. Ignoring tests performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-10-classes"><a class="header" href="#chapter-10-classes">Chapter 10: Classes</a></h1>
 <p>Written with Jeff Langr, this chapter reveals a fundamental contradiction in Clean Code's approach:</p>
@@ -2599,8 +2599,8 @@ Lays out theoretical foundation for multi-threaded programming.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-14-successive-refinement"><a class="header" href="#chapter-14-successive-refinement">Chapter 14: Successive Refinement</a></h1>
 <p>This chapter is an example of how he arrives to "clean code" solution for a specific task.</p>
-<p>When I first read the book in 2009 I've loved it.
-It felt like the best programming book I'd ever seen.
+<p>When I first read the book in 2009 I loved it.
+It felt like the best programming book.
 But even then, this chapter left me with an uneasy feeling about his solution. I spent a lot of time re-reading it, thinking I was too junior to understand why it was good.
 15 years later I still don't like his solution, but now I can explain why.</p>
 <p>The task: create a command-line argument parser with this interface:</p>
@@ -2919,7 +2919,7 @@ This book mentions 2 times that it's preferrable to use exceptions instead of er
 Why?
 Imagine if there was a tool that would allow to document such design decisions in code.. That would be so convinient. Unfortunately this tool doesn't exist. /s</li>
 <li>Has weirdly specific error types (why MISSING_DOUBLE and MISSING_INTEGER are separate?)</li>
-<li>Has an ErrorCode.OK which makes no sense (what does this mean <code>throw new ArgsException(ErrorCode.OK)</code>?)</li>
+<li>Has an ErrorCode.OK which makes no sense (what does this mean to <code>throw new ArgsException(ErrorCode.OK)</code>?)</li>
 <li>The exception is mutable. It lets you change error details after creating the exception (why?)</li>
 </ul>
 <h2 id="the-tdd-problem"><a class="header" href="#the-tdd-problem">The TDD Problem</a></h2>
