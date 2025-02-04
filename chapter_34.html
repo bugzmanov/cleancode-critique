@@ -190,12 +190,12 @@
 In Listing 3-7 I changed the name of our example function from testableHtml to SetupTeardownIncluder.render. This is a far better name because it better describes what the function does
 </div>
 <p>Nit-picking but <code>SetupTeardownIncluder.render</code> doesn't make much sense without reading the code. It's unclear why "Includer" should be rendering, and what does "rendering" mean for the "includer".</p>
-<p>Using a descriptive name is a good thing, but using description as a substitute for a name - not so much.</p>
+<p>Using descriptive names is good. Using descriptions as names isn't.</p>
 <div class="book-quote">
 Don't be afraid to make a name long.
 </div>
 <p>I think you should. Between using cryptic acronyms and writing "essay as a name" there is a balance to be found.</p>
-<p>There's scientific evidence that overly long words or word combinations increase both physical and mental effort when reading:</p>
+<p>There's scientific evidence that long words or word combinations increase both physical and mental effort when reading:</p>
 <blockquote>
 <p>"When we read, our eyes incessantly make rapid mechanical (i.e., not controlled by consciousness) movements, saccades. On average, their length is 7-9 letter spaces. At this time we do not receive new information."</p>
 <p>"During fixation, we get information from the perceptual span. The size of this area is relatively small, in the case of alphabetic orthographies (for example, in European languages) it starts from the beginning of the fixed word, but no more than 3-4 letter spaces to the left of the fixation point, and extends to about 14-15 letter spaces to the right of this point (in total 17-19 spaces)."</p>
@@ -205,7 +205,7 @@ Don't be afraid to make a name long.
 </center> 
 <p>From: <a href="https://optimal-codestyle.github.io/">Optimal Code Style</a></p>
 </blockquote>
-<p>This means names longer than <code>~15</code> characters become harder to process at a glance. For instance, compare these:</p>
+<p>Names longer than <code>~15</code> characters become harder to process. Compare:</p>
 <ul>
 <li>
 <p><code>PersistentItemRecordConfig</code></p>
@@ -239,7 +239,7 @@ Don't be afraid to make a name long.
 </blockquote>
 <br/>
 <hr />
-<p>12/29/2024 Update:</p>
+<h3 id="a-note-on-experience-levels"><a class="header" href="#a-note-on-experience-levels">A Note on Experience Levels</a></h3>
 <p>I've recently read about <a href="https://buttondown.com/hillelwayne/archive/stroustrops-rule/">"Stroustrup's Rule"</a>.
 The short version sounds like: <strong>"Beginners need explicit syntax, experts want terse syntax."</strong></p>
 <blockquote>
@@ -247,8 +247,8 @@ The short version sounds like: <strong>"Beginners need explicit syntax, experts 
 <p>(One example I like: which is more explicit, user_id or user_identifier? Which do experienced programmers prefer?)</p>
 <p>From  <a href="https://buttondown.com/hillelwayne/archive/stroustrops-rule/">"Stroustrup's Rule" by  Hillel Wayne</a></p>
 </blockquote>
-<p>That is a good insight. <br/> And yet I think when it comes to (descriptive) naming, it is more appropriate to put the information required for "begginers" (those who are unfamiliar with a code base) into comments.
-This way "experts"  don't need to suffer from visual clutter.</p>
+<p>That is a good insight. <br/> And yet it is more appropriate to put the information required for "begginers" (those who are unfamiliar with a code base) into comments.
+This way "experts" don't need to suffer from visual clutter.</p>
 
                     </main>
 

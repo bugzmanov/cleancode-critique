@@ -211,18 +211,20 @@ if (deletePage(page) == E_OK) {
         THESE 👏 ARE 👏 TERRIBLE 👏 LOG 👏 MESSAGES!
     </p>
 </div>
-<p>They lack any context to the degree of being useless. Imagine debugging production issue at 3am and the only thing you see in log is this:</p>
+<p>They lack any context to the degree of being useless.</p>
+<p>Imagine debugging production issue at 3am and seeing:</p>
 <pre><code>2024-01-01T02:45:00 - delete failed
 </code></pre>
 <p>Well, thank you dear sir cleancoder. Now I have everything I need!</p>
-<p>Never write logging like this. Even as a joke. Good log messages should always provide context, including:</p>
+<p>Never write logging like this. Even as a joke. Good log messages must include:</p>
 <ul>
-<li>What operation was being performed</li>
-<li>The input parameters</li>
-<li>The outcome or reason for failure</li>
+<li>The operation was being performed</li>
+<li>Input parameters</li>
+<li>Outcome or reason for failure</li>
 </ul>
-<p>Error handling must be cosistent! The provided code would return E_ERROR to the client code only in case 1 of 3 deletes fails: errors to <code>deleteReference</code> and <code>deleteKey</code> are essentialy ignored.</p>
-<p>Martin provides improved version:</p>
+<p>Also error handling must be cosistent!
+The provided code returns E_ERROR only in case if first failurer, errors to <code>deleteReference</code> and <code>deleteKey</code> are essentialy ignored.</p>
+<p>Martin's "improved" version:</p>
 <div class="book-quote">
 <pre><code class="language-java">
 try {
@@ -239,14 +241,14 @@ try {
         ALWAYS 👏 LOG 👏 STACK-TRACES!
     </p>
 </div>
-<p>The bear minimum is:</p>
+<p>At minimum:</p>
 <pre><code class="language-java">logger.log(e.getMessage(), e);
 </code></pre>
 <p>or better yet:</p>
 <pre><code class="language-java">logger.log("Got an error while deleting page: " + page, e);
 </code></pre>
-<p>This log has description of the operation, it has details of the context, it has stack-traces <span style="font-size:2rem"> = 😍 </span></p>
-<p>Notice the big change in refactored version: now ALL errors are essentially ignored and not communicated to the client code.</p>
+<p>This includes operation context, parameters, and stack traces <span style="font-size:2rem"> 😍 </span></p>
+<p>But notice: the refactored version silently swallows ALL errors.</p>
 <pre><code class="language-java">public void delete(Page page) {
     try {
         deletePage(page);
@@ -257,7 +259,7 @@ try {
     }
 }
 </code></pre>
-<p>The delete operation will always successfully return. Almost always this is a design mistake.</p>
+<p>The operation always "succeeds", even when it fails. Almost always this is a design mistake.</p>
 <p>Best Practices for Exception Handling:</p>
 <ul>
 <li><strong>Let Exceptions Propagate When Appropriate</strong>: If the code catching the exception doesn’t know how to handle it, it should let it propagate to a higher layer</li>
@@ -274,10 +276,8 @@ try {
     }
 }
 </code></pre>
-<p>[todo: talk about types and exceptions]</p>
-<p>[todo: talk about errors as values]</p>
 <h3 id="extract-trycatch-blocks"><a class="header" href="#extract-trycatch-blocks">Extract Try/Catch Blocks</a></h3>
-<p>Martin proposes splitting the delete method into smaller pieces:</p>
+<p>Martin suggests splitting the delete method:</p>
 <div class="code-comparison">
     <div class="code-column" style="flex:0">
         <div class="code-column-title">Original Code: </div>
@@ -334,7 +334,7 @@ Don't create useless methods just satisfy arbitary rule that doesn't have any va
 <p>"If it's hard to find a simple name for a variable or method that creates a clear image of the underlying object, that's a hint that the underlying object may not have a clean design."</p>
 <p>from <a href="https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201">Philosophy Of Software Design</a></p>
 </blockquote>
-<p>In addition:</p>
+<p>The extracted logging method makes things worse:</p>
 <pre><code class="language-java">private void logError(Exception e) {
     logger.log(e.getMessage());
 }
@@ -342,10 +342,10 @@ Don't create useless methods just satisfy arbitary rule that doesn't have any va
 <p>Is an example that bad abstractions can do more harm than good. It fails to capture meaningful context or stack traces.
 The more this helper being used in the app, the harder it will be to manage this application.</p>
 <hr />
-<h3 id="error-handling-approaches-todo-polish"><a class="header" href="#error-handling-approaches-todo-polish">Error Handling Approaches (TODO: POLISH!)</a></h3>
+<h3 id="error-handling-approaches"><a class="header" href="#error-handling-approaches">Error Handling Approaches</a></h3>
 <p>Ok. Now lets talk about exception vs error codes.</p>
 <p>Code needs a channel to communicate errors and that channel needs to be different from channel of communicating normal results.
-Martin have avoided this discussion by using methods that have nothing to communicate in successfull scenario.</p>
+Martin have avoided this discussion by using methods that have nothing to communicate via normal channel.</p>
 <p>Java’s exception handling is powerful and widely supported, offering features like:</p>
 <ul>
 <li>Stack traces for debugging</li>

@@ -186,21 +186,19 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="chapter-4-comments"><a class="header" href="#chapter-4-comments">Chapter 4: Comments</a></h1>
-<p>The chapter about comments is not inherently bad - it contains enough caveats and examples of bad vs good comments. However, Martin poisons the well right in the beginning of the chapter:</p>
+<p>The chapter about comments is not inherently bad - it contains enough caveats and examples of bad vs good comments. However, Martin poisons the well from the start:</p>
 <div class="book-quote">
 Comments are not like Schindler's List. They are not "pure good." Indeed, comments are, at best, a necessary evil. If our programming languages were expressive enough, or if we had the talent to subtly wield those languages to express our intent, we would not need comments very much—perhaps not at all.
 <p>The proper use of comments is to compensate for our failure to express ourself in code. Note that I used the word failure. I meant it. Comments are always failures. We must have them because we cannot always figure out how to express ourselves without them, but their use is not a cause for celebration.</p>
 <p>So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't some way to turn the tables and express yourself in code. Every time you express yourself in code, you should pat yourself on the back. Every time you write a comment, you should grimace and feel the failure of your ability of expression.</p>
 </div>
-<p>This is pretty damaging and I believe this is the main takeaway that developers get out the chapter.
-It's the second worst idea of this book: comments are failure to write good code.
-This hyperbolic stance had influenced many developers to avoid creating and using the useful tool. The tool of design, abstraction and documentation.
-This view has contributed to a broader culture where comments are undervalued and often ignored (note how comments are grayed out in most modern IDEs).</p>
-<p>Martin is low key proposing idea of self-documenting code. This is a nice idea if it could work.</p>
-<p>But the code can never provide all the context, even if you try using "really-relly long essays" as names.
-Even if we assume that executable code can perfectly describe everything that's there,
-quite often things that are excluded are also important part of the design.</p>
-<p>The "comments are failures" principle is probably the main driver of this verbose overdescriptive style of naming:</p>
+<p>This might be the book's most damaging idea: comments are failure to write good code.</p>
+<p>I believe this is the main takeaway that developers get out the chapter and the book.
+Declaring "comments are failure" has led developers to avoid a crucial tool for design, abstraction, and documentation.
+It's contributed to a culture where comments are undervalued and often ignored (notice how IDEs gray them out by default).</p>
+<p>Martin implicitly promotes "self-documenting code." But code alone can never provide all context.
+Even perfect code can only show what's there - not what's deliberately excluded or what was considered and rejected.</p>
+<p>This anti-comment position drives verbose, over-descriptive naming:</p>
 <pre><code class="language-java">private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) { }
 </code></pre>
 <p>Is <code>smallestOddNthMultipleNotLessThanCandidate</code> really a name or just inlined comment ?</p>
@@ -392,10 +390,9 @@ If anything, now he have polluted the domain with semi-similar words:</p>
 <li>uncrossed</li>
 </ul>
 <p>Is "notCrossed" same thing as "not crossedOut"? Is it same thing as "uncrossed"?
-By excessive method extraction Martin introduced inconsistencies and confusion in terminlogy, which at the end would only increase cognitive load.
 One would have to look into implementation of all those small methods to understand if there is a difference or not.</p>
-<p>This is the problem with introducing too many entities: working memory can hold 4–7 objects at a time. Flood it with small pebbles, and you’ll hit saturation,
-leading to inconsistencies and discrepancies.</p>
+<p>This exemplifies the problem with too many small entities: human working memory holds 4-7 objects. Flood it with pebbles, and you'll hit cognitive overload.
+By excessive method extraction Martin introduced inconsistencies and confusion in terminlogy.</p>
 <p>Lets remove obfuscation from the original method:</p>
 <pre><code class="language-java">public class GeneratePrimes {
     public static int[] generatePrimes(int maxValue) {

@@ -217,14 +217,13 @@ others that are at an intermediate level of abstraction, such as: String pagePat
 and still others that are remarkably low level, such as: .append("\n").
 </div>
 <p>Or.. you could also argue that the domain of this function is to convert PageData into HTML as a raw string.
-In that context, the function consistently operates on the same level of abstraction: processing data of a specific shape and generating formatted HTML text.</p>
+From that perspective, everything here operates at the same level - transforming structured data into formatted text.</p>
 <div class="subtle-paragraph">
 "Abstractions are mappings between a complex concrete world and a simple idealized one."
 <p>James Koppel <a href="https://www.pathsensitive.com/2022/03/abstraction-not-what-you-think-it-is.html">"Abstraction is not what you think it is"</a></p>
 </div>
-<p>The key point is that <strong>abstraction is a choice</strong>. Developers must decide on the idealized world their function is operating in.
-If your abstraction is "a data processor for converting PageData to raw HTML," then the function maintains that level.</p>
-<p>[todo: this might need more clarification]</p>
+<p>The key point is that <strong>abstraction is a choice</strong>. Developers define the idealized world their function operates in.
+If you decide your abstraction is "PageData to HTML converter," then string operations and HTML generation belong at the same level.</p>
 
                     </main>
 

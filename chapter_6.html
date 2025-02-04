@@ -186,7 +186,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="chapter-6-objects-and-data-structures"><a class="header" href="#chapter-6-objects-and-data-structures">Chapter 6: Objects and Data Structures</a></h1>
-<p>I don’t think this chapter has aged poorly; rather, it seems to have been misaligned from the start with the common understanding of data structures, the purpose of abstraction, and the principles of information hiding.</p>
+<p>I don’t think this chapter has aged poorly; rather, it seems to have been misaligned from the start with the common understanding of data structures,
+the purpose of abstraction, and the principles of information hiding.</p>
 <div class="book-quote">
 <pre><code class="language-java">public interface Point {
     double getX();
@@ -198,12 +199,12 @@
 }</code></pre>
 The beautiful thing about Listing 6-2 is that there is no way you can tell whether the implementation is in rectangular or polar coordinates. It might be neither! And yet the interface still unmistakably represents a data structure.
 </div>
-<p>There is nothing beautiful about this interface. An interface that exposes only getters and setters is often <em>a design mistake</em>.
+<p>There is nothing beautiful about this interface. An interface of just getters and setters is usually a <em>design mistake</em>.
 Interfaces should define <em>a contract of behavior</em>, not merely obfuscate the internal data structure.
 They should provide <em>meaningful abstractions</em>, not just hide implementation details.</p>
-<p>The fact that it's impossible to tell if this is about rectangular or polar coordinates is not true. It's both.
-The interface exposes both and the implementation is forced to support both.</p>
-<p>A more sensible design would separate these responsibilities:</p>
+<p>The fact that it's impossible to tell if this is about rectangular or polar coordinates is not true.
+It's both and it forces all implementations to be both.</p>
+<p>Here's a cleaner design:</p>
 <pre><code class="language-java">sealed interface Point;
 record Rectangular(double length, double width) implements Point { }
 record Polar(double r, double theta) implements Point {};
@@ -211,19 +212,19 @@ record Polar(double r, double theta) implements Point {};
 public Rectangular convert(Polar polar) {...}
 public Polar convert(Rectangular rectangular) {...}
 </code></pre>
-<p>Martin would say that "This exposes implementation. Indeed, it would expose implementation even if the variables were private and we were using single variable getters and setters."</p>
-<p>But the thing is that there is no implementation to be exposed, the Point is just data and its shape is essential to its meaning.
-In statically typed languages, explicitly communicating the shape of data through types is the goal.
-Not every abstraction needs to hide its data structure - sometimes the data structure itself is the abstraction.</p>
+<p>Martin would say that "This exposes implementation"</p>
+<p>But the thing is that there is no implementation to be exposed, the Point is put data and its shape is essential to its meaning.
+In statically typed languages, explicitly communicating the shape of data through types is the goal.</p>
+<p>Not every abstraction needs to hide its data structure - sometimes the data structure itself is the abstraction.</p>
 <div class="book-quote">
 Hiding implementation is not just a matter of putting a layer of functions between the variables. Hiding implementation is about abstractions!
 </div>
-<p>Exactly! But introducing unnecessary abstractions is over-engineering. As Edsger Dijkstra put it:</p>
+<p>Exactly! But introducing unnecessary abstractions is over-engineering. As Edsger Dijkstra noted:</p>
 <blockquote>
 <p>"The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise." - Dijkstra 1972</p>
 </blockquote>
-<p>The Point interface in the example creates no new semantic meaning.
-It conflates two coordinate systems into a vague abstraction without clear purpose. A good abstraction adds precision and reduces ambiguity—not the other way around.</p>
+<p>Martin's Point interface adds vagueness, not precision. It combines two coordinate systems without clear purpose.
+A good abstraction adds precision and reduces ambiguity—not the other way around.</p>
 <div class="book-quote">
 Consider Listing 6-3 and Listing 6-4. The first uses concrete terms to communicate the fuel level of a vehicle, whereas the second does so with the abstraction of percentage.
 <p>Listing 6-3 Concrete Vehicle</p>
@@ -242,42 +243,40 @@ Consider Listing 6-3 and Listing 6-4. The first uses concrete terms to communica
 <p>This is not hiding "details of our data", this is data hiding!
 Depending on the context, this might be good or bad. For example, with the second option, it becomes impossible to calculate the cost of filling the tank.
 Are we designing for scammy car rentals? If so, then sure, hide the data.</p>
-<p>The assumption that hiding data is always a good thing is just wrong.</p>
+<p>The assumption that hiding data is always good is simply wrong.</p>
 <p><strong>Ineffective abstraction</strong> occurs when essential knowledge is removed, or when non-essential knowledge is unnecessarily exposed - or both.</p>
 <h1 id="dataobject-anti-symmetry"><a class="header" href="#dataobject-anti-symmetry">Data/Object Anti-Symmetry</a></h1>
 <p>This chapter touches expression problem, without mentioning that this is the expression problem. It briefly mentions Visitor pattern as a solution for the problem.</p>
 <p>So far so good.
 However, Martin conflates dumb data objects with data structures.
 Which is unfortunate cause the name "data structure" is reserved for objects that indeed have specialized structure for the data: lists, trees, stacks, etc.</p>
-<p>I think it's worth clarifying existence of:</p>
+<p>Let's be precise about three types:</p>
 <ul>
 <li>Data objects (or Data transfer objects) - dumb containers for data</li>
-<li>Stateless objects (or effectively stateless objects with dependencies) - objects with no mutable state that act as executors or services.</li>
+<li>Stateless objects (or effectively stateless objects with dependencies) - behaviour only services</li>
 <li>Stateful objects: Objects that encapsulate both state and behavior, often used for data structures.</li>
 </ul>
-<p>Modern design practices, even in the Java community, prefer separating stateless executors from data objects. Stateful objects are mostly reserved for true data structures.</p>
-<p>In Martins nomenclature:</p>
+<p>Modern design, even in Java, prefers separating stateless services from data objects. Stateful objects are mainly for true data structures.</p>
+<p>In Martins terms:</p>
 <ul>
 <li>Data Structures = Dumb Objects</li>
 <li>True Objects = Stateless and Stateful objects.</li>
 </ul>
-<p>Martin briefly criticizes hybrid objects (part data, part behavior), calling them an unfortunate design. If we exclude actual data structures, this is a fair point.
-For example, a hybrid Stack design is acceptable because it encapsulates both state and operations:</p>
+<p>He correctly criticizes hybrid objects (mixing data and behavior) - except for actual data structures. A Stack interface is legitimately hybrid:</p>
 <pre><code class="language-java">interface Stack&lt;T&gt; {
    Optional&lt;T&gt; peek();
    Optional&lt;T&gt; pop(); 
    void push(T item); 
 }
 </code></pre>
-<p>It's a hybrid, but it is a standard object-oriented design for a data structure.</p>
+<p>But it's a good one.</p>
 <h1 id="law-of-demeter"><a class="header" href="#law-of-demeter">Law of Demeter</a></h1>
 <div class="book-quote">
 There is a well-known heuristic called the Law of Demeter2 that says a module should not know about the innards of the objects it manipulates. As we saw in the last section, objects hide their data and expose operations. This means that an object should not expose its internal structure through accessors because to do so is to expose, rather than to hide, its internal structure
 </div>
 <p>This law is from 1987. It might be a beneficial rule if the code base consists of mostly Hybrid objects.
-However, modern object-oriented design often separates stateless service objects from stateful (dumb) data objects,
-this makes law of Demeter significantly less relevant.</p>
-<p>Instead of the somewhat convoluted rules of the Law of Demeter, here are simpler and more practical rules to remember:</p>
+Today's separation of stateless services from data objects makes this law less relevant.</p>
+<p>Instead of the somewhat convoluted rules of the Law of Demeter, consider this:</p>
 <ul>
 <li><em>Service objects</em> should not expose their collaborators or dependencies.</li>
 <li><em>Data objects</em> can—and often should—be open books.</li>

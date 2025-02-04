@@ -186,14 +186,15 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="chapter-9-unit-tests"><a class="header" href="#chapter-9-unit-tests">Chapter 9: Unit Tests</a></h1>
+<p>Martin claims:</p>
 <div class="book-quote">
 What this team did not realize was that having dirty tests is equivalent to, if not worse than, having no tests.
 </div>
-<p>This statement lacks nuance: if the dirty tests are actually testing software, then having them is better than not having them. <br/></p>
+<p>This lacks crucial nuance: messy tests that actually test software are better than no tests. <br/></p>
 <p>To repeat the example of when that is true: <a href="https://news.ycombinator.com/item?id=18442941">Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests</a> <br/>
 Oracle Database is a very reliable software (as of 2024), it comes at the cost of thousands of people suffering through the setup, but as a customer I enjoy its robustness.</p>
-<p>Having tests that actually test software is good, even if they are dirty. However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks.</p>
-<p>This chapter unintentionally highlights the importance of balance.</p>
+<p>However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks. Those are indeed often messy is useless.</p>
+<p>The chapter highlights two competing approaches through refactoring examples.</p>
 <p>First, it presents an example of a refactoring that I mostly agree with:</p>
 <div class="code-comparison" >
 <div class="code-column" style="flex:0">
@@ -338,11 +339,10 @@ public void testGetDataAsXml() throws Exception {
     assertContains(response, "test page", "&lt;Test");
 }
 </code></pre>
-<p>We get advocated <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> shape, without need to have implicit mutable state somewhere hidden.
-All tests are isolated and can run in parallel.</p>
+<p>We get the <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> pattern without hidden state. Tests are isolated and can run in parallel.</p>
 <hr />
 <p>The first example in this chapter shows how adding domain-specific details can improve readability.
-The second one is an illustration that this approach can be taken too far:</p>
+The second example shows how domain-specific abstractions can go wrong:</p>
 <pre><code class="language-java">@Test
 public void turnOnLoTempAlarmAtThreashold() throws Exception {
     hw.setTemp(WAY_TOO_COLD);
@@ -367,8 +367,8 @@ public void turnOnLoTempAlarmAtThreshold() throws Exception {
 <p>The mini-DSL makes things harder to read, not easier.
 The "HBchL" encoding requires extra mental effort to decode, which defeats the purpose of making the test more readable.</p>
 <p>Why not "heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on" ?</p>
-<p><code>wayTooCold();</code> - is also very weird grammar. Is it a verb or verb phrase? Why do we need to hide call to <code>controller.tic()</code>?</p>
-<p>In the <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> template: <code>Controller.tic()</code> is the <code>OPERATE</code>!</p>
+<p><code>wayTooCold();</code> - is also very weird grammar. Is it a verb or verb phrase? Why do we need to hide <code>controller.tic()</code>?</p>
+<p>In the <code>BUILD</code>-<code>OPERATE</code>-<code>CHECK</code> pattern: <code>Controller.tic()</code> is the <code>OPERATE</code>!</p>
 <pre><code class="language-java">wayTooCold();
 assertEquals("HBchL", hw.getState());
 </code></pre>
@@ -401,7 +401,7 @@ def turnOnLoTempAlarmAtThreashold() {
     )
 }
 </code></pre>
-<p>No need for cryptic mini-DSLs, the language itself is expressive enough to keep things clean and clear.</p>
+<p>No need for mini-DSLs, the language itself is expressive enough to keep things clean and clear.</p>
 <h3 id="final-nitpick-test-performance-matters"><a class="header" href="#final-nitpick-test-performance-matters">Final nitpick: Test Performance Matters</a></h3>
 <div class="book-quote">
 The getState function is shown in Listing 9-6. Notice that this is not very efficient code. To make it efficient, I probably should have used a StringBuffer.
@@ -475,7 +475,7 @@ Fortunately, modern javac compiler can optimize sligtly modified version of <cod
 <div class="book-quote">
 There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
 </div>
-<p>No. Test performance absolutely matters — especially at scale.</p>
+<p>Wrong. Test performance is crucial at scale. Slow tests mean:</p>
 <p>Slow tests can and <strong>will</strong> kill development speed. Ignoring tests performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀</p>
 
                     </main>

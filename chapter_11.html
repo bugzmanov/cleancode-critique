@@ -187,24 +187,32 @@
                     <main>
                         <h1 id="chapter-11-systems"><a class="header" href="#chapter-11-systems">Chapter 11: Systems</a></h1>
 <p>This is a mixed bag of relatively OK-ish approaches, relatively outdated advice, and critique of the APIs that lost its relevance a decade ago.</p>
-<p>It's somewhat focusing on organizing cross-cutting concerns in an application using aspect oriented programming.</p>
-<p>The book mentions following implementation stategies:</p>
+<p>It focuses on managing cross-cutting concerns, but through a 2009 lens that's now clouded.
+The book discusses four implementation approaches:</p>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Jakarta_Enterprise_Beans">Enterprise JavaBeans - ejb</a> <em>(outdated)</em></li>
-<li>proxies: <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html">jdk based</a> or <a href="https://asm.ow2.io/">asm</a>-based <em>(relevant, in 2025 <a href="https://bytebuddy.net/">byte-buddy</a> is a more popular choice)</em></li>
-<li><a href="https://projects.eclipse.org/projects/tools.aspectj">aspectj</a> <em>(outdated)</em></li>
-<li>plain code</li>
+<li><a href="https://en.wikipedia.org/wiki/Jakarta_Enterprise_Beans">Enterprise JavaBeans - ejb</a> - obsolete</li>
+<li>Proxies:
+<ul>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html">JDK dynamic proxies</a> - still relevant</li>
+<li><a href="https://asm.ow2.io/">ASM-based proxies</a> - relevant, bbut superseded by <a href="https://bytebuddy.net/">byte-buddy</a></li>
 </ul>
-<p>At the end the book advocates for plain java: better modularity and easier way to separate concerns.
-To cope the disadvantage of this approach (i.e. slow development speed and verbose nature of java language) the book recommends to use DSLs.</p>
-<p>The core message is valid but poorly structured and hard to follow. Majority of tech mentioned in this chapter is outdated to irrelevancy, newcomers will not be able to understand what is being advocated.</p>
-<p>The argument for DSL is interesting, bu lacks concrete examples and relies on irrelevant references.
-The reader is expected to checkout books of Christopher Alexander (WTF? why?!) and jmock is presented as example of good DSL.</p>
-<p>What makes it somewhat amusing is that <a href="https://site.mockito.org/">Mockito</a> (mocking framework overtook 1st place in java ecosystem) has been adopting opposite design principle from the get-go:</p>
+</li>
+<li><a href="https://projects.eclipse.org/projects/tools.aspectj">aspectj</a> - largely obsolete</li>
+<li>Plain Java code</li>
+</ul>
+<p>Martin ultimately advocates for plain Java with better modularity and cleaner separation of concerns. To address Java's verbosity, he suggests using Domain-Specific Languages (DSLs).
+The core message about separation of concerns remains valid, but the presentation has three major problems:</p>
+<ol>
+<li>Most referenced technologies are obsolete, making the chapter confusing for modern developers</li>
+<li>The DSL argument lacks concrete examples, instead bizarrely referencing Christopher Alexander's architectural patterns</li>
+<li>The chapter holds up JMock as exemplary DSL design, yet the most successful Java mocking framework (Mockito) explicitly rejected DSLs:</li>
+</ol>
 <blockquote>
 <p>"The less DSL the better. Interactions are just method calls. Method calls are simple, DSL is complex."</p>
 <p>from <a href="https://szczepiq.wordpress.com/2008/01/14/mockito/">Mockito announcement</a></p>
 </blockquote>
+<p>This illustrates a broader issue with the chapter: its technical recommendations proved less durable than its architectural principles.
+While "separate your concerns" remains good advice, the specific approaches it recommends haven't stood the test of time.</p>
 
                     </main>
 

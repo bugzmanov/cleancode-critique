@@ -272,8 +272,8 @@
 <li><em>Business logic</em>: Handling suites, tests, setups, and teardowns in a specific order.</li>
 </ul>
 <p>When everything presented at the same level  it indeed looks very noisy and hard to follow. (the book touches this in <a href="./chapter_32.html">"One Level of Abstraction per Function"</a>)</p>
-<p>The trick that Martin tries to pull off here is to show that small chunk of code is easier to understand than a larger chunk.
-And it works because he is not showing implementation of <code>includeSetupPages</code> and <code>includeTeardownPages</code>.</p>
+<p>Martin's trick here is simple: show that smaller code is easier to understand than larger code.
+This works because he doesn't show the implementation of <code>includeSetupPages</code> and <code>includeTeardownPages</code></p>
 <p>But... extracting non-reusable methods doesn’t actually reduce complexity or code size, at best it just improves navigation.</p>
 <p>What objectively reduces code size is removing repetitions (the fancy term - <a href="https://en.wikipedia.org/wiki/Anti-unification">Anti-Unification</a>): the original code as bad as it is can be significantly improved by a small change - extract code duplication into helper method:</p>
 <pre><code class="language-java">public static String testableHtml(PageData pageData, boolean includeSuiteSetup) {
@@ -309,16 +309,16 @@ private static String generateInclude(WikiPage wikiPage, String path, String com
     }
 }
 </code></pre>
-<p>Is it more noisy than Martin's version? Sure. But most people would answer "YES" to the posed question "Do you understand the function after three minutes of study?"
+<p>Is it noisier than Martin's version? Yes. But most people would answer "YES" to the posed question "Do you understand the function after three minutes of study?"
 And it's a small change to the original mess.</p>
 <div style="text-align:center"><img src="./images/code_compression.png" width="70%"/></div>
 <div class="subtle-paragraph">
 "Extract a helper" - is one of those tidyings that Kent Beck is advocating - small code changes that definitely improve situation and have small risk.
 </div>
 <h2 id="the-real-problem"><a class="header" href="#the-real-problem">The real problem</a></h2>
-<p>Despite these improvements, the main critical issue remains unaddressed: the side effect of modifying the PageData object.
-Both <code>testableHtml</code> and <code>renderPageWithSetupsAndTeardowns</code> overwrite the PageData content to generate HTML, which introduces unexpected behavior.
-This lack of clarity around the method’s scope and purpose is the real “weirdness” in the original code.</p>
+<p>Despite these improvements, we're missing the critical issue: both versions modify the PageData object as a side effect.
+Both <code>testableHtml</code> and <code>renderPageWithSetupsAndTeardowns</code> overwrite PageData's content to generate HTML.
+This hidden behavior, not the code structure, is the real problem.</p>
 
                     </main>
 

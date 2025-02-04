@@ -189,7 +189,7 @@
 <div class="book-quote">
 It's hard to make a small switch statement. Even a switch statement with only two cases is larger than I'd like a single block or function to be. It's also hard to make a switch statement that does one thing. By their nature, switch statements always do N things.
 </div>
-<p>By this logic a method can never have if-else statement: that would mean do-ing two things.</p>
+<p>By this logic a method can never have if-else statement - they also do N things.</p>
 <p>There was a whole movement of <a href="https://www.antiifprogramming.com/about-the-anti-if.php">anti-if programming</a>.
 I'm not quite sure if it's a joke <a href="https://en.algorithmica.org/hpc/pipelining/branchless/">or not</a></p>
 <p>Ok, back to Martin:</p>
@@ -208,16 +208,16 @@ I'm not quite sure if it's a joke <a href="https://en.algorithmica.org/hpc/pipel
 }
 </code></pre>
 </div>
-<p>Whether this code violates the "one thing" rule depends on a perspective:</p>
+<p>Whether this violates the "one thing" rule depends entirely on perspective:</p>
 <ul>
-<li><em>Low-level view</em>: The function has four branches and performs four distinct actions.</li>
-<li><em>High-level view</em>: The function calculates pay for an employee. It is doing one thing.</li>
+<li><em>Low-level view</em>: Four branches doing four different things</li>
+<li><em>High-level view</em>: One thing - calculating employee pay</li>
 </ul>
 <p>Switch statements have bad rep among Java developers:</p>
 <ul>
 <li>Doesn't look like OOP</li>
 <li>Leads to repetition</li>
-<li>Repetition leads to mistakes when some of the copies go out of sync with others</li>
+<li>Lead to bugs when copies get out of sync</li>
 </ul>
 <p>Starting from Java 13 switch expressions introduced <a href="https://openjdk.org/jeps/354">exhaustive matching</a>, addressing one of these issues.</p>
 <pre><code class="language-java">public Money calculatePay(Employee e) throws InvalidEmployeeType {
@@ -228,8 +228,7 @@ I'm not quite sure if it's a joke <a href="https://en.algorithmica.org/hpc/pipel
     }
 }
 </code></pre>
-<p>With exhaustive matching, forgetting to handle a new EmployeeType causes a compile-time error. This solves issue #3 without introducing additional abstractions.
-And makes issue #2 benign.</p>
+<p>Forgetting to handle a case now causes compile-time errors that's improssible to miss. No extra abstractions needed.</p>
 <p>Martin suggests hiding the switch statement behind polymorphism:</p>
 <div class="book-quote">
 <pre><code class="language-java">public abstract class Employee {
@@ -258,21 +257,22 @@ public class EmployeeFactoryImpl implements EmployeeFactory {
 }
 </code></pre>
 </div>
-<p>While this approach (replace <code>switch</code> with polymorphism) is a common one, Martin’s example illustrates why it isn’t as straightforward as it seems.</p>
-<p>The proposed Employee interface is stuffed with domains and responsibilities:</p>
+<p>This common approach has serious problems, as Martin's own example shows.</p>
+<p>His Employee interface becomes a god object mixing unrelated concerns:</p>
 <ul>
 <li><code>Employee.isPayday()</code> - couples Employee with payments, agreements, calendars and dates</li>
 <li><code>Employee.calculatePay()</code> - couples Employee with financial calculations</li>
 <li><code>Employee.deliverPay()</code> - couples Employee with transaction processing and persistence</li>
 </ul>
-<p>This makes Employee a god object that handles everything related to employees. As more features are added, the Employee class will inevitably grow into an unmanageable, bloated entity</p>
-<p><a href="./chapter_10.html">Chapter 10</a> talks about cohesion and single responsibility principle, it feels strange that in order to avoid <code>swtich</code> Martin forgoes OOP principles he advocates for.</p>
+<p>As more features will be added, the Employee interface will inevitably grow into an unmanageable, bloated entity</p>
+<p>Ironically, <a href="./chapter_10.html">Chapter 10</a> talks about cohesion and single responsibility principle.
+Yet here, to avoid a switch, he violates these core OOP principles.</p>
 <div class="subtle-paragraph">
 <b> Writing software is a balancing act </b> - it is a search for a solution in a system of contradictory constraints.
 </div>
-<p>By declaring <code>switch</code> fundamentally bad, Martin loses the balance. His solution increases complexity and couples unrelated concerns, trading one set of problems for another.</p>
-<p>The final point: to properly separate concerns, the <code>Employee</code> interface would need to be broken into multiple, smaller interfaces (something like <code>Payable</code>, <code>Schedulable</code>, <code>Transactionable</code>, etc).
-To maintain polymorphism, we'd either need three abstract factories (repetitions) or factory of factories (over-engineering).</p>
+<p>By declaring <code>switch</code> fundamentally bad, Martin loses this balance. His solution increases complexity and couples unrelated concerns, trading one set of problems for another.</p>
+<p>To properly separate concerns, we'd need to split <code>Employee</code> into focused interfaces like <code>Payable</code>, <code>Schedulable</code>, and <code>Transactionable</code>.
+But to maintain polymorphism, we'd then need either three factories (repetition) or a factory of factories (over-engineering).</p>
 
                     </main>
 
