@@ -1,21 +1,26 @@
 # Chapter 10: Classes
 
-Written with Jeff Langr.
+Written with Jeff Langr, this chapter reveals a fundamental contradiction in Clean Code's approach:
 
-They lay out following constraints:
-- classes should have small amount of responsibilities: ideally single responsibility
-- defines cohesion as small amount of instance variables
+* Classes should have minimal responsibilities (ideally one)
+* Classes should have few instance variables
+* Methods should have few parameters
 
-He clearly understands that small amount of parameters for methods lead him to pass parameters via instance variables and in order to keep amount of instance variables small he has to increase amount of classes.
+See the problem? Reducing method parameters forces state into instance variables. Keeping instance variables minimal requires creating more classes.
+Martin's solution?
+More classes is better:
 
-Does he see a problem with this? No, he doesn't.
 
 <div class="book-quote">
 So breaking a large function into many smaller functions often gives us the opportunity to split several smaller classes out as well. 
 This gives our program a much better organization and a more transparent structure.
 </div>
 
-And then he does his favorite trick: shows obfuscated code (he confesses that it's a generated code, not actually a human written) and refactors it using all his favorite hits: classes with global mutable states, passing parameters via instance fields, tiny private methods that being used only once, names that looks like an essay.
+And then he does his favorite trick: shows obfuscated code (admittedly machine-generated) and refactors it using all his favorite hits: 
+* Classes with global mutable state
+* Parameters moved to instance fields
+* Tiny single-use private methods
+* Essay-length names
 
 ```java
 public class PrintPrimes {
@@ -251,6 +256,7 @@ public class PrimeGenerator {
 }
 ```
 
+Martin celebrates the growth:
 <div class="book-quote">
 The first thing you might notice is that the program got a lot longer. It went from a little over one page to nearly three pages in length. There are several reasons for this growth. 
 First, the refactored program uses longer, more descriptive variable names. 
@@ -258,15 +264,13 @@ Second, the refactored program uses function and class declarations as a way to 
 Third, we used whitespace and formatting techniques to keep the program readable.
 </div>
 
-The most contributing reason is number two of course: he introduced a lots of additional methods.
+The real reason for the bloat: excessive method and class extraction. What should be three clear methods (main, generate primes, format output) becomes a sprawling hierarchy of tiny classes.
 
 <div class="book-quote">
 "Notice how the program has been split into three main responsibilities."
 </div>
 
-This is a good thing and I agree with this. But my god this should be just 3 methods: main, prime generator, formatter. It would be so much easier to read and understand.
-
-The original solution, as ugly as it was, was small and contained. Martin's solution is big and spread out. 
+The original solution, though ugly, was contained. Refactored version is glutted and bloated, scattered across multiple files, and still ugly. ¯\\_(ツ)_/¯ 
 
 # Organizing for Change
 
@@ -274,9 +278,9 @@ The original solution, as ugly as it was, was small and contained. Martin's solu
 For most systems, change is continual. Every change subjects us to the risk that the remainder of the system no longer works as intended. In a clean system we organize our classes so as to reduce the risk of change.
 </div>
 
-I think best antidote for the risk of change is tests. The code structure and design is somewhat ephemeral and can be gradually modified so that it will lose all safety measures without anyone noticing it. Tests on the other hand give immediate signal when some of the safety measures got violated.
+I think our best defense against risky changes is tests. Code structure can erode silently - tests fail loudly.
 
-I agree with Martin that it's important for code structure to guide and accelerate future development, but it's not about risk.
+I agree that it's important for code structure to guide and accelerate future development, but it's not about risk.
 
 In this chapter Martin advocates for 3 components of his future SOLID framework:
 - Single Responsibility
@@ -302,12 +306,5 @@ public class Sql {
 }
 ```
 
-I can argue that Responsibility of this class is to generate SQL statements. And thus it has single responsibility. Martin can select different level of abstraction and claim that class is responsible for generating 7 types of SQL queries and thus has 7 responsibilities.
+Is this class's single responsibility "generating SQL statements"? Or does it have seven responsibilities, one per query type? The definition depends entirely on your abstraction level.
 
-<div class="book-quote">
-We can spot this SRP violation from a simple organizational standpoint. The method outline of Sql shows that there are private methods, such as selectWithCriteria, that appear to relate only to select statements. Private method behavior that applies only to a small subset of a class can be a useful heuristic for spotting potential areas for improvement.
-</div>
-
-Ok. but aren't you the one who tend to introduce 100500 small private methods that's being used only once?
-
-Open/Closed principle is the most odd one. There is nothing wrong in modifying code that you own and maintain. Designing proper extension points always depends on the context, and I don't think there is universal rules to it. And as such this a time-consuming exercise, be mindful on how much time budget you should spent of this. In the worlds of java there is a tendency to have everything open (by default, classes can be extended and methods can be overridden), so you are getting "open for extension" part for free.

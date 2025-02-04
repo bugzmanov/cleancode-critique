@@ -7,7 +7,7 @@ It felt like the best programming book I'd ever seen.
 But even then, this chapter left me with an uneasy feeling about his solution. I spent a lot of time re-reading it, thinking I was too junior to understand why it was good. 
 15 years later I still don't like his solution, but now I can explain why.
 
-He's creating a library to parse command-line arguments:
+The task: create a command-line argument parser with this interface:
 
 <div class="book-quote">
 <pre><code class="language-java">public static void main(String[] args) {
@@ -201,8 +201,8 @@ public interface ArgumentMarshaler<T> {
 ### 2. Mixed Up Responsibilities 
 
 The StringArgumentMarshaler (and all other marshalers) tries to do two things:
-- Parse the stream of tokens
-- Store the parsed value and give access to it
+- Parse token streams
+- Store and provide parsed values 
 
 From an interface design perspective, this would make more sense:
 
@@ -239,7 +239,6 @@ int port = arg.getInt('p');           // but trying to read as int
 The library quietly gives you 0 as the port value, which is extra bad since [port 0 means something special in Unix](https://www.lifewire.com/port-0-in-tcp-and-udp-818145).
 
 The argument parsing library is expected to be generic - i.e. it's expected to be used in wide range of domains.<br/>
-int, String, boolean - are generic types, i.e. it's expected they can represent pretty much anything. <br/>
 In this context, it is not safe to assume default values based on type information alone. 
 
 ### 4. State Management Gone Wrong
@@ -349,25 +348,24 @@ Let's talk about that ArgsException class.
 </div>
 
 
-It's got issues:
+It got issues:
 
-- Introduction of error codes. <br/>
+- Reintroduces error codes inside exceptions (contradicting the book's own advice). <br/>
   This book mentions 2 times that it's preferrable to use exceptions instead of error codes. And yet in the example he is introducing error codes inside exceptions. 
-  Why? I can not come up with a good justification for error codes here. 
-  Imagine if there was a tool that would allow to document design decisions in code.. That would be so convinient. Unfortunately this tool doesn't exist. /s
-- Has weirdly specific error types (why MISSING_DOUBLE and MISSING_INTEGER separately?)
-- Has an ErrorCode.OK which makes no sense (`throw new ArgsException(ErrorCode.OK)`?)
+  Why? 
+  Imagine if there was a tool that would allow to document such design decisions in code.. That would be so convinient. Unfortunately this tool doesn't exist. /s
+- Has weirdly specific error types (why MISSING_DOUBLE and MISSING_INTEGER are separate?)
+- Has an ErrorCode.OK which makes no sense (what does this mean `throw new ArgsException(ErrorCode.OK)`?)
 - The exception is mutable. It lets you change error details after creating the exception (why?)
 
 ## The TDD Problem
 
-The rest of the chapter shows how he got to this solution using TDD. If you've never seen TDD in action, it's pretty impressive to watch the process (you might have better luck watching people do it on YouTube though).
+The chapter shows TDD in action, revealing two problems:
 
-But it shows two big problems with TDD:
-1. You can end up with a not-great solution because TDD forces you to focus on the next small step instead of the big picture
-2. Where you start from really matters, and bad starting code means a lot more work
+1. Focus on small steps can miss big-picture issues
+2. Starting point heavily influences final quality
 
-Martin started with this "working code" that was pretty rough:
+Martin began with deeply problematic code:
 - Lots of tiny methods 
 - Huge area of mutable state 
 - Everything crammed into one class
@@ -634,7 +632,6 @@ Martin started with this "working code" that was pretty rough:
  
 :shrug emoji: No wonder it would require him a lot of steps to end up on something more reasonable.
 
-
 If you ask claude sonnet 3.5:
 
 ```
@@ -729,11 +726,10 @@ public class Args {
 }
 ```
 
-Is it perfect? No. But now you can start having useful conversations about making it better:
+Not perfect, but a much better starting point for discussions about:
 - How to make it easier to add new types
 - How to improve the schema format
 - How to make errors more specific
 
-It's hard to tell why was the Martin's initial draft so far off. 
-
+The chapter unintentionally demonstrates how TDD alone doesn't guarantee good design - you need solid architectural vision too.
 

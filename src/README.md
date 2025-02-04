@@ -6,9 +6,9 @@ Clean code is probably the most recommended book to entry level engineers and ju
 
 After revisiting the book in 2023 I was surprised to notice that:
 
-- The book is old and it hasn't aged well
-- Much of the advice is questionable, but some being outright harmful
-- Examples are the worst part of the book. By any objective measure, many would qualify as "bad code."
+- The book hasn't aged well
+- Much of its advice ranges from questionable to harmful
+- Examples are the worst part of the book. By any objective metrics, many would qualify as "bad code."
 - Lazer focus on a wrong thing and attempt to sell it as the solution to everything. Code readability is important, it is not the only one aspect
 - Despite being an entry-level book, it has these vibes of implied superiority, potentially giving the readers an undeserved sense of expertise
 
@@ -19,12 +19,11 @@ I mostly agree with qntm assessment. But it's a bit too emotional and personal a
 If you're just starting your career and seeking books to improve your coding skills, I suggest these instead:
 
 - [A Philosophy of Software Design](https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201) <br/>
-  This is not stated explicitly as a goal, but the book is full of contra-arguments and implicit critiques to the "Clean Code". <br/>
-  This might be the best book to unlearn "Clean Code" style of development.
+  While not explicitly positioned as such, this book effectively counters many "Clean Code" principles. 
+  It's particularly helpful for unlearning Clean Code style of coding.
 
 - [The Art of Software Design: Balancing Flexibility and Coupling](https://www.amazon.com/Balancing-Coupling-Software-Design-Addison-wesley/dp/0137353480)
-  A thought-provoking book that explores software complexity through the lenses of abstraction, coupling, and modularity. 
-  It is as an excellent and in-depth complement to "A Philosophy of Software Design"
+  A deep dive into software complexity through abstraction, coupling, and modularity. It works as an excellent companion to "A Philosophy of Software Design".
 
 Also Robert Martin is working on the second edition of *Clean Code*. It will be fun to see how much of this critique will become irrelevant 😃
 

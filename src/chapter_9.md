@@ -1,17 +1,19 @@
 # Chapter 9: Unit Tests
 
+Martin claims:
+
 <div class="book-quote">
 What this team did not realize was that having dirty tests is equivalent to, if not worse than, having no tests.
 </div>
 
-This statement lacks nuance: if the dirty tests are actually testing software, then having them is better than not having them. <br/>
+This lacks crucial nuance: messy tests that actually test software are better than no tests. <br/>
 
 To repeat the example of when that is true: [Oracle Database: an unimaginable horror! You can't change a single line of code in the product without breaking 1000s of existing tests](https://news.ycombinator.com/item?id=18442941) <br/>
 Oracle Database is a very reliable software (as of 2024), it comes at the cost of thousands of people suffering through the setup, but as a customer I enjoy its robustness.
 
-Having tests that actually test software is good, even if they are dirty. However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks.
+However proliferation of mocking frameworks lead to the situation when developers spent time tweaking mock expectations and then testing the mocks. Those are indeed often messy is useless.
 
-This chapter unintentionally highlights the importance of balance.
+The chapter highlights two competing approaches through refactoring examples.
 
 First, it presents an example of a refactoring that I mostly agree with:
 
@@ -170,13 +172,12 @@ public void testGetDataAsXml() throws Exception {
 }
 ```
 
-We get advocated `BUILD`-`OPERATE`-`CHECK` shape, without need to have implicit mutable state somewhere hidden.
-All tests are isolated and can run in parallel.
+We get the `BUILD`-`OPERATE`-`CHECK` pattern without hidden state. Tests are isolated and can run in parallel.
 
 ----
 
 The first example in this chapter shows how adding domain-specific details can improve readability.
-The second one is an illustration that this approach can be taken too far:
+The second example shows how domain-specific abstractions can go wrong:
 
 ```java
 @Test
@@ -209,9 +210,9 @@ The "HBchL" encoding requires extra mental effort to decode, which defeats the p
 
 Why not "heater:on, blower:on, cooler:off, hi-temp-alarm:off, lo-temp-alarm:on" ? 
 
-`wayTooCold();` - is also very weird grammar. Is it a verb or verb phrase? Why do we need to hide call to `controller.tic()`? 
+`wayTooCold();` - is also very weird grammar. Is it a verb or verb phrase? Why do we need to hide `controller.tic()`? 
 
-In the `BUILD`-`OPERATE`-`CHECK` template: `Controller.tic()` is the `OPERATE`!
+In the `BUILD`-`OPERATE`-`CHECK` pattern: `Controller.tic()` is the `OPERATE`!
 
 ```java
 wayTooCold();
@@ -254,7 +255,7 @@ def turnOnLoTempAlarmAtThreashold() {
 }
 ```
 
-No need for cryptic mini-DSLs, the language itself is expressive enough to keep things clean and clear.
+No need for mini-DSLs, the language itself is expressive enough to keep things clean and clear.
 
 ### Final nitpick: Test Performance Matters 
 
@@ -335,7 +336,7 @@ Fortunately, modern javac compiler can optimize sligtly modified version of `get
 There are things that you might never do in a production environment that are perfectly fine in a test environment. Usually they involve issues of memory or CPU efficiency. But they never involve issues of cleanliness.
 </div>
 
-No. Test performance absolutely matters — especially at scale.
+Wrong. Test performance is crucial at scale. Slow tests mean:
 
 Slow tests can and **will** kill development speed. Ignoring tests performance in a large codebase means longer CI/CD cycles, slower iteration, stagnation, suffering and death 💀
 

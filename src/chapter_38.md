@@ -11,18 +11,16 @@ In the end, I wind up with functions that follow the rules I've laid down in thi
 What's Martin is advocating is bottom-up approach to software development: first make it work, then make it beautiful( = "clean", in Matrins worldview).
 
 But this is not the only way to design software! 
-In my experience, some of the most elegant solutions emerge from top-down thinking:
+
+In my experience, top-down design often produces more elegant solutions:
 
 1) Start by imagining how you want the code to look like
-2) Draft pseudocode 
+2) Sketch it in pseudocode 
 3) Gradually fill in the implementation details, making adjustments as needed while preserving the original design
-
 
 ### A Concrete Example
 
-One of my biggest pet peeves is that tables aren’t used often enough in programming. 
-[Decision Tables](https://www.hillelwayne.com/post/decision-tables/) have an amazing property: they make complex logic immediately obvious and provide a perfect overview of the problem.
-
+One of my biggest pet peeves is that [Decision Tables](https://www.hillelwayne.com/post/decision-tables/) are underused in programming. They make complex logic immediately obvious and provide a perfect overview of the problem.
 
 ```
 PAYMENT METHOD    |   DISCOUNT CODE   |    TAX STATUS    |    PRICE
@@ -31,8 +29,7 @@ PayPal            |    CLEANCODE      |     NONEXEMPT    |    8.99
 CreditCard        |      N/A          |     NONEXEMPT    |    9.99
 ```
 
-If you implement this logic using a standard JUnit-style test, you’ll end up with something readable—but it won’t resemble the original table at all:
-
+Standard JUnit tests lose this clarity:
 
 ```java
 assertEquals(
@@ -70,7 +67,7 @@ executeTests(
 ```
 Now, the challenge becomes figuring out how to implement a parser and interpreter for executeTests.
 
-Or you might take an approach that doesn't require parsing and design a DSL that looks like this:
+Or you might take an approach that doesn't require parsing and design an internal DSL that still looks like a table:
 
 ```java
 testTable()
@@ -84,9 +81,9 @@ testTable()
     .executeTests()
 ```
 
-Of course, both approaches require significantly more effort than the standard JUnit style. But that’s not the point.
+Yes, these approaches require more upfront work. That's not the point.
 
-The point is that with a top-down approach, you control how your code looks at every step, then implement the supporting code at lower levels to make it work.
+The key insight: top-down design lets you control code structure from the start. You build supporting infrastructure to achieve your vision.
 
 In contrast, starting with a messy, working solution and then refining it into something cleaner is more of a discovery process. 
-You might end up with significantly less optimal results - especially if your refactoring toolkit is limited and primarily consists of extraction-based techniques.
+When your refactoring toolkit consists mainly of extraction techniques (as Martin suggests), you often end up with suboptimal results.

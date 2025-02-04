@@ -6,7 +6,7 @@ In Listing 3-7 I changed the name of our example function from testableHtml to S
 
 Nit-picking but `SetupTeardownIncluder.render` doesn't make much sense without reading the code. It's unclear why "Includer" should be rendering, and what does "rendering" mean for the "includer".
 
-Using a descriptive name is a good thing, but using description as a substitute for a name - not so much.
+Using descriptive names is good. Using descriptions as names isn't.
 
 <div class="book-quote">
 Don't be afraid to make a name long.
@@ -14,7 +14,7 @@ Don't be afraid to make a name long.
 
 I think you should. Between using cryptic acronyms and writing "essay as a name" there is a balance to be found.
 
-There's scientific evidence that overly long words or word combinations increase both physical and mental effort when reading:
+There's scientific evidence that long words or word combinations increase both physical and mental effort when reading:
 
 >"When we read, our eyes incessantly make rapid mechanical (i.e., not controlled by consciousness) movements, saccades. On average, their length is 7-9 letter spaces. At this time we do not receive new information."
 > 
@@ -27,7 +27,7 @@ There's scientific evidence that overly long words or word combinations increase
 >
 > From: [Optimal Code Style](https://optimal-codestyle.github.io/)
 
-This means names longer than `~15` characters become harder to process at a glance. For instance, compare these:
+Names longer than `~15` characters become harder to process. Compare:
 
 *  `PersistentItemRecordConfig`
 
@@ -67,7 +67,7 @@ Consider Bob Nystrom’s principles of good naming as a guide:
 
 -----
 
-12/29/2024 Update:
+### A Note on Experience Levels
 
 I've recently read about ["Stroustrup's Rule"](https://buttondown.com/hillelwayne/archive/stroustrops-rule/).
 The short version sounds like: **"Beginners need explicit syntax, experts want terse syntax."**
@@ -78,5 +78,5 @@ The short version sounds like: **"Beginners need explicit syntax, experts want t
 > 
 > From  ["Stroustrup's Rule" by  Hillel Wayne](https://buttondown.com/hillelwayne/archive/stroustrops-rule/)
 
-That is a good insight. <br/> And yet I think when it comes to (descriptive) naming, it is more appropriate to put the information required for "begginers" (those who are unfamiliar with a code base) into comments. 
-This way "experts"  don't need to suffer from visual clutter.
+That is a good insight. <br/> And yet it is more appropriate to put the information required for "begginers" (those who are unfamiliar with a code base) into comments. 
+This way "experts" don't need to suffer from visual clutter.

@@ -36,7 +36,7 @@ and still others that are remarkably low level, such as: .append("\n").
 </div>
 
 Or.. you could also argue that the domain of this function is to convert PageData into HTML as a raw string. 
-In that context, the function consistently operates on the same level of abstraction: processing data of a specific shape and generating formatted HTML text.
+From that perspective, everything here operates at the same level - transforming structured data into formatted text.
 
 <div class="subtle-paragraph">
 "Abstractions are mappings between a complex concrete world and a simple idealized one."
@@ -44,8 +44,6 @@ In that context, the function consistently operates on the same level of abstrac
 James Koppel ["Abstraction is not what you think it is"](https://www.pathsensitive.com/2022/03/abstraction-not-what-you-think-it-is.html )
 </div>
 
-The key point is that **abstraction is a choice**. Developers must decide on the idealized world their function is operating in. 
-If your abstraction is "a data processor for converting PageData to raw HTML," then the function maintains that level.
-
-[todo: this might need more clarification]
+The key point is that **abstraction is a choice**. Developers define the idealized world their function operates in. 
+If you decide your abstraction is "PageData to HTML converter," then string operations and HTML generation belong at the same level. 
 

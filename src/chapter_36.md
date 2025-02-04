@@ -16,9 +16,10 @@ To make it more formal: a side effect is any operation that:
 - Relies on non-deterministic behavior (e.g., random number generation, system clock)
 - Throws exception (which can alter the program's control flow in unexpected ways)
 
-Pure functions—those without side effects—are easier to reason about, test, and reuse. They work like black boxes: given the same inputs, they always produce the same outputs, with no hidden dependencies or interactions.
+Pure functions—those without side effects—are easier to reason about, test, and reuse. 
+Like mathematical functions, they produce the same outputs given the same inputs, with no hidden interactions.
 
-However, the example provided in Clean Code is somewhat incomplete and misses critical aspects. 
+Martin's example misses critical issues:
 
 <div class="book-quote">
 "Consider, for example, the seemingly innocuous function in Listing 3-6. This function uses a standard algorithm to match a userName to a password. 
@@ -46,17 +47,14 @@ public class UserValidator {
 "The side effect is the call to Session.initialize(), of course. The checkPassword function, by its name, says that it checks the password."
 </div>
 
-He implies that renaming function would get rid of side-effects: "we might rename the function checkPasswordAndInitializeSession, though that certainly violates 'Do one thing'"
+He focuses on Session.initialize() as the side effect, suggesting a rename to checkPasswordAndInitializeSession. But this misses deeper problems:
 
-This analysis misses several critical issues:
+1. `UserGateway.findByName(userName)` is likely a database call - another side effect. This creates temporal coupling: authentication fails if the database is unavailable.
+2. `UserGateway` is a singleton - a global implicit dependency.
 
-1. `UserGateway.findByName(userName)` - From the name this looks like a remote call to some-kind of storage, which is also a side-effect. And it also creates temporal coupling: the checkPassword would fail if there is no connection to the UserGateway.
-2. `UserGateway` is a singleton - i.e. it is a global implicit dependency. 
+This illustrates why formal understanding of side effects matters.
 
-A more formal understanding of side effects helps spot issues more easily.
-
-This also makes it obvious that moving [input arguments](./chapter_35.html) to object fields, especially when function has to mutate them to keep intermediate state, is incompatible
-with idea of side-effect free. 
+It also reveals a contradiction: Martin's advice to move [input arguments](./chapter_35.html) to object fields creates side effects by definition - methods must mutate shared state.
 
 In rewrite suggestion from [chapter 2](./chapter_2.html), all new methods have a side effect - they mutate fields - Modify "state outside the function's scope": 
 
@@ -134,4 +132,11 @@ In rewrite suggestion from [chapter 2](./chapter_2.html), all new methods have a
 }</code></pre>
     </div>
 </div>
+
+The "improved" version spreads side effects everywhere:
+* Every helper method mutates shared state
+* Calling methods with side effects propagates those effects upward
+* The entire class becomes a web of interdependent state changes
+
+This perfectly demonstrates why moving local variables to class fields often makes code harder to reason about, not easier.
 

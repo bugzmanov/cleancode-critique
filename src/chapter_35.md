@@ -27,18 +27,17 @@ but then our readers would have had to interpret it each time they saw it.
 When you are reading the story told by the module, <code>includeSetupPage()</code> is easier to understand than <code>includeSetupPageInto(newPageContent)</code>
 </div>
 
-This doesn't eliminate complexity. It just moves it to another place. 
+This doesn't eliminate complexity - it relocates it. 
 But worse: moving parameters to fields increases size and the scope of the mutable state of the application. This sacrifices global complexity to reduce local one.
-Honestly, tracking shared mutable state in multi-threaded environments - is far harder than understanding function arguments. 
+Tracking shared mutable state in multi-threaded environments is far harder than understanding function arguments.
 
 <div class="book-quote">
 Arguments are even harder from a testing point of view. Imagine the difficulty of writing all the test cases to ensure that all the various combinations of arguments work properly. If there are no arguments, this is trivial.
 </div>
 
-Calling the methods became easier, but setting up the instance class and tracking the state becomes harder. This is not a winning move. 
+But this just shifts the burden. Method calls become simpler, but setting up test instances and tracking state becomes harder. Not a winning trade.
 
-The discipline of functional programming exists precisely to limit mutable state, recognizing its significant cognitive overhead.
-And while functional programming predates Clean Code, it's clear that by the time of Martin writing the book he wasn't really a fan.
+Ironically, functional programming exists specifically to limit mutable state, recognizing its cognitive cost. Martin clearly wasn't a fan at the time of writing Clean Code.
 
 <div class="book-quote">
 One input argument is the next best thing to no arguments. SetupTeardownIncluder.render(pageData) is pretty easy to understand. 
@@ -71,7 +70,7 @@ While `render(true)` is indeed unclear on a caller side, modern programming lang
 render(asSuite = true)   # costs nothing in runtime
 ```
 
-The larger problem with `render(true)` is so-called [boolean blindness](https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/)
+The deeper problem with `render(true)` is so-called [boolean blindness](https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/)
 
 <div class="subtle-paragraph">
 "The problem is computing the bit in the first place. Having done so, you have blinded yourself by reducing the information you have at hand to a bit, 
@@ -80,7 +79,7 @@ and then trying to recover that information later by remembering the provenance 
 from [Boolean Blindness](https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/)
 </div>
 
-The easiest solution to this code smell is to use disjoint unions (enums) where both options have with semantic meaning:
+A better solution: Use enums to preserve semantic meaning:
 
 ```java
 enum ExcutionUnit { 

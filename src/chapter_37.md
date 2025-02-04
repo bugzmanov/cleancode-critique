@@ -29,7 +29,9 @@ Lets do a quick de-tour...
     </p>
 </div>
 
-They lack any context to the degree of being useless. Imagine debugging production issue at 3am and the only thing you see in log is this:
+They lack any context to the degree of being useless. 
+
+Imagine debugging production issue at 3am and seeing:
 
 ```
 2024-01-01T02:45:00 - delete failed
@@ -37,14 +39,15 @@ They lack any context to the degree of being useless. Imagine debugging producti
 
 Well, thank you dear sir cleancoder. Now I have everything I need!
 
-Never write logging like this. Even as a joke. Good log messages should always provide context, including:
-* What operation was being performed
-* The input parameters
-* The outcome or reason for failure
+Never write logging like this. Even as a joke. Good log messages must include:
+* The operation was being performed
+* Input parameters
+* Outcome or reason for failure
 
-Error handling must be cosistent! The provided code would return E_ERROR to the client code only in case 1 of 3 deletes fails: errors to `deleteReference` and `deleteKey` are essentialy ignored.
+Also error handling must be cosistent! 
+The provided code returns E_ERROR only in case if first failurer, errors to `deleteReference` and `deleteKey` are essentialy ignored.
 
-Martin provides improved version:
+Martin's "improved" version:
 
 <div class="book-quote">
 <pre><code class="language-java">
@@ -64,7 +67,7 @@ try {
     </p>
 </div>
 
-The bear minimum is:
+At minimum:
 ```java
 logger.log(e.getMessage(), e);
 ```
@@ -73,9 +76,10 @@ or better yet:
 ```java
 logger.log("Got an error while deleting page: " + page, e);
 ```
-This log has description of the operation, it has details of the context, it has stack-traces <span style="font-size:2rem"> = 😍 </span>
 
-Notice the big change in refactored version: now ALL errors are essentially ignored and not communicated to the client code.
+This includes operation context, parameters, and stack traces <span style="font-size:2rem"> 😍 </span>
+
+But notice: the refactored version silently swallows ALL errors. 
 
 ```java
 public void delete(Page page) {
@@ -88,8 +92,7 @@ public void delete(Page page) {
     }
 }
 ```
-
-The delete operation will always successfully return. Almost always this is a design mistake.
+The operation always "succeeds", even when it fails. Almost always this is a design mistake.
 
 Best Practices for Exception Handling:
 * **Let Exceptions Propagate When Appropriate**: If the code catching the exception doesn’t know how to handle it, it should let it propagate to a higher layer
@@ -109,13 +112,9 @@ public void delete(Page page) thows Exception {
 }
 ```
 
-[todo: talk about types and exceptions]
-
-[todo: talk about errors as values]
-
 ### Extract Try/Catch Blocks
  
-Martin proposes splitting the delete method into smaller pieces:
+Martin suggests splitting the delete method:
 
 <div class="code-comparison">
     <div class="code-column" style="flex:0">
@@ -182,7 +181,7 @@ Don't create useless methods just satisfy arbitary rule that doesn't have any va
 >
 > from [Philosophy Of Software Design](https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201)
 
-In addition:
+The extracted logging method makes things worse: 
 
 ```java
 private void logError(Exception e) {
@@ -195,12 +194,12 @@ The more this helper being used in the app, the harder it will be to manage this
 
 ---
 
-### Error Handling Approaches (TODO: POLISH!)
+### Error Handling Approaches 
 
 Ok. Now lets talk about exception vs error codes.
 
 Code needs a channel to communicate errors and that channel needs to be different from channel of communicating normal results. 
-Martin have avoided this discussion by using methods that have nothing to communicate in successfull scenario.
+Martin have avoided this discussion by using methods that have nothing to communicate via normal channel.
 
 Java’s exception handling is powerful and widely supported, offering features like:
 

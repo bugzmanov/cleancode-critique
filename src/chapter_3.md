@@ -90,8 +90,8 @@ The original version operates on multiple levels of detalization and juggles mul
 
 When everything presented at the same level  it indeed looks very noisy and hard to follow. (the book touches this in ["One Level of Abstraction per Function"](./chapter_32.html))
 
-The trick that Martin tries to pull off here is to show that small chunk of code is easier to understand than a larger chunk.
-And it works because he is not showing implementation of `includeSetupPages` and `includeTeardownPages`. 
+Martin's trick here is simple: show that smaller code is easier to understand than larger code. 
+This works because he doesn't show the implementation of `includeSetupPages` and `includeTeardownPages`
 
 But... extracting non-reusable methods doesn’t actually reduce complexity or code size, at best it just improves navigation. 
 
@@ -132,7 +132,7 @@ private static String generateInclude(WikiPage wikiPage, String path, String com
 }
 ```
 
-Is it more noisy than Martin's version? Sure. But most people would answer "YES" to the posed question "Do you understand the function after three minutes of study?" 
+Is it noisier than Martin's version? Yes. But most people would answer "YES" to the posed question "Do you understand the function after three minutes of study?" 
 And it's a small change to the original mess.
 
 <div style="text-align:center"><img src="./images/code_compression.png" width="70%"/></div>
@@ -143,8 +143,8 @@ And it's a small change to the original mess.
 
 ## The real problem
 
-Despite these improvements, the main critical issue remains unaddressed: the side effect of modifying the PageData object. 
-Both `testableHtml` and `renderPageWithSetupsAndTeardowns` overwrite the PageData content to generate HTML, which introduces unexpected behavior. 
-This lack of clarity around the method’s scope and purpose is the real “weirdness” in the original code.
+Despite these improvements, we're missing the critical issue: both versions modify the PageData object as a side effect. 
+Both `testableHtml` and `renderPageWithSetupsAndTeardowns` overwrite PageData's content to generate HTML. 
+This hidden behavior, not the code structure, is the real problem.
 
 
