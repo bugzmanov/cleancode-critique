@@ -1,6 +1,6 @@
 # Chapter 2: Meaningful names
 
-I generally agree with the theme of this chapter: names are important. Naming is the main component of building abstractions and abstraction boundaries. 
+I agree with the theme of this chapter: names are important. Naming is the main component of building abstractions and abstraction boundaries. 
 In smaller languages like C or Go-Lang, naming is *the* primary mechanism for abstraction.
 
 Naming brings the problem domain into the computational domain:
@@ -28,8 +28,8 @@ The advocated principle is the title - the name should reveal intent. But the ap
 The name of a variable, function, or class, should answer all the big questions. It should tell you why it exists, what it does, and how it is used. If a name requires a comment, then the name does not reveal its intent.
 </div>
 
-This sounds like an impossible task. First, the name that reveals all of those details fails to be an abstraction boundary. 
-Second, what you notice in many examples in this book that this approach to naming leads to using "description as a name".
+This sounds like an impossible task to me. First, the name that reveals all of those details fails to be an abstraction boundary. 
+Second, what you notice in many examples in the book this approach leads to using "description as a name".
 
 Martin presents 3 versions of the same code:
 
@@ -81,13 +81,13 @@ gameBoard.filter(cell => cell(STATUS_VALUE) == FLAGGED)
 
 That's it. This code can be inlined and used as is.
 
-While `getFlaggedCells` looks like an improvement over obfuscated `getThem`, it's not really a name, it's a description of what the method does. 
-If the description is as long as the code, it's often redundant.
+While `getFlaggedCells` looks like an improvement over obfuscated `getThem`, it's not a name, it's a description.
+If the description is as long as the code, it is redundant.
 
 Martin writes about it in passing: "if you can extract another function from it with **a name that is not merely a restatement of its implementation**".<br/>
 But he violates this principle quite often.
 
-If for readability alone, I'd argue that the second version is as clear as the third and introducing Cell abstraction is an overkill.
+For readability, the second version is just as clear as the third. Adding a Cell abstraction is overkill.
 
 <div class="collapsible-rant">
     <div class="collapsible-header">
@@ -176,12 +176,6 @@ If anything, in most examples he proposed to replace short (albeit cryptic) name
         <div style="text-align:center"><img src="./images/names.png" width="70%" style="filter: brightness(85%)"/></div>
     </div>
 </div>
-
-<!--Pascal and Camel case in Java was proposed in Sun's Java Style as way to enforce "names should be short yet meaningful". <br/>-->
-<!--The idea being that `ItIsReallyUncomfortableToReadLongSentencesWrittenInThisStyle`. Hence people will be soft forced to limit the size of names.<br/>-->
-<!--The assumption was wrong.-->
-<!---->
-<!--<div style="text-align:center"><img src="./images/names.png" width="70%"/></div>-->
 
 
 ## Add meaningful context
