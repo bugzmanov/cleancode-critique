@@ -186,7 +186,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="chapter-2-meaningful-names"><a class="header" href="#chapter-2-meaningful-names">Chapter 2: Meaningful names</a></h1>
-<p>I generally agree with the theme of this chapter: names are important. Naming is the main component of building abstractions and abstraction boundaries.
+<p>I agree with the theme of this chapter: names are important. Naming is the main component of building abstractions and abstraction boundaries.
 In smaller languages like C or Go-Lang, naming is <em>the</em> primary mechanism for abstraction.</p>
 <p>Naming brings the problem domain into the computational domain:</p>
 <pre><code class="language-java">static int TEMPERATURE_LIMIT_F = 1000;
@@ -202,8 +202,8 @@ In smaller languages like C or Go-Lang, naming is <em>the</em> primary mechanism
 <div class="book-quote">
 The name of a variable, function, or class, should answer all the big questions. It should tell you why it exists, what it does, and how it is used. If a name requires a comment, then the name does not reveal its intent.
 </div>
-<p>This sounds like an impossible task. First, the name that reveals all of those details fails to be an abstraction boundary.
-Second, what you notice in many examples in this book that this approach to naming leads to using "description as a name".</p>
+<p>This sounds like an impossible task to me. First, the name that reveals all of those details fails to be an abstraction boundary.
+Second, what you notice in many examples in the book this approach leads to using "description as a name".</p>
 <p>Martin presents 3 versions of the same code:</p>
 <div class="code-comparison">
     <div class="code-column">
@@ -248,11 +248,11 @@ public List&lt;Cell&gt; getFlaggedCells() {
 <pre><code class="language-scala">gameBoard.filter(cell =&gt; cell(STATUS_VALUE) == FLAGGED)
 </code></pre>
 <p>That's it. This code can be inlined and used as is.</p>
-<p>While <code>getFlaggedCells</code> looks like an improvement over obfuscated <code>getThem</code>, it's not really a name, it's a description of what the method does.
-If the description is as long as the code, it's often redundant.</p>
+<p>While <code>getFlaggedCells</code> looks like an improvement over obfuscated <code>getThem</code>, it's not a name, it's a description.
+If the description is as long as the code, it is redundant.</p>
 <p>Martin writes about it in passing: "if you can extract another function from it with <strong>a name that is not merely a restatement of its implementation</strong>".<br/>
 But he violates this principle quite often.</p>
-<p>If for readability alone, I'd argue that the second version is as clear as the third and introducing Cell abstraction is an overkill.</p>
+<p>For readability, the second version is just as clear as the third. Adding a Cell abstraction is overkill.</p>
 <div class="collapsible-rant">
     <div class="collapsible-header">
         <span class="collapsible-title">To be fair there are good reasons to introduce Cell abstraction, but also there are reasons not to</span>
@@ -328,11 +328,6 @@ Shorter names are generally better than longer ones, so long as they are clear.
         <div style="text-align:center"><img src="./images/names.png" width="70%" style="filter: brightness(85%)"/></div>
     </div>
 </div>
-<!--Pascal and Camel case in Java was proposed in Sun's Java Style as way to enforce "names should be short yet meaningful". <br/>-->
-<!--The idea being that `ItIsReallyUncomfortableToReadLongSentencesWrittenInThisStyle`. Hence people will be soft forced to limit the size of names.<br/>-->
-<!--The assumption was wrong.-->
-<!---->
-<!--<div style="text-align:center"><img src="./images/names.png" width="70%"/></div>-->
 <h2 id="add-meaningful-context"><a class="header" href="#add-meaningful-context">Add meaningful context</a></h2>
 <p>I believe this was my first big WTF moment in the book:</p>
 <div class="code-comparison">
