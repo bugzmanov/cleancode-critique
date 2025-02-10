@@ -6,7 +6,7 @@ It's hard to make a small switch statement. Even a switch statement with only tw
 
 By this logic a method can never have if-else statement - they also do N things.
 
-There was a whole movement of [anti-if programming](https://www.antiifprogramming.com/about-the-anti-if.php).
+There was a whole movement of [anti-if programming](https://www.defusetheifstrategy.com/).
 I'm not quite sure if it's a joke [or not](https://en.algorithmica.org/hpc/pipelining/branchless/)
 
 Ok, back to Martin:
