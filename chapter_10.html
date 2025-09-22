@@ -7,17 +7,20 @@
 
 
         <!-- Custom HTML head -->
+        <!-- Custom Page Title for SEO -->
+        <title>Clean Code Critique: Why Much of 'Clean Code' Aged Poorly (+ Better Alternatives)</title>
+        
         <!-- Basic SEO Meta Tags -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="title" content="Clean Code - A Critical Analysis">
-        <meta name="description" content="A modern critique of Robert C. Martin's Clean Code. This book evaluates its principles, explores real-world software development challenges, and presents alternative approaches to writing maintainable code.">
+        <meta name="title" content="Clean Code Critique: Why Much of 'Clean Code' Aged Poorly (+ Better Alternatives)">
+        <meta name="description" content="A detailed critique of Robert C. Martin's 'Clean Code': what didn't age well, harmful examples, and better modern resources like A Philosophy of Software Design.">
         <meta name="keywords" content="Clean Code, software development, coding best practices, refactoring, code readability, programming critique">
         <meta name="author" content="bugzmanov">
         <meta name="robots" content="index, follow">
         
         <!-- Open Graph (OG) Meta Tags for Social Media -->
-        <meta property="og:title" content="Clean Code - A Critical Analysis">
+        <meta property="og:title" content="Clean Code Critique: Why Much of 'Clean Code' Aged Poorly (+ Better Alternatives)">
         <meta property="og:description" content="A deep dive into Clean Code's impact, its shortcomings, and what modern developers should do instead.">
         <meta property="og:type" content="book">
         <meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/">
@@ -25,7 +28,7 @@
         
         <!-- Twitter Card Meta Tags -->
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Clean Code - A Critical Analysis">
+        <meta name="twitter:title" content="Clean Code Critique: Why Much of 'Clean Code' Aged Poorly (+ Better Alternatives)">
         <meta name="twitter:description" content="A modern critique of Clean Code, evaluating its relevance and offering alternative programming best practices.">
         <meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
         <meta name="twitter:site" content="@bugzmanov">
@@ -33,8 +36,47 @@
         <!-- Canonical URL -->
         <link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/">
         
+        <!-- Prefetch and preconnect for performance -->
+        <link rel="dns-prefetch" href="https://bugzmanov.github.io">
+        <link rel="preconnect" href="https://bugzmanov.github.io">
+        
+        <!-- Link to sitemap for search engines -->
+        <link rel="sitemap" type="application/xml" href="https://bugzmanov.github.io/cleancode-critique/sitemap.xml">
+        
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="https://bugzmanov.github.io/cleancode-critique/favicon.svg">
+        
+        <!-- JSON-LD Structured Data for Article -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Clean Code Critique: Why Much of 'Clean Code' Aged Poorly (+ Better Alternatives)",
+          "description": "A detailed critique of Robert C. Martin's 'Clean Code': what didn't age well, harmful examples, and better modern resources like A Philosophy of Software Design.",
+          "author": {
+            "@type": "Person",
+            "name": "bugzmanov",
+            "sameAs": [
+              "https://github.com/bugzmanov",
+              "https://x.com/bugzmanov"
+            ]
+          },
+          "datePublished": "2024-01-01",
+          "dateModified": "2025-02-10",
+          "image": "https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png",
+          "publisher": {
+            "@type": "Person",
+            "name": "bugzmanov"
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://bugzmanov.github.io/cleancode-critique/"
+          },
+          "keywords": "Clean Code, Robert C. Martin, software development, code review, programming best practices, A Philosophy of Software Design",
+          "articleSection": "Software Development",
+          "inLanguage": "en"
+        }
+        </script>
         
 
         <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
@@ -52,30 +94,43 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/css/custom.css">
         <link rel="stylesheet" href="theme/css/custom-flex.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+            const path_to_root = "";
+            const default_light_theme = "navy";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -89,7 +144,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -102,17 +158,20 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -139,13 +198,14 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -165,7 +225,12 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -524,6 +589,7 @@ For most systems, change is continual. Every change subjects us to the risk that
 
         <!-- Custom JS scripts -->
         <script src="theme/book2.js"></script>
+
 
 
     </div>
