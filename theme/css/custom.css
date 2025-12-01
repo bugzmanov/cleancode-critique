@@ -279,7 +279,7 @@ pre code {
     /*top: -80px;*/
     transform: translateX(-50%);
     background: #f0de7d;
-    color: #2f2f2f; 
+    color: #2f2f2f !important;
     padding: 8px 12px;
     border-radius: 4px;
     width: 300px;
@@ -289,6 +289,10 @@ pre code {
     line-height: 1.4;
     z-index: 100;
     white-space: normal;
+}
+
+.code-comment * {
+    color: #2f2f2f !important;
 }
 
 .reviewable-line:hover .code-comment {
@@ -555,4 +559,313 @@ main {
     display: none !important;
 }
 
+/* Key Pillars Callout Box */
+.key-pillars {
+    background: linear-gradient(135deg, rgba(94, 234, 212, 0.1) 0%, rgba(94, 234, 212, 0.05) 100%);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 2rem 2rem 1.5rem 2rem;
+    margin: 2.5rem 0;
+    position: relative;
+}
 
+.key-pillars::before {
+    content: "The 3 Pillars of \"Clean Code\"™ Style";
+    color: var(--bg-primary);
+    position: absolute;
+    top: -14px;
+    left: 1.5rem;
+    background: var(--accent);
+    padding: 0.3rem 1rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.key-pillars ol {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1.8rem;
+    color: var(--text-primary);
+}
+
+.key-pillars li {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.key-pillars li strong {
+    color: var(--accent);
+}
+
+/* Better Code Example Box */
+.better-code {
+    margin: 2rem 0;
+    position: relative;
+    padding-top: 2rem;
+}
+
+.better-code::before {
+    content: "✓ Better approach";
+    color: var(--accent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--bg-primary);
+    padding: 0.2rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+}
+
+.better-code pre {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.better-code > p:last-child {
+    margin-bottom: 0;
+}
+
+/* Reality Check Callout Box */
+.reality-check {
+    background: var(--bg-secondary);
+    border-left: 2px solid rgba(156, 163, 175, 0.5);
+    border-radius: 0 6px 6px 0;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+}
+
+.reality-check ol, .reality-check ul {
+    margin: 0.5rem 0;
+}
+
+.reality-check li {
+    margin-bottom: 0.5rem;
+}
+
+.reality-check pre {
+    margin: 1rem 0;
+}
+
+/* Objective Benefits List */
+.objective-benefits {
+    background: linear-gradient(135deg, rgba(94, 234, 212, 0.1) 0%, rgba(94, 234, 212, 0.05) 100%);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 2rem 2rem 1.5rem 2rem;
+    margin: 2.5rem 0;
+    position: relative;
+}
+
+.objective-benefits::before {
+    content: "Objective Improvements";
+    color: var(--bg-primary);
+    position: absolute;
+    top: -14px;
+    left: 1.5rem;
+    background: var(--accent);
+    padding: 0.3rem 1rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.objective-benefits ol {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1.8rem;
+    color: var(--text-primary);
+}
+
+.objective-benefits li {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.objective-benefits li strong {
+    color: var(--accent);
+}
+
+/* File Explorer Styles */
+.file-explorer {
+    display: flex;
+    gap: 0;
+    margin: 2rem 0;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(94, 234, 212, 0.2);
+    border-radius: 6px;
+    overflow: hidden;
+    min-height: 600px;
+    max-height: 800px;
+}
+
+.file-tree-panel {
+    flex: 0 0 220px;
+    background: var(--bg-primary);
+    border-right: 1px solid rgba(94, 234, 212, 0.2);
+    overflow-y: auto;
+    padding: 0;
+}
+
+.file-content-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    background: var(--bg-secondary);
+}
+
+.file-tree {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+}
+
+.file-tree-item {
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: background 0.1s ease;
+    user-select: none;
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.file-tree-item::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%23656d76"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+    flex-shrink: 0;
+}
+
+.file-tree-item:hover {
+    background: var(--bg-overlay);
+}
+
+.file-tree-item.active {
+    background: var(--accent);
+    color: var(--bg-primary);
+    font-weight: 600;
+}
+
+.file-tree-item.active::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%231a1b26"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"></path></svg>');
+}
+
+.file-tree-folder {
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 6px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.file-tree-folder:hover {
+    background: var(--bg-overlay);
+}
+
+.file-tree-folder::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%23656d76"><path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+    transition: transform 0.12s ease;
+    transform: rotate(-90deg);
+    flex-shrink: 0;
+}
+
+.file-tree-folder.expanded::before {
+    transform: rotate(0deg);
+}
+
+.file-tree-children {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease;
+}
+
+.file-tree-children.expanded {
+    max-height: 500px;
+}
+
+.file-tree-children .file-tree-item {
+    padding-left: 40px;
+}
+
+.file-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px;
+    border-bottom: 1px solid rgba(94, 234, 212, 0.2);
+    background: var(--bg-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.file-content-title {
+    color: var(--accent);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.file-content-code {
+    margin: 0;
+    background: var(--bg-secondary) !important;
+    border-radius: 0;
+    max-height: 730px;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.file-content-code code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.file-content-placeholder {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 3rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+
+
+
+/* Sidebar separator after second edition review */
+ol.chapter > li.chapter-item:first-child {
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+    padding-bottom: 0.8rem;
+    margin-bottom: 0.8rem;
+}

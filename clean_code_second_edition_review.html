@@ -1,0 +1,1169 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Clean Code: Second Edition Critique - Clean Code - Critical Analysis</title>
+
+
+        <!-- Custom HTML head -->
+        <!-- Second Edition Review - Standalone Article -->
+<title>Clean Code Second Edition Review: Same Style, Same Problems</title>
+
+<!-- Basic SEO Meta Tags -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="title" content="Clean Code Second Edition Review: Same Style, Same Problems">
+<meta name="description" content="A review of Robert C. Martin'''s Clean Code Second Edition (2024). The core remains unchanged.">
+<meta name="keywords" content="Clean Code Second Edition, Clean Code 2024, Robert C. Martin, Uncle Bob, software development, code review, book review">
+<meta name="author" content="bugzmanov">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph (OG) Meta Tags for Social Media -->
+<meta property="og:title" content="Clean Code Second Edition Review: Same Style, Same Problems">
+<meta property="og:description" content="A review of Robert C. Martin'''s Clean Code Second Edition (2024). The core remains unchanged.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://bugzmanov.github.io/cleancode-critique/clean_code_second_edition_review.html">
+<meta property="og:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Clean Code Second Edition Review: Same Style, Same Problems">
+<meta name="twitter:description" content="A review of Robert C. Martin'''s Clean Code Second Edition (2024). The core remains unchanged.">
+<meta name="twitter:image" content="https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png">
+<meta name="twitter:site" content="@bugzmanov">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://bugzmanov.github.io/cleancode-critique/clean_code_second_edition_review.html">
+
+<!-- JSON-LD Structured Data for Article -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Clean Code Second Edition Review: Same Style, Same Problems",
+  "description": "A review of Robert C. Martin'''s Clean Code Second Edition (2024). The core remains unchanged.",
+  "author": {
+    "@type": "Person",
+    "name": "bugzmanov",
+    "sameAs": [
+      "https://github.com/bugzmanov",
+      "https://x.com/bugzmanov"
+    ]
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2025-12-01",
+  "image": "https://bugzmanov.github.io/cleancode-critique/images/is_this_code_clean.png",
+  "publisher": {
+    "@type": "Person",
+    "name": "bugzmanov"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bugzmanov.github.io/cleancode-critique/clean_code_second_edition_review.html"
+  },
+  "keywords": "Clean Code Second Edition, Clean Code 2024, Robert C. Martin, Uncle Bob, book review, software development",
+  "articleSection": "Software Development",
+  "inLanguage": "en"
+}
+</script>
+
+        <meta name="description" content="A modern critique of Robert C. Martin&#x27;s &#x27;Clean Code,&#x27; evaluating its principles, real-world applicability, and alternative approaches to software development. This book explores the nuances of code quality, refactoring strategies, and the evolution of programming best practices beyond Clean Code&#x27;s rigid rules.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom.css">
+        <link rel="stylesheet" href="theme/css/custom-flex.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "navy";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Clean Code - Critical Analysis</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/buhzmanov/cleancode-critique" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="review-of-clean-code-second-edition"><a class="header" href="#review-of-clean-code-second-edition">Review of "Clean Code" Second Edition</a></h1>
+<div style="text-align:center"> 
+    <a target="_blank" href="https://www.reddit.com/r/programming/comments/1eo2lo5/uncle_bob_martin_i_am_in_the_midst_of_writing_the/"><img src="./images/second-ed-tweet.png" style="width:60%"></img></a>
+</div> 
+<p>This is true! Clean Code’s second edition is pretty much the same: same tiny-functions style, the same old OOP habit of mixing data and behavior into choppy class designs, and the same blind spots.</p>
+<p>I wrote <a href="https://bugzmanov.github.io/cleancode-critique/">a critique of Clean Code's first edition</a> and was curious how much of it would become obsolete.
+After reading it, the answer is: "not much, if anything"</p>
+<p>It is a different book in some ways:</p>
+<ul>
+<li>The first edition was focused, concise and highly opinionated. You could disagree with 80% of it and still appreciate it as a clear, coherent message about one particular style of programming.</li>
+<li>The second edition is less focused. It’s an amalgamation of Martin’s work - a collage of
+<em>Clean Code</em>, <em>The Clean Coder</em>, <em>Clean Architecture</em>, <em>We Programmers</em>, and SOLID material.</li>
+</ul>
+<p>It’s also a noticeably thicker book - full of digressions, rants, and good old rambling.</p>
+<p>But the code part has not really changed. This review focuses on "Part 1: Code".</p>
+<p>...</p>
+<p>Here's a good example of the new format:  <br/>
+In Chapter 10 - "One Thing" - he addresses critiques of his style of tiny functions:</p>
+<div class="book-quote">
+Over the years, this particular recommendation, from the first edition of this book, has been the most controversial. But why?
+There are a lot of reasons.
+<ol>
+<li>
+<p>People are afraid that if they follow this rule, they will drown beneath a sea of tiny little functions.</p>
+</li>
+<li>
+<p>People are afraid that following this rule will obscure the intent of a function because they won't be able to see it all in
+one place.</p>
+</li>
+<li>
+<p>People worry that the performance penalty of calling all those tiny little functions will cause their applications to run
+like molasses in the wintertime.</p>
+</li>
+<li>
+<p>People think they're going to have to be bouncing around, from function to function, in order to understand anything.</p>
+</li>
+<li>
+<p>People are concerned that the resulting functions will be too entangled to understand in isolation.</p>
+</li>
+</ol>
+<p>Let's address these one at a time.</p>
+<ol>
+<li>Drowning</li>
+</ol>
+<p>Long ago our languages were very primitive. The first version of Fortran, for example, allowed you to write one function. And it
+wasn't called a function. It was just called a program. There were no modules, no functions, and no subroutines. As I said, it
+was primitive.</p>
+<p>COBOL wasn't much better. You could jump around from one paragraph to the next using a goto statement; but the idea of functions
+that you could call with arguments was still a decade in the future.</p>
+<p>When Algol, and later, C, came along, the idea of functions burst upon us like a wave. Suddenly we could create modules that
+could be individually compiled. Modular programming became all the rage.</p>
+<p>But as the years went by, and our programs got larger and larger, we began to realize that functions weren't enough. Our names
+started to collide. We were having trouble keeping them unique. And we really didn't like the idea of prefixing every name with
+the name of its module. I mean, nobody likes io_files_open as a function name.</p>
+<p>So we added classes and namespaces to our languages. These gave us lovely little cubbyholes that had names into which we
+could place our functions and our variables. Moreover, these namespaces and classes quickly became hierarchical. We could have
+functions within namespaces that were within yet other namespaces.</p>
+</div>
+<p>He keeps going, but you can see that:</p>
+<ul>
+<li>Points 1, 2, and 4 are essentially the same concern.</li>
+<li>Folksy phrasing like “run like molasses in the wintertime” doesn’t clarify anything.</li>
+<li>Instead of addressing the core critique, he detours into a thin language-history lesson.</li>
+</ul>
+<p>This is <em>the</em> style of the second edition.</p>
+<p>What has somewhat improved is the Java code: most examples in the first edition were abysmally bad, and while the second edition is better, it still leaves much to be desired.</p>
+<p>The second edition has examples in other languages. But Martin writes Python and Go as if they were Java with disclaimers that he doesn’t really know them:</p>
+<ul>
+<li><em>"It’s been a long time since I’ve written any Python, so bear with me."</em></li>
+<li><em>"I apologize - I am not an accomplished Golang programmer"</em></li>
+</ul>
+<p>Why does he use them?
+I guess to prove that the ideas aren’t Java-specific and apply across languages. And they might be - if you write Java in Python.
+Do they apply if you write Python in Python? That’s left as an exercise for the reader.</p>
+<p>Over the years Martin has definitely heard the critique of his original book, and he has participated in debates around it (with <a href="https://github.com/cmuratori/misc">Casey Muratori</a> about performance,
+and with <a href="https://github.com/johnousterhout/aposd-vs-clean-code">John Ousterhout</a> about style and design).</p>
+<p>I don't believe Martin internalized the critique or revised any of his recommendations.
+There is a tonal shift here and there towards being more accepting of alternative views (<code>"but you may disagree. That's OK. We are allowed to disagree. There is no single standard for what cleanliness is. This is mine, and mine may not be yours."</code>), but I haven't noticed any changes in the way he writes code.</p>
+<h1 id="chapter-2---clean-that-code"><a class="header" href="#chapter-2---clean-that-code">Chapter 2 - Clean that code!</a></h1>
+<p>This chapter is a replacement for <a href="https://bugzmanov.github.io/cleancode-critique/chapter_14.html">"Chapter 14: Successive Refinement"</a> from the first edition.</p>
+<p>This is a good illustration that it's the same "Clean Code"(tm) style from 2007 - nothing has really changed.</p>
+<p>As a reminder:</p>
+<div class="key-pillars">
+<ol>
+<li><strong>Avoid comments.</strong> Over-use "description as a name" instead</li>
+<li><strong>Extract a lot of tiny functions</strong> that are used only once</li>
+<li><strong>Move parameters to class state</strong> and pass them implicitly from everywhere to everywhere</li>
+</ol>
+</div>
+<p>This is how he cleans the code in 2024: Original version on the left; the cleaned-up version on the right:</p>
+<div class="code-comparison">
+    <div class="code-column" style="flex: 0 0 45% !important; max-width: 45%; min-width: 45%;">
+        <pre class="ignore"><code class="language-java">package fromRoman;
+&#10;import java.util.Arrays;
+&#10;public class FromRoman {
+  public static int convert(String roman) {
+    if (roman.contains("VIV") ||
+      roman.contains("IVI") ||
+      roman.contains("IXI") ||
+      roman.contains("LXL") ||
+      roman.contains("XLX") ||
+      roman.contains("XCX") ||
+      roman.contains("DCD") ||
+      roman.contains("CDC") ||
+      roman.contains("MCM")) {
+      throw new InvalidRomanNumeralException(roman);
+    }
+    roman = roman.replace("IV", "4");
+    roman = roman.replace("IX", "9");
+    roman = roman.replace("XL", "F");
+    roman = roman.replace("XC", "N");
+    roman = roman.replace("CD", "G");
+    roman = roman.replace("CM", "O");
+    if (roman.contains("IIII") ||
+      roman.contains("VV") ||
+      roman.contains("XXXX") ||
+      roman.contains("LL") ||
+      roman.contains("CCCC") ||
+      roman.contains("DD") ||
+      roman.contains("MMMM")) {
+      throw new InvalidRomanNumeralException(roman);
+    }
+&#10;    int[] numbers = new int[roman.length()];
+    int i = 0;
+    for (char digit : roman.toCharArray()) {
+      switch (digit) {
+        case 'I' -> numbers[i] = 1;
+        case 'V' -> numbers[i] = 5;
+        case 'X' -> numbers[i] = 10;
+        case 'L' -> numbers[i] = 50;
+        case 'C' -> numbers[i] = 100;
+        case 'D' -> numbers[i] = 500;
+        case 'M' -> numbers[i] = 1000;
+        case '4' -> numbers[i] = 4;
+        case '9' -> numbers[i] = 9;
+        case 'F' -> numbers[i] = 40;
+        case 'N' -> numbers[i] = 90;
+        case 'G' -> numbers[i] = 400;
+        case 'O' -> numbers[i] = 900;
+        default -> throw new InvalidRomanNumeralException(roman);
+      }
+      i++;
+    }
+    int lastDigit = 1000;
+    for (int number : numbers) {
+      if (number > lastDigit) {
+        throw new InvalidRomanNumeralException(roman);
+      }
+      lastDigit = number;
+    }
+    return Arrays.stream(numbers).sum();
+  }
+&#10;  public static
+  class InvalidRomanNumeralException extends RuntimeException {
+    public InvalidRomanNumeralException(String roman) {
+    }
+  }
+}
+</code></pre>
+    </div>
+    <div class="code-column" style="flex: 0 0 53% !important; max-width: 53%; min-width: 53%;">
+        <pre class="ignore"><code class="language-java">package fromRoman;
+&#10;import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+&#10;public class FromRoman {
+  <span class="code-comment-trigger">►</span><span class="reviewable-line">private String roman;
+  private List&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();
+  private int charIx;
+  private char nextChar;
+  private Integer nextValue;
+  private Integer value;
+  private int nchars;<span class="code-comment">this is unfortunate mix of input data, intermediate computation state, and output data<br/> What's surprising is that Martin wants method bodies to be clean, but doesn't mind mess in object's state or class namespace</span></span>
+&#10;  <span class="code-comment-trigger">►</span><span class="reviewable-line">Map&lt;Character, Integer&gt; values = Map.of(<span class="code-comment">this should be a constant, i.e. "static private final"</span></span>
+    'I', 1,
+    'V', 5,
+    'X', 10,
+    'L', 50,
+    'C', 100,
+    'D', 500,
+    'M', 1000);
+&#10;  <span class="code-comment-trigger">►</span><span class="reviewable-line">public FromRoman(String roman) {<span class="code-comment">this should be private, if we want `convert` to be an entry point</span></span>
+    this.roman = roman;
+  }
+&#10;  public static int convert(String roman) {
+    return new FromRoman(roman).doConversion();
+  }
+&#10;  private int doConversion() {
+    checkInitialSyntax();
+    convertLettersToNumbers();
+    checkNumbersInDecreasingOrder();
+    return numbers.stream().reduce(0, Integer::sum);
+  }
+&#10;  private void checkInitialSyntax() {
+    checkForIllegalPrefixCombinations();
+    checkForImproperRepetitions();
+  }
+&#10;  private void checkForIllegalPrefixCombinations() {
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">checkForIllegalPatterns(
+      new String[]{"VIV", "IVI", "IXI", "IXV", "LXL", "XLX",
+                   "XCX", "XCL", "DCD", "CDC", "CMC", "CMD"});<span class="code-comment">useless allocations. these should be extracted into constants</span></span>
+  }
+&#10;  <span class="code-comment-trigger">►</span><span class="reviewable-line">private void checkForImproperRepetitions() {<span class="code-comment">there is no need to split validation in 3 methods. this just pollutes name space</span></span>
+    <span class="code-comment-trigger">►</span><span class="reviewable-line">checkForIllegalPatterns(
+      new String[]{"IIII", "VV", "XXXX", "LL", "CCCC", "DD", "MMMM"});<span class="code-comment">useless allocations. these should be extracted into constants</span></span>
+  }
+&#10;  private void checkForIllegalPatterns(String[] patterns) {
+    for (String badString : patterns)
+      if (roman.contains(badString))
+        throw new InvalidRomanNumeralException(roman);
+  }
+&#10;  private void convertLettersToNumbers() {
+    char[] chars = roman.toCharArray();
+    nchars = chars.length;
+    for (charIx = 0; charIx &lt; nchars; charIx++) {
+      nextChar = isLastChar() ? 0 : chars[charIx + 1];
+      nextValue = values.get(nextChar);
+      char thisChar = chars[charIx];
+      value = values.get(thisChar);
+      switch (thisChar) {
+        case 'I' -> addValueConsideringPrefix('V', 'X');
+        case 'X' -> addValueConsideringPrefix('L', 'C');
+        case 'C' -> addValueConsideringPrefix('D', 'M');
+        case 'V', 'L', 'D', 'M' -> numbers.add(value);
+        default -> throw new InvalidRomanNumeralException(roman);
+      }
+    }
+  }
+&#10;  private boolean isLastChar() {
+    return charIx + 1 == nchars;
+  }
+&#10;  private void addValueConsideringPrefix(char p1, char p2) {
+    if (nextChar == p1 || nextChar == p2) {
+      numbers.add(nextValue - value);
+      charIx++;
+    } else numbers.add(value);
+  }
+&#10;  private void checkNumbersInDecreasingOrder() {
+    for (int i = 0; i &lt; numbers.size() - 1; i++)
+      if (numbers.get(i) &lt; numbers.get(i + 1))
+        throw new InvalidRomanNumeralException(roman);
+  }
+&#10;  public static
+  class InvalidRomanNumeralException extends RuntimeException {
+    public InvalidRomanNumeralException(String roman) {
+      super("Invalid Roman numeral: " + roman);
+    }
+  }
+}
+</code></pre>
+    </div>
+</div>
+<p>Let's be clear: this is a stylistic choice. It doesn't improve any objective metric.<br/>
+As a style, it's very recognizable: when you see long-named functions that have 0-1 parameters and very short bodies - you immediately think "Oh. That's Uncle Bob's Clean Code".
+From an artistic standpoint, creating a distinctive, instantly recognizable style is an achievement. I bet you know a colleague or two who uses it.
+But code isn't art. The question is whether the style helps you build and maintain software.</p>
+<p>Putting the style aside for a moment, you'll notice that the "improved" code is surprisingly sloppy:</p>
+<ol>
+<li><strong>Confusing public API</strong>: class <code>FromRoman</code> has a single public entry point - static method <code>convert</code>, this means the constructor should be private.</li>
+</ol>
+<p>If we are aiming for code to be new-reader friendly, the proper implementation would be:</p>
+<div class="better-code">
+<pre><code class="language-java">// internal constructor. use static method 'convert' instead
+private FromRoman(String roman) {
+   this.roman = roman;
+}
+</code></pre>
+</div>
+<ol start="2">
+<li><strong>Unnecessary allocations</strong>: The immutable values (<code>Map&lt;Character, Integer&gt; values</code>) have to be "private static final" to avoid creating the same reference data every time you do a conversion.
+The validation patterns are allocated on each call too.</li>
+</ol>
+<p>Here's how it should be done instead:</p>
+<div class="better-code">
+<pre><code class="language-java">private static final String[] INVALID_PATTERNS = {
+  // Illegal prefix combinations
+  "VIV", "IVI", "IXI", "IXV", "LXL", "XLX",
+  "XCX", "XCL", "DCD", "CDC", "CMC", "CMD",
+  // Improper repetitions
+  "IIII", "VV", "XXXX", "LL", "CCCC", "DD", "MMMM"
+};
+
+private static void validate(String roman) {
+  for (String pattern : INVALID_PATTERNS) {
+    if (roman.contains(pattern)) {
+      throw new InvalidRomanNumeralException(roman);
+    }
+  }
+}
+</code></pre>
+<p>This eliminates the useless allocations and removes the pointless <code>checkForIllegalPrefixCombinations</code>, <code>checkForImproperRepetitions</code>, and <code>checkForIllegalPatterns</code> helpers.</p>
+</div>
+<div class="objective-benefits">
+<ol>
+<li>It's a smaller code chunk that does exactly the same</li>
+<li>This code is less work for the compiler to compile</li>
+<li>It will perform better at runtime</li>
+<li>It would generate less garbage and have less memory pressure</li>
+</ol>
+</div>
+<p>All for free, just from using a different style.</p>
+<p>And let's talk style. Arguably <code>private static void validate(String roman)</code> is an easy-to-understand signature. You don't need to
+jump across the code to guess what it is doing. And the implementation utilizes different language constructs to express the intent:</p>
+<ul>
+<li>Inputs for the processing - as method arguments</li>
+<li>Static immutable reference data - as constants</li>
+<li>Code explanation - as comments</li>
+</ul>
+<p>In contrast, Clean Code advocates using method names for code explanation and class fields for passing parameters and results. This feels like a misuse of the instrument.</p>
+<p>Now try to work out the purpose and relationships between these methods from signatures only:</p>
+<ul>
+<li><code>private void checkForIllegalPrefixCombinations() </code></li>
+<li><code>private void checkInitialSyntax()</code></li>
+<li><code>private void checkForIllegalPatterns(String[] patterns)</code></li>
+<li><code>private void checkForImproperRepetitions()</code></li>
+</ul>
+<p>Fun!</p>
+<p>P.S. Sometimes it's worth encoding documentation into the name to make things more visible (for example, <code>runTaskDangerouslySkipPermissions</code>),
+but this should not be a go-to move. This is a special case situation that requires justification.</p>
+<p>...</p>
+<p>This is the moment that made me chuckle:</p>
+<div class="book-quote">
+Future Bob: Two months later I'm torn. The first version, ugly as it was, was not as chopped up as this one. It's true that the
+names and the ordering of the extracted functions read like a story and are a big help in understanding the intent; but there
+were several times that I had to scroll back up to the top to assure myself about the types of instance variables. I found the
+choppiness, and the scrolling, to be annoying.
+</div>
+<p>YES! Everyone finds this annoying! Lean into this feeling! See the light, Robert! It's not too late.</p>
+<p>But then he falls into justifications:</p>
+<div class="book-quote">
+However, and this is critical, I am reading this cleaned code after having first
+read the ugly version and having gone through the work of understanding it. So now, as I read this version, I am annoyed because
+I already understand it and find the chopped-up functions and the instance variables redundant.
+<p>This annoyance is an issue that John Ousterhout and I have debated. When you understand an algorithm, the artifacts intended
+to help you understand it become annoying. Worse, if you understand an algorithm, the names or comments you write to help others
+will be biased by that understanding and may not help the reader as much as you think they will</p>
+</div>
+<p>He is mixing two points here:</p>
+<ul>
+<li><a href="https://buttondown.com/hillelwayne/archive/stroustrups-rule/">Stroustrup's rule</a> - beginners want as much context as possible, experts want code to be terse and on-point</li>
+<li>You might be bad at explaining your ideas in code</li>
+</ul>
+<p>Comments solve both problems: experts can skip them, beginners can rely on them.
+Bad comments are less risky than bad code - if you're bad at explaining your code in comments, people can ignore them.
+If you're bad at explaining your thoughts in code, everyone is stuck with it.</p>
+<p>He casually pushes comments under the bus: <code>"the names or comments you write to help others  will be biased by that understanding and may not help the reader as much as you think they will"</code>. But his code had none so far.</p>
+<p>This section was supposed to address the main critique from John Ousterhout: code style and design.</p>
+<p>Then he moves to performance (<a href="https://www.computerenhance.com/p/clean-code-horrible-performance">Casey Muratori</a> is not mentioned once in the book, which is a shame):</p>
+<div class="book-quote">
+You might complain that the creation of an object is overkill and expensive. It's true that allocating memory, and then garbage-
+collecting it later, takes extra time. There is also time spent in the calling of all those small methods. If you are writing
+embedded real-time code with very tight timing constraints, or if you are writing code for a high-performance flight simulator
+or first-person shooter game, then this decision could seem insane, not to mention unclean. But for my purposes, the extra time
+is the least of my concerns. I don't need the speed. For my situation, I think trading speed for clarity, within reason, is a
+good trade to make.
+</div>
+<p>It might sound repetitive, but the trade-off comes not from cleanliness or clarity, it comes specifically from <strong>his style</strong>:</p>
+<ul>
+<li>Function extraction to keep them small (and to avoid comments)</li>
+<li>Moving parameters to object fields to minimize the number of parameters (to 1 or 0)</li>
+</ul>
+<p>He understates the negative impact:</p>
+<ul>
+<li><em>Compile time</em>: more small functions and many fields forces the compiler to do more work</li>
+<li><em>Runtime</em>: all these object fields require additional memory space for references</li>
+<li><em>Testing</em>: in Java, for non-JITed code, passing data via instance fields is more expensive than using method parameters. Slow non-JITed code means slow tests.</li>
+</ul>
+<p>If you don't agree that this style improves clarity (and you shouldn't - be like John Ousterhout), you get a double slap:
+less readable code that also has worse performance. This is what makes people so energized against "clean code"™.</p>
+<div class="book-quote">
+You might be a functional programmer horrified that the functions are not "pure." But, in fact, the static convert function is
+as pure as a function can be. The others are just little helpers that operate within a single invocation of that overarching
+pure function. Those instance variables are very convenient for allowing the individual methods to communicate without having to
+resort to passing arguments. This shows that one good use for an object is to allow the helper functions that operate within the
+execution of a pure function to easily communicate through the instance variables of the object.
+</div>
+<p>"Well, actually" the function that can throw an exception is not pure. A pure function must be deterministic and have no side effects. Throwing an exception is a side effect-it
+alters the control flow and can be observed from outside the function.</p>
+<p><code>"allowing the individual methods to communicate without having to resort to passing arguments"</code> - this is such strange wording.
+Passing arguments and returning values is THE main mechanism for how functions communicate. There is no resorting here.</p>
+<hr />
+<p>Tangent: Pure functions.</p>
+<p>There is a whole section in Chapter 7: Clean Functions dedicated to Robert Martin refusing to embrace the concept of pure functions.</p>
+<div class="book-quote"> 
+<p>Purity is an observed quality, not an intrinsic quality. Therefore, whether a function is pure or not depends
+upon what is being observed.</p>
+<p>Consider the C library function <code>fopen(char* name, char* mode)</code> This function has the side effect of leaving the named file open.
+This means that fopen is not pure, because there are functions, such as fgetc and fputc, that will not behave properly unless
+fopen is called first. Indeed, if you call fopen with the same arguments twice in a row without an intervening call to fclose,
+the second invocation will likely fail because the file is already open. So fopen is not pure, because of the side effect that
+leaves the system in an altered state.</p>
+<p>However, we can make the fopen function appear to be pure, at least to certain observers, by ensconcing it in another function
+that hides the side effect.</p>
+<pre><code class="language-c">void openAndDo(char* fileName, void (*doTo)(FILE*)) {
+  FILE* f = fopen(fileName, "r+");
+  doTo(f);
+  fclose(f);
+}
+</code></pre>
+</div>
+<p>I believe he is trying to address <a href="https://bugzmanov.github.io/cleancode-critique/chapter_36.html">criticism</a> of his misunderstanding of pure functions and side effects by doubling down on that misunderstanding.</p>
+<blockquote>
+<p>Indeed, if you call fopen with the same arguments twice in a row without an intervening call to fclose, the second invocation will likely fail because the file is already open</p>
+</blockquote>
+<p>On some operating systems it will fail, but on others it won’t. Instead, you may just leak file descriptors.
+The side effect of fopen is more complex than “leaves the file open”:</p>
+<ul>
+<li>It mutates global system state.</li>
+<li>It depends on external system resources being available.</li>
+<li>It might fail based on external conditions.</li>
+</ul>
+<p>In other words, it has an implicit dependency on the environment.</p>
+<blockquote>
+<p>at least to certain observers</p>
+</blockquote>
+<p>For any observer:</p>
+<ul>
+<li><code>fopen</code> can fail, <code>doTo</code> can fail, and <code>fclose</code> can fail. Any of these may leave the system in a different state.</li>
+<li><code>fopen</code> and <code>fclose</code> both depend on the environment: the file must exist, the filesystem must be available, there must be free file descriptors, etc.</li>
+</ul>
+<p>The whole point of pure functions is that they depend only on their input parameters and always produce the same result for the same input.
+This makes them:</p>
+<ul>
+<li><em>Context-independent</em> – they can be used anywhere you have the required input data, and they compose well with other parts of the system.</li>
+<li><em>Easier to reason about</em> – you only need to think about the function’s implementation, not hidden global or environmental state.</li>
+<li><em>Easier to optimize</em> – they are suitable for memoization/caching and compiler optimizations</li>
+</ul>
+<p>I suspect this section exists mostly to defend his “0–1 parameters” style. But again, instead of clarifying important concepts (purity and side effects), Martin blurs them just enough to justify his preferred way of writing code.</p>
+<p>This reframing of purity as an “observed quality” in a programming book in 2025 looks off.</p>
+<hr />
+<div class="book-quote">
+So I think this is pretty clean. Am I right? I think I am; but you may disagree. That's OK. We are allowed to disagree. There
+is no single standard for what cleanliness is. This is mine, and mine may not be yours. All I'll ask of you is that you consider
+mine and develop your own standard. The most important thing is to have a standard that you apply with discipline.
+</div>
+<p>In isolation this is an A-OK caveat. It makes the book feel less dogmatic and given how controversial it is - that's a good tone shift.
+But the question is: who is Robert Martin speaking to? Junior people would just ignore this paragraph, they are looking for straight and simple guidance. Putting disclaimers like this doesn't negate the harmful influence.
+For senior people who are just upset with "clean code"(tm) style this is an empty platitude. Everyone who disagrees with "clean code"(tm)
+style knows that they are allowed to disagree. That's not the point of the criticism.</p>
+<div class="book-quote">
+Postscript: Future Bob Playing with Grok3
+<p>I fed my "clean" version of the above code into Grok3 and asked it to make improvements. After a bit of
+thought, it returned the following code, which compiled and which passed all my tests.</p>
+<pre><code class="language-java">package fromRoman;
+
+import java.util.Map;
+
+public class FromRoman {
+    private String roman;
+    private static final String REGEX =
+      "^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$";
+    private static final Map&lt;Character, Integer&gt; VALUES = Map.of(
+        'I', 1,
+        'V', 5,
+        'X', 10,
+        'L', 50,
+        'C', 100,
+        'D', 500,
+        'M', 1000
+    );
+
+    /** Constructs a FromRoman instance,
+        validating the input Roman numeral. */
+    public FromRoman(String roman) {
+        if (!roman.matches(REGEX)) {
+            throw new InvalidRomanNumeralException(roman);
+        }
+        this.roman = roman;
+    }
+
+    /** Converts the Roman numeral to an integer. */
+    public int toInt() {
+        int sum = 0;
+        for (int i = 0; i &lt; roman.length(); i++) {
+            int currentValue = VALUES.get(roman.charAt(i));
+            if (i &lt; roman.length() - 1) {
+                int nextValue = VALUES.get(roman.charAt(i + 1));
+                if (currentValue &lt; nextValue) {
+                    sum -= currentValue;
+                } else {
+                    sum += currentValue;
+                }
+            } else {
+                sum += currentValue;
+            }
+        }
+        return sum;
+    }
+
+    /** Static method to convert a Roman numeral string to an integer. */
+    public static int convert(String roman) {
+        return new FromRoman(roman).toInt();
+    }
+
+    public static
+    class InvalidRomanNumeralException extends RuntimeException {
+        public InvalidRomanNumeralException(String roman) {
+            super("Invalid Roman numeral: " + roman);
+        }
+    }
+}
+</code></pre>
+<p>Grok3 did a nice job</p>
+</div>
+<p>This is such a canonical solution to the Roman numeral problem that Grok almost certainly got it from the training data.</p>
+<p>But what's interesting here is how you can bias an AI model to write suboptimal code.
+Notice that Grok's solution retains the instance variable <code>roman</code> which is completely unnecessary.
+It is a bias from his "clean" version.
+If you just ask a model to create a brand new converter from "roman numerals to int in java" it would come up with a reasonable API:</p>
+<pre><code class="language-java">public final class RomanNumerals {
+   public static int toInt(String roman) {...}
+}
+</code></pre>
+<h1 id="chapter-3-first-principles"><a class="header" href="#chapter-3-first-principles">Chapter 3: First principles</a></h1>
+<p>Chapter 3 is supposed to demonstrate how SOLID gives you designs that scale with new requirements.
+What it actually demonstrates is how you can get a complex code design that completely ignores the complexity of the domain.</p>
+<p>The starting point is a simple rental statement for a conference center.</p>
+<pre><code class="language-java">---Statement.java---
+package ubConferenceCenter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Statement {
+
+  public enum CatalogItem {SMALL_ROOM, LARGE_ROOM,
+                           PROJECTOR, COFFEE, COOKIES}
+
+  public record RentalItem(CatalogItem type,
+                           int days,
+                           int unitPrice,
+                           int price,
+                           int tax) {
+  }
+
+  public record Totals(int subtotal, int tax) {
+  }
+
+  private String customerName;
+  private int subtotal = 0;
+  private int tax = 0;
+  private List&lt;RentalItem&gt; items = new ArrayList&lt;&gt;();
+
+  public Statement(String customerName) {
+    this.customerName = customerName;
+  }
+
+  public void rent(CatalogItem item, int days) {
+    int unitPrice = switch (item) {
+      case SMALL_ROOM -&gt; 100;
+      case LARGE_ROOM -&gt; 150;
+      case PROJECTOR -&gt; 50;
+      case COFFEE -&gt; 10;
+      case COOKIES -&gt; 15;
+    };
+
+    boolean eligibleForDiscount = switch (item) {
+      case SMALL_ROOM, LARGE_ROOM -&gt; days == 5;
+      case PROJECTOR, COFFEE, COOKIES-&gt; false;
+    };
+
+    int price = unitPrice * days;
+
+    if (eligibleForDiscount) price = (int) Math.round(price * .9);
+
+    subtotal += price;
+    int thisTax = switch (item) {
+      case SMALL_ROOM, LARGE_ROOM, PROJECTOR -&gt;
+           (int) Math.round(price * .05);
+      case COFFEE,COOKIES -&gt; 0;
+    };
+    tax += thisTax;
+    items.add(new RentalItem(item, days, unitPrice, price, thisTax));
+  }
+
+  public RentalItem[] getItems() {
+    List&lt;RentalItem&gt; items = new ArrayList&lt;&gt;(this.items);
+    boolean largeRoomFiveDays = items.stream().anyMatch(
+      item -&gt; item.type() == CatalogItem.LARGE_ROOM &amp;&amp; item.days() == 5);
+    boolean coffeeFiveDays = items.stream().anyMatch(
+      item -&gt; item.type() == CatalogItem.COFFEE &amp;&amp; item.days() == 5);
+    if (largeRoomFiveDays &amp;&amp; coffeeFiveDays)
+      items.add(new RentalItem(CatalogItem.COOKIES, 5, 0, 0, 0));
+    return items.toArray(new RentalItem[0]);
+  }
+
+  public String getCustomerName() {
+    return customerName;
+  }
+
+  public Totals getTotals() {
+    return new Totals(subtotal, tax);
+  }
+}
+
+</code></pre>
+<p>To address the requirements changes:</p>
+<div class="book-quote">
+Let's suppose that we've just gotten back from an all-hands meeting at which the CEO gave us a glowing report about how
+the company is expanding. There are new markets, new states, new laws to contend with. There will be new discounts and new
+promotions, and new tax regulations
+</div>
+<p>The proposed rewrite is as follows:</p>
+<div id="uncle-bob-explorer" class="file-explorer"></div>
+<p>Applying different letters from SOLID, Martin claims that SOLID helps design code for growth and scaling:</p>
+<div class="book-quote">
+ our assumption has been that this code is going to grow, and that we’re trying to make room for that
+growth
+</div> 
+<p>I can agree with extraction of Bonus subsystem. But why stop at Bonuses? What about taxes and discounts and pricing?<br/>
+(side note: <code>void checkAndAdd(List&lt;RentalItem&gt; items, List&lt;RentalItem&gt; bonusItems)</code> is surprisingly awkward API)</p>
+<p>The whole redesign is mostly an attempt to replace switch statements with polymorphism. But is CatalogItem actually a good interface?</p>
+<pre><code class="language-java">public interface CatalogItem {
+    boolean isEligibleForDiscount(int days);
+    int getDiscountedPrice(int days);
+    int getUnitPrice();
+    double getTaxRate();
+    String getName();
+}
+</code></pre>
+<p>This is old-school OOP: one interface that pretends to encapsulate “an item” but quietly bundles pricing, tax, and discount policy into a single interface.</p>
+<p>And yet it is very simplistic.</p>
+<div class="reality-check">
+<p>Everyone who has dealt with taxes can immediately understand how laughable this simplification is:</p>
+<pre><code class="language-java">double getTaxRate();
+</code></pre>
+<ol>
+<li>There's rarely just one tax</li>
+<li>Taxes depend on the category of item</li>
+<li>Tax depends on where and who</li>
+<li>Tax rules change over time</li>
+<li>double wouldn't cut it for rounding and precision, some taxes are not even percentages.</li>
+</ol>
+</div>
+<p>The requirement changes that this design wouldn't be able to accommodate:</p>
+<ol start="0">
+<li>Actual taxation system</li>
+<li>Changes over time</li>
+</ol>
+<p>For example, Martin's interface makes a fundamental domain modeling error: it treats tax as an intrinsic property of items.<br/>
+Say we're expanding state tax rules: New York charges 8.875% on room rentals but 0% on food. California charges 7.25% on both. With Martin's design, where does this logic go?</p>
+<pre><code class="language-java">class LargeRoom implements CatalogItem {
+     double getTaxRate() {
+         // How do I know we're in NY vs CA?
+         // Do I inject location into every item?
+     }
+ }
+</code></pre>
+<p>I don't believe this design is ready for "new markets, new states, new laws to contend with."</p>
+<p>This is one of the problems with SOLID in general: it's a collection of principles that you can apply mechanistically to any codebase,
+completely ignoring the domain of the application.</p>
+<p>This idea of separating high-level policy from low-level detail might be useful, but it is misapplied.
+The real world of taxation doesn't work by each newly produced item (low-level) deciding its own tax rate.
+And yes, tax code (high level) has to change to accommodate new categories when they are being introduced.</p>
+<p>This is where domain-driven design provides better guidance: instead of mechanically applying structural principles, start by understanding what you're building.</p>
+<ol>
+<li>Figure out the goal of the application</li>
+<li>Figure out main domain areas</li>
+<li>Figure out main domain entities</li>
+<li>Figure out processing workflows</li>
+</ol>
+<p>It is easier to organize growing space, by abandoning old OOP-style of mixing data and processing in one interface.<br />
+For this rental system, the processing flow is straightforward:</p>
+<pre><code>[order] -&gt; &lt;discounts&gt; -&gt; &lt;promotions&gt; -&gt; &lt;pricing&gt; -&gt; &lt;taxation&gt; -&gt; [receipt]
+</code></pre>
+<p>And the sketch would look like this:</p>
+<div class="better-code">
+<pre><code class="language-java">  // data
+
+  record RoomRental(RoomType type, int days) {}
+  record EquipmentRental(EquipmentType type, int days) {}
+  record ConsumableOrder(ConsumableType type, int days) {}
+
+  class Order {
+      private List&lt;RoomRental&gt; rooms = new ArrayList&lt;&gt;();
+      private List&lt;EquipmentRental&gt; equipment = new ArrayList&lt;&gt;();
+      private List&lt;ConsumableOrder&gt; consumables = new ArrayList&lt;&gt;();
+  }
+
+  record BillingDetails(
+      String customerName,
+      String billingAddress,
+      String taxId,
+      PaymentMethod paymentMethod
+  ) {}
+
+  // processing
+
+  var pricing = new PricingEngine(discounts, taxes, promotions);
+
+  var order = new Order()
+      .addRoom(Rooms.LARGE, 5)
+      .addRoom(Rooms.SMALL, 3)
+      .addEquipment(Equipment.PROJECTOR, 3)
+      .addConsumable(Consumables.COFFEE, 5);
+
+  var billingDetails = new BillingDetails(
+      "Acme Corp",
+      "123 Business St, New York, NY 10001",
+      "EIN: 12-3456789",
+      PaymentMethod.CORPORATE_ACCOUNT
+  );
+
+  Receipt receipt = pricing.generateReceipt(order, billingDetails);
+</code></pre>
+</div>
+<p>This is a sketch, but it clearly has space for growth into a real system:
+Need to add California tax rules? Add a new tax strategy. New promotion for repeat customers? Add it to the promotions engine. Etc</p>
+<p>Applying SOLID without thinking about domain modeling, will produce architecturally wrong designs that won't work.</p>
+<h1 id="chapter-5-comments"><a class="header" href="#chapter-5-comments">Chapter 5: Comments</a></h1>
+<p>In the revised chapter on comments, he refuses to take the blame for popularizing the idea that comments are a sign of bad code and should be avoided:</p>
+<div class="book-quote">
+It has been said that advice like this gives license to younger programmers to avoid writing comments. Shame on any programmers,
+young or old, who use these recommendations as an excuse for their laziness and/or unwillingness to add proper explanations and
+context. In the end, I cannot concern myself with how others might abuse my advice. My sole purpose here is help those who will
+not.
+</div>
+<p>And yet even in this edition he declares comments to be a failure:</p>
+<div class="book-quote">
+The comments you write may be necessary; but that necessity is also unfortunate.<br/>
+..<br/>
+The proper use of comments is to compensate for our failure to express ourselves in code. Note that I used the word failure. I
+meant it. Comments are always failures of either our languages or our abilities.
+</div>
+<p>I would generalize even more: this is a failure of our universe. If only the laws of our universe were better, we could avoid writing comments.</p>
+<p>Both editions of this book are seriously lacking examples of good comments. The chapter about comments has a section "Good comments"
+and all examples are comically bad.</p>
+<div class="book-quote">
+Comments Do Not Make Up for Bad Code
+<p>One of the more common motivations for writing comments is bad code. We write a module and we know it is confusing and
+disorganized. We know it's a mess. So we say to ourselves, "Ooh, I'd better comment that!"
+No! You'd better clean it!</p>
+</div>
+<p>Expressing thoughts in code is harder than expressing thoughts in plain text. Expressing thoughts in code requires:</p>
+<ul>
+<li>Clear thinking</li>
+<li>Mastery of the language</li>
+<li>Expressiveness of the language</li>
+</ul>
+<p>For example, you can try very hard, but the expressiveness of the language is a noticeable limiting factor:</p>
+<pre><code class="language-java">assertTrue(b.compareTo(a) == 1);    // b &lt; a
+</code></pre>
+<p>The best Java can offer is:</p>
+<pre><code class="language-java">assertThat(a).isGreaterThan(b);
+</code></pre>
+<p>Serious note: if you have messy code, sit down and try to write clear comments - it will clarify your thinking and might help you
+reorganize the original mess.</p>
+<p>Or another example from Chapter 7: Clean functions:</p>
+<div class="book-quote">
+They will read like well-written prose.
+<pre><code class="language-java">if(employee.shouldBePaidToday())
+   employee.pay();
+</code></pre>
+</div>
+<p>In this example the employee class/interface is now coupled with unrelated concerns:</p>
+<ul>
+<li>calendars</li>
+<li>schedules</li>
+<li>payment transactions</li>
+</ul>
+<p>Does this read like prose? Maybe. Is it a good interface design? No, it isn't.
+Some languages are just not expressive enough for you to satisfy both constraints:
+good code design and "reading like prose".</p>
+<p>Overall the messaging of this chapter is the same. It's overfocused on bad examples and underfocused on good ones.</p>
+<div class="collapsible-rant">
+    <div class="collapsible-header">
+        <span class="collapsible-title">Seriously this is an example of a good comment:</span>
+        <span class="collapsible-arrow">↓</span>
+    </div>
+    <div class="collapsible-content">
+<div class="book-quote">
+<pre><code class="language-java">// Returns an instance of the Responder being tested.
+protected abstract Responder responderInstance();
+</code></pre>
+<p>That's because the author was using the well-known Singleton design pattern.
+When you use a design pattern like that, you should follow the canonical form specified by that pattern.
+In the Singleton pattern, the name of the accessor function always ends in the word Instance.</p>
+</div>
+<p>This doesn't look like a singleton. At all.</p>
+<p>This is how a typical singleton should look (in Java):</p>
+<pre><code class="language-java">class Responder {
+    public static final Responder INSTANCE = createResponder();
+}
+</code></pre>
+<p>I don't know what has happened here. But assuming that the suffix <code>Instance</code> means singleton is just wrong.
+I've checked the source code of <a href="https://github.com/EddyPronk/fitnesse/blob/0554263842e2f7a0f7ac69b89e8032f81dfa8f97/src/fitnesse/responders/RawContentResponderTest.java#L10">Fitnesse</a>.
+And I'm sorry to inform you this is not a singleton.</p>
+</div>
+</div>
+<p>A couple of notes that irritate me:</p>
+<div class="book-quote">
+Attributions and Bylines
+<p>/* Added by Rick */</p>
+<p>This is just graffiti. Please don't spray-paint your name all over the source code. Source code control systems are very good at
+remembering who added what, when.</p>
+</div>
+<p>I'm surprised to hear this argument from an IT veteran who for sure should have seen mass migration from one version control system to another (CVS to SVN or from SVN to Git).
+And how often the authorship information is lost during such migrations.</p>
+<div class="book-quote">
+Commented-Out Code
+<p>Few practices are as odious as commenting-out code. Commented-out code is an abomination before nature and nature's God. Don't
+check this stuff in!</p>
+<p>Others who see that commented-out code will be unlikely to have the courage to delete it. They'll think it is there for a reason
+and is too important to delete. So commented-out code gathers like dregs at the bottom of a bad bottle of wine</p>
+</div>
+<p>In reality, nobody is afraid to delete old commented-out code; once it’s been sitting there for a year or two, everyone assumes it’s stale.
+And for short-lived changes, commenting code in and out is far more practical and convenient than anything else.</p>
+<p>I don't know where this puritan stance against comments is coming from.
+Comments can be fun, creative and useful:</p>
+<a href="https://x.com/sadisticsystems/status/1313799443167272960" target="_blank">
+<img src="images/fun_comments.png" alt="ASCII art diagram showing memory barriers and store sequences - an example of creative documentation" style="width: 70%; display: block; margin: 1em auto;">
+</a>
+<p>Feel free to use and enjoy them.</p>
+<p>...</p>
+<p>And one last thing..</p>
+<p>Exception handling is still a mess, even <a href="https://bugzmanov.github.io/cleancode-critique/chapter_37.html">two decades</a> later:</p>
+<div class="book-quote">
+<pre><code class="language-java">public void loadProperties()
+ {
+   try
+   {
+    String propertiesPath = propertiesLocation + "/" + PROPERTIES_FILE;
+    FileInputStream propertiesStream =
+                    new FileInputStream(propertiesPath);
+    loadedProperties.load(propertiesStream);
+   }
+   catch(IOException e)
+   {
+     // No properties files means all defaults are loaded
+   }
+ }
+</code></pre>
+<p>...
+Wouldn't it have been better if the programmer had written the following?</p>
+<pre><code class="language-java">catch(IOException e)
+{
+   LoadedProperties.loadDefaults();
+}
+</code></pre>
+</div>
+<p>No! It wouldn't. This is very sloppy code for several reasons:</p>
+<ol>
+<li>
+<p><strong>IOException is too broad</strong>: This exception type can occur for many reasons-file not found, permission denied, disk full, corrupted data, network issues (for network
+filesystems), and more.</p>
+</li>
+<li>
+<p><strong>Silent failures make debugging impossible</strong>: When this code fails in production, you'll have no idea why the defaults were loaded. That information is gone.</p>
+</li>
+<li>
+<p><strong>The fallback might not be safe</strong>: Loading defaults might be the right response to "file not found" but completely wrong for "disk full" or "permission denied." Different
+IOException causes should trigger different recovery strategies.</p>
+</li>
+</ol>
+<p>The correct approach would be something like:</p>
+<div class="better-code">
+<pre><code class="language-java">catch(FileNotFoundException e) {
+   logger.info("Config file not found, the execution would proceed using defaults", e);
+   LoadedProperties.loadDefaults();
+} catch(IOException e) {
+   throw new ConfigurationException("Unable to load configuration", e);
+}
+</code></pre>
+</div>
+<p>If you think that I'm nit-picking, I promise you that I'm not. Proper handling of error cases is one of the main pillars of software engineering.
+Just another illustration that Clean Code (the book) is obsessed with style aesthetics and underweights operational reality.</p>
+<p>Small functions are a style, but good error handling is clean code.</p>
+<hr />
+<h1 id="reference-materials"><a class="header" href="#reference-materials">Reference Materials</a></h1>
+<p>If you want to learn more about domain-driven design and domain modeling, here are some excellent resources:</p>
+<ul>
+<li><a href="https://a.co/d/gr1x5SV"><strong>Domain-Driven Design: Tackling Complexity in the Heart of Software</strong></a> by Eric Evans - The foundational book that introduced DDD concepts</li>
+<li><a href="https://a.co/d/czGsBj1"><strong>Implementing Domain-Driven Design</strong></a> by Vaughn Vernon - Practical guide to applying DDD in real projects</li>
+<li><a href="https://a.co/d/8oikAnM"><strong>Domain Modeling Made Functional</strong></a> by Scott Wlaschin - Shows how to use functional programming with DDD (uses F#)</li>
+<li><a href="https://a.co/d/bfzM1Iw"><strong>Functional and Reactive Domain Modeling</strong></a> by Debasish Ghosh - Combines DDD with functional programming</li>
+</ul>
+<p>For performance critique of Clean Code style:</p>
+<ul>
+<li><a href="https://www.computerenhance.com/p/clean-code-horrible-performance"><strong>"Clean" Code, Horrible Performance</strong></a> by Casey Muratori - Demonstrates the performance cost of Clean Code patterns</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/book2.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
