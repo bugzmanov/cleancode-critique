@@ -99,7 +99,7 @@ What objectively reduces code size is removing repetitions (the fancy term - [An
 
 ```java
 public static String testableHtml(PageData pageData, boolean includeSuiteSetup) {
-    if (pageData.hasAttribute("Test")) { // not a test data page
+    if (!pageData.hasAttribute("Test")) { // not a test data page
         return pageData.getHtml(); 
     } 
     WikiPage wikiPage = pageData.getWikiPage();
